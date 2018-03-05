@@ -1,0 +1,561 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
+		CE7F7DF4204DD32D00548D5F /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* FirstViewController.swift */; };
+		CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */; };
+		CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DF7204DD32D00548D5F /* Main.storyboard */; };
+		CE7F7DFB204DD32D00548D5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DFA204DD32D00548D5F /* Assets.xcassets */; };
+		CE7F7DFE204DD32D00548D5F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */; };
+		CE7F7E09204DD32E00548D5F /* FairFeesAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E08204DD32E00548D5F /* FairFeesAppTests.swift */; };
+		CE7F7E14204DD32E00548D5F /* FairFeesAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E13204DD32E00548D5F /* FairFeesAppUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CE7F7E05204DD32E00548D5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE7F7DE6204DD32D00548D5F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE7F7DED204DD32D00548D5F;
+			remoteInfo = FairFeesApp;
+		};
+		CE7F7E10204DD32E00548D5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE7F7DE6204DD32D00548D5F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE7F7DED204DD32D00548D5F;
+			remoteInfo = FairFeesApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CE7F7DF3204DD32D00548D5F /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		CE7F7DF8204DD32D00548D5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CE7F7DFA204DD32D00548D5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CE7F7DFD204DD32D00548D5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CE7F7DFF204DD32E00548D5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE7F7E04204DD32E00548D5F /* FairFeesAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FairFeesAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE7F7E08204DD32E00548D5F /* FairFeesAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairFeesAppTests.swift; sourceTree = "<group>"; };
+		CE7F7E0A204DD32E00548D5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE7F7E0F204DD32E00548D5F /* FairFeesAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FairFeesAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE7F7E13204DD32E00548D5F /* FairFeesAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairFeesAppUITests.swift; sourceTree = "<group>"; };
+		CE7F7E15204DD32E00548D5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE7F7DEB204DD32D00548D5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7F7E01204DD32E00548D5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7F7E0C204DD32E00548D5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE7F7DE5204DD32D00548D5F = {
+			isa = PBXGroup;
+			children = (
+				CE7F7DF0204DD32D00548D5F /* FairFeesApp */,
+				CE7F7E07204DD32E00548D5F /* FairFeesAppTests */,
+				CE7F7E12204DD32E00548D5F /* FairFeesAppUITests */,
+				CE7F7DEF204DD32D00548D5F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE7F7DEF204DD32D00548D5F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */,
+				CE7F7E04204DD32E00548D5F /* FairFeesAppTests.xctest */,
+				CE7F7E0F204DD32E00548D5F /* FairFeesAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE7F7DF0204DD32D00548D5F /* FairFeesApp */ = {
+			isa = PBXGroup;
+			children = (
+				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
+				CE7F7DF3204DD32D00548D5F /* FirstViewController.swift */,
+				CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */,
+				CE7F7DF7204DD32D00548D5F /* Main.storyboard */,
+				CE7F7DFA204DD32D00548D5F /* Assets.xcassets */,
+				CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */,
+				CE7F7DFF204DD32E00548D5F /* Info.plist */,
+			);
+			path = FairFeesApp;
+			sourceTree = "<group>";
+		};
+		CE7F7E07204DD32E00548D5F /* FairFeesAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				CE7F7E08204DD32E00548D5F /* FairFeesAppTests.swift */,
+				CE7F7E0A204DD32E00548D5F /* Info.plist */,
+			);
+			path = FairFeesAppTests;
+			sourceTree = "<group>";
+		};
+		CE7F7E12204DD32E00548D5F /* FairFeesAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CE7F7E13204DD32E00548D5F /* FairFeesAppUITests.swift */,
+				CE7F7E15204DD32E00548D5F /* Info.plist */,
+			);
+			path = FairFeesAppUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CE7F7DED204DD32D00548D5F /* FairFeesApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE7F7E18204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesApp" */;
+			buildPhases = (
+				CE7F7DEA204DD32D00548D5F /* Sources */,
+				CE7F7DEB204DD32D00548D5F /* Frameworks */,
+				CE7F7DEC204DD32D00548D5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FairFeesApp;
+			productName = FairFeesApp;
+			productReference = CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CE7F7E03204DD32E00548D5F /* FairFeesAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE7F7E1B204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesAppTests" */;
+			buildPhases = (
+				CE7F7E00204DD32E00548D5F /* Sources */,
+				CE7F7E01204DD32E00548D5F /* Frameworks */,
+				CE7F7E02204DD32E00548D5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE7F7E06204DD32E00548D5F /* PBXTargetDependency */,
+			);
+			name = FairFeesAppTests;
+			productName = FairFeesAppTests;
+			productReference = CE7F7E04204DD32E00548D5F /* FairFeesAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CE7F7E0E204DD32E00548D5F /* FairFeesAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE7F7E1E204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesAppUITests" */;
+			buildPhases = (
+				CE7F7E0B204DD32E00548D5F /* Sources */,
+				CE7F7E0C204DD32E00548D5F /* Frameworks */,
+				CE7F7E0D204DD32E00548D5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE7F7E11204DD32E00548D5F /* PBXTargetDependency */,
+			);
+			name = FairFeesAppUITests;
+			productName = FairFeesAppUITests;
+			productReference = CE7F7E0F204DD32E00548D5F /* FairFeesAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE7F7DE6204DD32D00548D5F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Fair Fees";
+				TargetAttributes = {
+					CE7F7DED204DD32D00548D5F = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					CE7F7E03204DD32E00548D5F = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = CE7F7DED204DD32D00548D5F;
+					};
+					CE7F7E0E204DD32E00548D5F = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = CE7F7DED204DD32D00548D5F;
+					};
+				};
+			};
+			buildConfigurationList = CE7F7DE9204DD32D00548D5F /* Build configuration list for PBXProject "FairFeesApp" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CE7F7DE5204DD32D00548D5F;
+			productRefGroup = CE7F7DEF204DD32D00548D5F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE7F7DED204DD32D00548D5F /* FairFeesApp */,
+				CE7F7E03204DD32E00548D5F /* FairFeesAppTests */,
+				CE7F7E0E204DD32E00548D5F /* FairFeesAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE7F7DEC204DD32D00548D5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE7F7DFE204DD32D00548D5F /* LaunchScreen.storyboard in Resources */,
+				CE7F7DFB204DD32D00548D5F /* Assets.xcassets in Resources */,
+				CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7F7E02204DD32E00548D5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7F7E0D204DD32E00548D5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE7F7DEA204DD32D00548D5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */,
+				CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */,
+				CE7F7DF4204DD32D00548D5F /* FirstViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7F7E00204DD32E00548D5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE7F7E09204DD32E00548D5F /* FairFeesAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7F7E0B204DD32E00548D5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE7F7E14204DD32E00548D5F /* FairFeesAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CE7F7E06204DD32E00548D5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE7F7DED204DD32D00548D5F /* FairFeesApp */;
+			targetProxy = CE7F7E05204DD32E00548D5F /* PBXContainerItemProxy */;
+		};
+		CE7F7E11204DD32E00548D5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE7F7DED204DD32D00548D5F /* FairFeesApp */;
+			targetProxy = CE7F7E10204DD32E00548D5F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CE7F7DF7204DD32D00548D5F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE7F7DF8204DD32D00548D5F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE7F7DFD204DD32D00548D5F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CE7F7E16204DD32E00548D5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CE7F7E17204DD32E00548D5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE7F7E19204DD32E00548D5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FairFeesApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CE7F7E1A204DD32E00548D5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FairFeesApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CE7F7E1C204DD32E00548D5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FairFeesAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FairFeesApp.app/FairFeesApp";
+			};
+			name = Debug;
+		};
+		CE7F7E1D204DD32E00548D5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FairFeesAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FairFeesApp.app/FairFeesApp";
+			};
+			name = Release;
+		};
+		CE7F7E1F204DD32E00548D5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FairFeesAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FairFeesApp;
+			};
+			name = Debug;
+		};
+		CE7F7E20204DD32E00548D5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FairFeesAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FairFeesApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE7F7DE9204DD32D00548D5F /* Build configuration list for PBXProject "FairFeesApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE7F7E16204DD32E00548D5F /* Debug */,
+				CE7F7E17204DD32E00548D5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE7F7E18204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE7F7E19204DD32E00548D5F /* Debug */,
+				CE7F7E1A204DD32E00548D5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE7F7E1B204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE7F7E1C204DD32E00548D5F /* Debug */,
+				CE7F7E1D204DD32E00548D5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE7F7E1E204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE7F7E1F204DD32E00548D5F /* Debug */,
+				CE7F7E20204DD32E00548D5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE7F7DE6204DD32D00548D5F /* Project object */;
+}
