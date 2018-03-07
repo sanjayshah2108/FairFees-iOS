@@ -32,7 +32,7 @@ class DummyData: NSObject {
     func createListings(){
 
         homesForSale = []
-        LocationManager.theLocationManager.getLocation()
+        LocationManager.theLocationManager.currentLocation = LocationManager.theLocationManager.getLocation()
         
         let homeSale1 = HomeSale(name: "North Van Apt", description: "", location: LocationManager.theLocationManager.currentLocation, poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         

@@ -129,6 +129,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         mapListSegmentedControl = UISegmentedControl()
         mapListSegmentedControl.insertSegment(withTitle: "Map", at: 0, animated: false)
         mapListSegmentedControl.insertSegment(withTitle: "List", at: 2, animated: false)
+        mapListSegmentedControl.selectedSegmentIndex = 0
         mapListSegmentedControl.addTarget(self, action: #selector(bringMapOrListToFront), for: .valueChanged)
         self.navigationItem.titleView = mapListSegmentedControl
     }
@@ -188,6 +189,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         applyFilterButton = UIButton()
         applyFilterButton.frame = CGRect.zero
         applyFilterButton.addTarget(self, action: #selector(applyFilters), for: .touchUpInside)
+        applyFilterButton.layer.cornerRadius = 5
         applyFilterButton.setTitle("Apply Filters", for: .normal)
         applyFilterButton.backgroundColor = UIColor.white
         applyFilterButton.titleLabel?.textColor = UIColor.black
@@ -210,15 +212,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         
         let noOfBedroomsSegmentedControlTrailingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
-        let noOfBedroomsSegmentedControlBottomConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: 0)
+        //let noOfBedroomsSegmentedControlBottomConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: 5)
         let noOfBedroomsSegmentedControlLeadingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
-        //let noOfBedroomsSegmentedControlTopConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 0)
+        let noOfBedroomsSegmentedControlTopConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0)
         
-        NSLayoutConstraint.activate([noOfBedroomsSegmentedControlTrailingConstraint, noOfBedroomsSegmentedControlBottomConstraint, noOfBedroomsSegmentedControlLeadingConstraint])
+        NSLayoutConstraint.activate([noOfBedroomsSegmentedControlTrailingConstraint, noOfBedroomsSegmentedControlTopConstraint, noOfBedroomsSegmentedControlLeadingConstraint])
         
-        let applyFilterButtonTrailingConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
-        let applyFilterButtonBottomConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: 0)
-        let applyFilterButtonLeadingConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
+        let applyFilterButtonTrailingConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10)
+        let applyFilterButtonBottomConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: filterView, attribute: .bottom , multiplier: 1, constant: -20)
+        let applyFilterButtonLeadingConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10)
         let applyFilterButtonHeightConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20)
         
         NSLayoutConstraint.activate([applyFilterButtonTrailingConstraint, applyFilterButtonBottomConstraint, applyFilterButtonLeadingConstraint, applyFilterButtonHeightConstraint])
