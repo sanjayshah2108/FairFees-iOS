@@ -8,8 +8,14 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
-class Listing: NSObject {
+class Listing: NSObject, MKAnnotation {
+    
+    var coordinate: CLLocationCoordinate2D {
+        get { return self.listingLocation.coordinate }
+        //set { self.listingLocation.coordinate = newValue }
+    }
     
     var listingUID: String!
     var listingName: String!

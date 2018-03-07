@@ -22,6 +22,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
      var filterView: UIView!
     
      var priceFilterSlider: UISlider!
+    var noOfBedroomsLabel: UILabel!
      var noOfBedroomsSegmentedControl: UISegmentedControl!
      var applyFilterButton: UIButton!
     
@@ -105,6 +106,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let topConstraint = NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (searchBarHeight + navigationBarHeight) )
         
         NSLayoutConstraint.activate([trailingConstraint, bottomConstraint, topConstraint, leadingConstraint])
+        
+        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
+        homeMapView.addAnnotation(DummyData.theDummyData.homesForSale[0] as! MKAnnotation)
 
     }
     
@@ -169,12 +173,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterView.translatesAutoresizingMaskIntoConstraints = false
         
         priceFilterSlider = UISlider()
-        priceFilterSlider.maximumValue = 100000
-        priceFilterSlider.minimumValue = 10
-        priceFilterSlider.setValue(3, animated: true)
+        priceFilterSlider.maximumValue = 10000000
+        priceFilterSlider.minimumValue = 100000
+        
+        priceFilterSlider.setValue(100000, animated: true)
         
         filterView.addSubview(priceFilterSlider)
         priceFilterSlider.translatesAutoresizingMaskIntoConstraints = false
+        
+        noOfBedroomsLabel = UILabel()
+        noOfBedroomsLabel.text = "No. of Bedrooms"
+        filterView.addSubview(noOfBedroomsLabel)
+        noOfBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         noOfBedroomsSegmentedControl = UISegmentedControl()
         noOfBedroomsSegmentedControl.frame = CGRect.zero
@@ -210,11 +220,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         NSLayoutConstraint.activate([priceFilterSliderTrailingConstraint, priceFilterSliderBottomConstraint, priceFilterSliderLeadingConstraint, priceFilterSliderTopConstraint])
 
+        //let noOfBedroomsLabelTrailingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
+        let noOfBedroomsLabelBottomConstraint = NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: 5)
+        let noOfBedroomsLabelLeadingConstraint = NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
+        let noOfBedroomsLabelTopConstraint = NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0)
+        
+        NSLayoutConstraint.activate([noOfBedroomsLabelBottomConstraint, noOfBedroomsLabelLeadingConstraint, noOfBedroomsLabelTopConstraint])
         
         let noOfBedroomsSegmentedControlTrailingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
         //let noOfBedroomsSegmentedControlBottomConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: 5)
         let noOfBedroomsSegmentedControlLeadingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
-        let noOfBedroomsSegmentedControlTopConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0)
+        let noOfBedroomsSegmentedControlTopConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .top, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .bottom , multiplier: 1, constant: 10)
         
         NSLayoutConstraint.activate([noOfBedroomsSegmentedControlTrailingConstraint, noOfBedroomsSegmentedControlTopConstraint, noOfBedroomsSegmentedControlLeadingConstraint])
         
