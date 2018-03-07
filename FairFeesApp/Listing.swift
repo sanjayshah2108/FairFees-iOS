@@ -7,10 +7,16 @@
 //
 
 import UIKit
+import CoreLocation
 
 class Listing: NSObject {
-
-    var name: String
-    var price: Int
+    
+    var listingUID: String!
+    var listingName: String!
+    var listingPoster: User!
+    var listingDescription: String!
+    var listingPhotos: [UIImage]!
+    var listingSize: Int!
+    var listingLocation: CLLocation!
     
 }

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE51484A204F70170021DB67 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514849204F70170021DB67 /* LocationManager.swift */; };
+		CE51484C204F74540021DB67 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484B204F74540021DB67 /* DummyData.swift */; };
+		CE51484E204F778F0021DB67 /* Sale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484D204F778F0021DB67 /* Sale.swift */; };
+		CE514850204F77C20021DB67 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484F204F77C20021DB67 /* User.swift */; };
+		CE514852204F7A580021DB67 /* HomeSale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514851204F7A580021DB67 /* HomeSale.swift */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */; };
@@ -41,6 +46,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE514849204F70170021DB67 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		CE51484B204F74540021DB67 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
+		CE51484D204F778F0021DB67 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
+		CE51484F204F77C20021DB67 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CE514851204F7A580021DB67 /* HomeSale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSale.swift; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -113,12 +123,17 @@
 			children = (
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
 				CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */,
+				CE514849204F70170021DB67 /* LocationManager.swift */,
 				CE7F7E27204DE78500548D5F /* Listing.swift */,
 				CE7F7E29204DE7B700548D5F /* Building.swift */,
 				CE7F7E2B204DE8C100548D5F /* Rental.swift */,
+				CE51484D204F778F0021DB67 /* Sale.swift */,
+				CE514851204F7A580021DB67 /* HomeSale.swift */,
 				CE7F7E23204DDF8E00548D5F /* ListingViewController.swift */,
 				CE7F7E24204DDF8E00548D5F /* ListingViewController.xib */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
+				CE51484B204F74540021DB67 /* DummyData.swift */,
+				CE51484F204F77C20021DB67 /* User.swift */,
 				CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */,
 				CE7F7DF7204DD32D00548D5F /* Main.storyboard */,
 				CE7F7DFA204DD32D00548D5F /* Assets.xcassets */,
@@ -284,11 +299,16 @@
 				CE7F7E22204DDB6600548D5F /* MapViewDelegate.swift in Sources */,
 				CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */,
 				CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */,
+				CE51484E204F778F0021DB67 /* Sale.swift in Sources */,
 				CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */,
+				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
 				CE7F7E28204DE78500548D5F /* Listing.swift in Sources */,
 				CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */,
 				CE7F7E25204DDF8E00548D5F /* ListingViewController.swift in Sources */,
+				CE514850204F77C20021DB67 /* User.swift in Sources */,
 				CE7F7E2A204DE7B700548D5F /* Building.swift in Sources */,
+				CE51484C204F74540021DB67 /* DummyData.swift in Sources */,
+				CE51484A204F70170021DB67 /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

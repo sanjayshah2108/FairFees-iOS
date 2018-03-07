@@ -13,6 +13,8 @@ import MapKit
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate {
     
+     var locationManager: CLLocationManager!
+    
      var homeMapView: MKMapView!
      var homeTableView: UITableView!
      var mapListSegmentedControl: UISegmentedControl!
@@ -28,13 +30,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var searchBarHeight: CGFloat!
     
     var tapGesture: UITapGestureRecognizer!
+    var swipeUpGesture: UISwipeGestureRecognizer!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return DummyData.theDummyData.homesForSale.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
+        
         let cell = UITableViewCell(style: .default, reuseIdentifier: "homeTableViewCell")
+        
+        let listing = DummyData.theDummyData.homesForSale[indexPath.row]
+        
+        cell.textLabel?.text = listing.listingName
+        
         
         return cell
     }
@@ -43,10 +53,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         //view.translatesAutoresizingMaskIntoConstraints = false
+    
+    
+        
+        locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         tabBarHeight = self.tabBarController?.tabBar.frame.height
         searchBarHeight = 40
+        
+        setupDummyData()
         
         setupMapListSegmentTitle()
         setupHomeMapView()
@@ -63,12 +79,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func setupDummyData(){
+        
+        DummyData.theDummyData.createUsers()
+        DummyData.theDummyData.createListings()
+    }
 
     func setupHomeMapView(){
         
         homeMapView = MKMapView()
         homeMapView.frame = CGRect.zero
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
+        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+        MapViewDelegate.theMapViewDelegate.setMapRegion()
+        homeMapView.showsUserLocation = true
+        
        // homeMapView.
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,7 +148,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchBar = UISearchBar()
         searchBar.frame = CGRect(x: 0, y: navigationBarHeight, width: view.frame.width, height: 40)
         searchBar.delegate = self
-        searchBar.placeholder = "Search Address, ZIp or City"
+        searchBar.placeholder = "Search Address, Zip or City"
         view.addSubview(searchBar)
         view.bringSubview(toFront: searchBar)
         
@@ -202,12 +228,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func applyFilters(){
         print("apply filters")
     }
+    
+    @objc func handleSwipeGestures(swipeGesture: UISwipeGestureRecognizer){
+        
+        if(swipeGesture.direction == .up){
+            view.sendSubview(toBack: filterView)
+            filterView.removeGestureRecognizer(swipeUpGesture)
+        }
+        
+    }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         view.bringSubview(toFront: filterView)
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
         self.view.addGestureRecognizer(tapGesture)
+        
+        swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+        swipeUpGesture.direction = .up
+        filterView.addGestureRecognizer(swipeUpGesture)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

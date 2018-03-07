@@ -14,7 +14,12 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
     static let theMapViewDelegate = MapViewDelegate()
 
     weak var theMapView: MKMapView!
+    weak var myLocation: CLLocation! = LocationManager.theLocationManager.getLocation()
     
-    
+    func setMapRegion(){
+        
+        let span = MKCoordinateSpanMake(0.009, 0.009)
+        theMapView.setRegion(MKCoordinateRegionMake(myLocation.coordinate, span) , animated: true)
+    }
 
 }
