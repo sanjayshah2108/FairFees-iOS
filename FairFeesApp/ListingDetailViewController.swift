@@ -17,6 +17,8 @@ class ListingDetailViewController: UIViewController {
     weak var currentListing: HomeSale!
 
     var imageViewCarousel: UIImageView!
+    var nextImageButton: UIButton!
+    var previousImageButton: UIButton!
     var addressLabel: UILabel!
     var descriptionLabel: UILabel!
     var mapView: MKMapView!
@@ -58,6 +60,20 @@ class ListingDetailViewController: UIViewController {
     
         imageCarouselSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
         imageViewCarousel.addGestureRecognizer(imageCarouselSwipeGesture)
+        
+        nextImageButton = UIButton(type: .custom)
+        nextImageButton.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
+        nextImageButton.addTarget(self, action: #selector(nextImage), for: .touchUpInside)
+        nextImageButton.layer.cornerRadius = 3
+        nextImageButton.translatesAutoresizingMaskIntoConstraints = false
+        imageViewCarousel.addSubview(nextImageButton)
+        
+        previousImageButton = UIButton(type: .custom)
+        previousImageButton.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
+        previousImageButton.addTarget(self, action: #selector(previousImage), for: .touchUpInside)
+        previousImageButton.layer.cornerRadius = 3
+        previousImageButton.translatesAutoresizingMaskIntoConstraints = false
+        imageViewCarousel.addSubview(previousImageButton)
     }
     
     func setupLabels(){
@@ -130,6 +146,18 @@ class ListingDetailViewController: UIViewController {
         NSLayoutConstraint(item: imageViewCarousel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
+        //nextImageButton
+        NSLayoutConstraint(item: nextImageButton, attribute: .bottom, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: -20).isActive = true
+        NSLayoutConstraint(item: nextImageButton, attribute: .trailing, relatedBy: .equal, toItem: imageViewCarousel, attribute: .trailing, multiplier: 1, constant: -20).isActive = true
+        NSLayoutConstraint(item: nextImageButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: nextImageButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        
+        //previousImageButton
+        NSLayoutConstraint(item: previousImageButton, attribute: .bottom, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: -20).isActive = true
+        NSLayoutConstraint(item: previousImageButton, attribute: .leading, relatedBy: .equal, toItem: imageViewCarousel, attribute: .leading, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: previousImageButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: previousImageButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        
         //addressLabel
         NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: addressLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
@@ -174,6 +202,14 @@ class ListingDetailViewController: UIViewController {
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0).isActive = true
+    }
+    
+    @objc func nextImage(sender: UIButton){
+        print("nextImage")
+    }
+    
+    @objc func previousImage(sender: UIButton){
+        print("previousImage")
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){

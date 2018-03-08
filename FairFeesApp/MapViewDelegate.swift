@@ -18,7 +18,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
     
     func setHomeVCMapRegion(){
         
-        let span = MKCoordinateSpanMake(0.009, 0.009)
+        let span = MKCoordinateSpanMake(0.045, 0.045)
         theMapView.setRegion(MKCoordinateRegionMake(myLocation.coordinate, span) , animated: true)
     }
     
