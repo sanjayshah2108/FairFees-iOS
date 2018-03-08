@@ -43,7 +43,7 @@ class DummyData: NSObject {
         
         let homeSale4 = HomeSale(name: "East Van House", description: "Test Description", location: CLLocation.init(latitude: 49.2467, longitude: -123.0578), address:"1234 East Van", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         
-        let homeSale5 = HomeSale(name: "Vancouver West Apt", description: "Test Description", location: CLLocation.init(latitude: 49.2606, longitude: -123.2460), address:"1234 West Van", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        let homeSale5 = HomeSale(name: "Vancouver West Apt", description: "Test Description", location: CLLocation.init(latitude: 49.2606, longitude: -123.2460), address:"1234 UBC Boulevard", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         
         
         

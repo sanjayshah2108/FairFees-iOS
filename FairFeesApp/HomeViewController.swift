@@ -90,8 +90,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
         
         homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
-        
-
     }
     
     func setupHomeTableView(){
@@ -99,6 +97,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeTableView.delegate = self
         homeTableView.dataSource = self
         homeTableView.frame = CGRect.zero
+        homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
+        
         view.addSubview(homeTableView)
         homeTableView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -141,7 +141,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         priceFilterSlider = UISlider()
         priceFilterSlider.maximumValue = 10000000
         priceFilterSlider.minimumValue = 100000
-        priceFilterSlider.setValue(100000, animated: true)
+        priceFilterSlider.setValue(5000000, animated: true)
         priceFilterSlider.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(priceFilterSlider)
         
@@ -164,7 +164,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         applyFilterButton.frame = CGRect.zero
         applyFilterButton.addTarget(self, action: #selector(applyFilters), for: .touchUpInside)
         applyFilterButton.layer.cornerRadius = 5
+        applyFilterButton.isEnabled = false
         applyFilterButton.setTitle("Apply Filters", for: .normal)
+        applyFilterButton.isEnabled = true
         applyFilterButton.backgroundColor = UIColor.white
         applyFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
@@ -208,7 +210,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         //bedroomNumberLabel
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: 5).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
         
         //bedroomNumberSegment
         NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
@@ -223,23 +225,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     @objc func applyFilters(){
+
         print("apply filters")
     }
     
-    
+
     //tableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return DummyData.theDummyData.homesForSale.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
         
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "homeTableViewCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
+        
+//        if (cell == nil){
+//            tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
+//        }
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
-        cell.textLabel?.text = listing.listingName
+        cell.listingCellNameLabel.text = listing.listingName
+        cell.listingCellSizeLabel.text = "\(listing.listingSize!) SF"
+        cell.listingCellPriceLabel.text = "$\(listing.salePrice!)"
+        cell.listingCellAddressLabel.text = listing.listingAddress
         
         return cell
     }
@@ -249,6 +258,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         listingViewController.currentListing = DummyData.theDummyData.homesForSale[indexPath.row]
         
         self.navigationController?.pushViewController(listingViewController, animated: true)
+        
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
