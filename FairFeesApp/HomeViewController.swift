@@ -22,7 +22,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
      var filterView: UIView!
     
      var priceFilterSlider: UISlider!
-    var noOfBedroomsLabel: UILabel!
+     var noOfBedroomsLabel: UILabel!
      var noOfBedroomsSegmentedControl: UISegmentedControl!
      var applyFilterButton: UIButton!
     
@@ -32,31 +32,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var tapGesture: UITapGestureRecognizer!
     var swipeUpGesture: UISwipeGestureRecognizer!
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DummyData.theDummyData.homesForSale.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
-        
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "homeTableViewCell")
-        
-        let listing = DummyData.theDummyData.homesForSale[indexPath.row]
-        
-        cell.textLabel?.text = listing.listingName
-        
-        
-        return cell
-    }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //view.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-        
+   
         locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
@@ -70,10 +50,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupHomeTableView()
         setupSearchBar()
         setupFilterView()
+        
+        setupConstraints()
     
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
       
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,23 +81,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeMapView.frame = CGRect.zero
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
         MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
-        MapViewDelegate.theMapViewDelegate.setMapRegion()
+        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
         homeMapView.showsUserLocation = true
-        
-       // homeMapView.
+     
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
-        let trailingConstraint = NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0)
-        let bottomConstraint = NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight)
-        let leadingConstraint = NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0)
-        let topConstraint = NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (searchBarHeight + navigationBarHeight) )
-        
-        NSLayoutConstraint.activate([trailingConstraint, bottomConstraint, topConstraint, leadingConstraint])
-        
         homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        homeMapView.addAnnotation(DummyData.theDummyData.homesForSale[0] as! MKAnnotation)
-
+        
+        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     func setupHomeTableView(){
@@ -117,16 +97,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeTableView.delegate = self
         homeTableView.dataSource = self
         homeTableView.frame = CGRect.zero
+        homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
+        
         view.addSubview(homeTableView)
         homeTableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let trailingConstraint = NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0)
-        let bottomConstraint = NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight)
-        let leadingConstraint = NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0)
-        let topConstraint = NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (navigationBarHeight+searchBarHeight))
-        
-        NSLayoutConstraint.activate([trailingConstraint, bottomConstraint, topConstraint, leadingConstraint])
-
     }
     
     func setupMapListSegmentTitle(){
@@ -156,35 +130,26 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchBar.placeholder = "Search Address, Zip or City"
         view.addSubview(searchBar)
         view.bringSubview(toFront: searchBar)
-        
-        let searchBarTrailingConstraint = NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0)
-        let searchBarHeightConstraint = NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight)
-        let searchBarLeadingConstraint = NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0)
-        let searchBarBottomConstraint = NSLayoutConstraint(item: searchBar, attribute: .bottom, relatedBy: .equal, toItem: homeMapView, attribute: .top , multiplier: 1, constant: 0)
-        
-        NSLayoutConstraint.activate([searchBarTrailingConstraint, searchBarHeightConstraint, searchBarLeadingConstraint, searchBarBottomConstraint])
-        
     }
     
     func setupFilterView(){
         filterView = UIView(frame: CGRect(x: 0, y: navigationBarHeight + 40, width: view.frame.width, height: 200))
-        filterView.backgroundColor = UIColor.gray
-        view.addSubview(filterView)
+        filterView.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         filterView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(filterView)
         
         priceFilterSlider = UISlider()
         priceFilterSlider.maximumValue = 10000000
         priceFilterSlider.minimumValue = 100000
-        
-        priceFilterSlider.setValue(100000, animated: true)
-        
-        filterView.addSubview(priceFilterSlider)
+        priceFilterSlider.setValue(5000000, animated: true)
         priceFilterSlider.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(priceFilterSlider)
         
         noOfBedroomsLabel = UILabel()
         noOfBedroomsLabel.text = "No. of Bedrooms"
-        filterView.addSubview(noOfBedroomsLabel)
+        noOfBedroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
         noOfBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(noOfBedroomsLabel)
         
         noOfBedroomsSegmentedControl = UISegmentedControl()
         noOfBedroomsSegmentedControl.frame = CGRect.zero
@@ -192,60 +157,113 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         noOfBedroomsSegmentedControl.insertSegment(withTitle: "2+", at: 1, animated: false)
         noOfBedroomsSegmentedControl.insertSegment(withTitle: "3+", at: 2, animated: false)
         noOfBedroomsSegmentedControl.insertSegment(withTitle: "4+", at: 3, animated: false)
-        
-        filterView.addSubview(noOfBedroomsSegmentedControl)
         noOfBedroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(noOfBedroomsSegmentedControl)
         
         applyFilterButton = UIButton()
         applyFilterButton.frame = CGRect.zero
         applyFilterButton.addTarget(self, action: #selector(applyFilters), for: .touchUpInside)
         applyFilterButton.layer.cornerRadius = 5
+        applyFilterButton.isEnabled = false
         applyFilterButton.setTitle("Apply Filters", for: .normal)
+        applyFilterButton.isEnabled = true
         applyFilterButton.backgroundColor = UIColor.white
-        applyFilterButton.titleLabel?.textColor = UIColor.black
-        filterView.addSubview(applyFilterButton)
+        applyFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(applyFilterButton)
+    }
+    
+    func setupConstraints(){
         
-        let filterViewTrailingConstraint = NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0)
-        let filterViewHeightConstraint = NSLayoutConstraint(item: filterView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 200)
-        let filterViewLeadingConstraint = NSLayoutConstraint(item: filterView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0)
-        let filterViewTopConstraint = NSLayoutConstraint(item: filterView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0)
+        //homeMapView
+        NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (searchBarHeight + navigationBarHeight)).isActive = true
         
-        NSLayoutConstraint.activate([filterViewTrailingConstraint, filterViewHeightConstraint, filterViewLeadingConstraint, filterViewTopConstraint])
         
-        let priceFilterSliderTrailingConstraint = NSLayoutConstraint(item: priceFilterSlider, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
-        let priceFilterSliderBottomConstraint = NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: 0)
-        let priceFilterSliderLeadingConstraint = NSLayoutConstraint(item: priceFilterSlider, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
-        let priceFilterSliderTopConstraint = NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 0)
-        
-        NSLayoutConstraint.activate([priceFilterSliderTrailingConstraint, priceFilterSliderBottomConstraint, priceFilterSliderLeadingConstraint, priceFilterSliderTopConstraint])
+        //homeTableView
+        NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (navigationBarHeight+searchBarHeight)).isActive = true
 
-        //let noOfBedroomsLabelTrailingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
-        let noOfBedroomsLabelBottomConstraint = NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: 5)
-        let noOfBedroomsLabelLeadingConstraint = NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
-        let noOfBedroomsLabelTopConstraint = NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0)
+        //searchBar
+        NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
+        NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: searchBar, attribute: .bottom, relatedBy: .equal, toItem: homeMapView, attribute: .top , multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint.activate([noOfBedroomsLabelBottomConstraint, noOfBedroomsLabelLeadingConstraint, noOfBedroomsLabelTopConstraint])
+        //filterView
+        NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: filterView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 120).isActive = true
+        NSLayoutConstraint(item: filterView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: filterView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         
-        let noOfBedroomsSegmentedControlTrailingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: 0)
-        //let noOfBedroomsSegmentedControlBottomConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: 5)
-        let noOfBedroomsSegmentedControlLeadingConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 0)
-        let noOfBedroomsSegmentedControlTopConstraint = NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .top, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .bottom , multiplier: 1, constant: 10)
+        //priceFilterSlider
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint.activate([noOfBedroomsSegmentedControlTrailingConstraint, noOfBedroomsSegmentedControlTopConstraint, noOfBedroomsSegmentedControlLeadingConstraint])
         
-        let applyFilterButtonTrailingConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10)
-        let applyFilterButtonBottomConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: filterView, attribute: .bottom , multiplier: 1, constant: -20)
-        let applyFilterButtonLeadingConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10)
-        let applyFilterButtonHeightConstraint = NSLayoutConstraint(item: applyFilterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20)
+        //bedroomNumberLabel
+        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
         
-        NSLayoutConstraint.activate([applyFilterButtonTrailingConstraint, applyFilterButtonBottomConstraint, applyFilterButtonLeadingConstraint, applyFilterButtonHeightConstraint])
+        //bedroomNumberSegment
+        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        
+        //applyFilterButton
+        NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: applyFilterButton, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: applyFilterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: filterView, attribute: .bottom , multiplier: 1, constant: -10).isActive = true
+        
+    }
+    @objc func applyFilters(){
+
+        print("apply filters")
+    }
+    
+
+    //tableView Methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return DummyData.theDummyData.homesForSale.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
+        
+//        if (cell == nil){
+//            tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
+//        }
+        
+        let listing = DummyData.theDummyData.homesForSale[indexPath.row]
+        
+        cell.listingCellNameLabel.text = listing.listingName
+        cell.listingCellSizeLabel.text = "\(listing.listingSize!) SF"
+        cell.listingCellPriceLabel.text = "$\(listing.salePrice!)"
+        cell.listingCellAddressLabel.text = listing.listingAddress
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let listingViewController = ListingDetailViewController()
+        listingViewController.currentListing = DummyData.theDummyData.homesForSale[indexPath.row]
+        
+        self.navigationController?.pushViewController(listingViewController, animated: true)
+        
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
-    @objc func applyFilters(){
-        print("apply filters")
-    }
     
     @objc func handleSwipeGestures(swipeGesture: UISwipeGestureRecognizer){
         

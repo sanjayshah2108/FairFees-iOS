@@ -20,6 +20,7 @@ class HomeSale: Sale {
          
          description:String,
          location:CLLocation,
+         address: String,
          poster:User,
          photos:[UIImage],
          size: Int,
@@ -35,6 +36,7 @@ class HomeSale: Sale {
         super.listingName = name
         super.listingDescription = description
         super.listingLocation = location
+        super.listingAddress = address
         super.listingPoster = poster
         super.listingSize = size
         super.listingPhotos = photos

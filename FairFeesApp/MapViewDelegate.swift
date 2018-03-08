@@ -16,9 +16,9 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
     weak var theMapView: MKMapView!
     weak var myLocation: CLLocation! = LocationManager.theLocationManager.getLocation()
     
-    func setMapRegion(){
+    func setHomeVCMapRegion(){
         
-        let span = MKCoordinateSpanMake(0.009, 0.009)
+        let span = MKCoordinateSpanMake(0.045, 0.045)
         theMapView.setRegion(MKCoordinateRegionMake(myLocation.coordinate, span) , animated: true)
     }
     
@@ -64,5 +64,38 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         newMarkerView.markerTintColor = UIProperties.sharedUIProperties.primaryRedColor
         newMarkerView.glyphTintColor = UIProperties.sharedUIProperties.primaryGrayColor
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        if (view.annotation is MKUserLocation){
+            return
+        }
+        else {
+            let listingToPresent = view.annotation as? Listing
+            
+            let listingViewController = ListingDetailViewController()
+            listingViewController.currentListing = listingToPresent as! HomeSale
+            
+            topController().navigationController?.pushViewController(listingViewController, animated: true)
+        }
+    }
+    
+    func topController(_ parent:UIViewController? = nil) -> UIViewController {
+        if let vc = parent {
+            if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
+                return topController(selected)
+            } else if let nav = vc as? UINavigationController, let top = nav.topViewController {
+                return topController(top)
+            } else if let presented = vc.presentedViewController {
+                return topController(presented)
+            } else {
+                return vc
+            }
+        } else {
+            return topController(UIApplication.shared.keyWindow!.rootViewController!)
+        }
+    }
+    
+
 
 }
