@@ -13,6 +13,7 @@
 		CE514850204F77C20021DB67 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484F204F77C20021DB67 /* User.swift */; };
 		CE514852204F7A580021DB67 /* HomeSale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514851204F7A580021DB67 /* HomeSale.swift */; };
 		CE51485420505FAE0021DB67 /* UIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485320505FAE0021DB67 /* UIProperties.swift */; };
+		CE51485620506A350021DB67 /* ListingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485520506A350021DB67 /* ListingDetailViewController.swift */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */; };
@@ -22,8 +23,6 @@
 		CE7F7E09204DD32E00548D5F /* FairFeesAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E08204DD32E00548D5F /* FairFeesAppTests.swift */; };
 		CE7F7E14204DD32E00548D5F /* FairFeesAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E13204DD32E00548D5F /* FairFeesAppUITests.swift */; };
 		CE7F7E22204DDB6600548D5F /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */; };
-		CE7F7E25204DDF8E00548D5F /* ListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E23204DDF8E00548D5F /* ListingViewController.swift */; };
-		CE7F7E26204DDF8E00548D5F /* ListingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7E24204DDF8E00548D5F /* ListingViewController.xib */; };
 		CE7F7E28204DE78500548D5F /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E27204DE78500548D5F /* Listing.swift */; };
 		CE7F7E2A204DE7B700548D5F /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E29204DE7B700548D5F /* Building.swift */; };
 		CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E2B204DE8C100548D5F /* Rental.swift */; };
@@ -53,6 +52,7 @@
 		CE51484F204F77C20021DB67 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CE514851204F7A580021DB67 /* HomeSale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSale.swift; sourceTree = "<group>"; };
 		CE51485320505FAE0021DB67 /* UIProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProperties.swift; sourceTree = "<group>"; };
+		CE51485520506A350021DB67 /* ListingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingDetailViewController.swift; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -68,8 +68,6 @@
 		CE7F7E13204DD32E00548D5F /* FairFeesAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairFeesAppUITests.swift; sourceTree = "<group>"; };
 		CE7F7E15204DD32E00548D5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
-		CE7F7E23204DDF8E00548D5F /* ListingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingViewController.swift; sourceTree = "<group>"; };
-		CE7F7E24204DDF8E00548D5F /* ListingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListingViewController.xib; sourceTree = "<group>"; };
 		CE7F7E27204DE78500548D5F /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		CE7F7E29204DE7B700548D5F /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		CE7F7E2B204DE8C100548D5F /* Rental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rental.swift; sourceTree = "<group>"; };
@@ -129,10 +127,9 @@
 				CE7F7E27204DE78500548D5F /* Listing.swift */,
 				CE7F7E29204DE7B700548D5F /* Building.swift */,
 				CE7F7E2B204DE8C100548D5F /* Rental.swift */,
+				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
 				CE51484D204F778F0021DB67 /* Sale.swift */,
 				CE514851204F7A580021DB67 /* HomeSale.swift */,
-				CE7F7E23204DDF8E00548D5F /* ListingViewController.swift */,
-				CE7F7E24204DDF8E00548D5F /* ListingViewController.xib */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
 				CE51485320505FAE0021DB67 /* UIProperties.swift */,
 				CE51484B204F74540021DB67 /* DummyData.swift */,
@@ -274,7 +271,6 @@
 				CE7F7DFE204DD32D00548D5F /* LaunchScreen.storyboard in Resources */,
 				CE7F7DFB204DD32D00548D5F /* Assets.xcassets in Resources */,
 				CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */,
-				CE7F7E26204DDF8E00548D5F /* ListingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,7 +303,7 @@
 				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
 				CE7F7E28204DE78500548D5F /* Listing.swift in Sources */,
 				CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */,
-				CE7F7E25204DDF8E00548D5F /* ListingViewController.swift in Sources */,
+				CE51485620506A350021DB67 /* ListingDetailViewController.swift in Sources */,
 				CE514850204F77C20021DB67 /* User.swift in Sources */,
 				CE51485420505FAE0021DB67 /* UIProperties.swift in Sources */,
 				CE7F7E2A204DE7B700548D5F /* Building.swift in Sources */,

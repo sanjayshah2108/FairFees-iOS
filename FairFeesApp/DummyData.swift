@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class DummyData: NSObject {
     
@@ -34,15 +35,17 @@ class DummyData: NSObject {
         homesForSale = []
         LocationManager.theLocationManager.currentLocation = LocationManager.theLocationManager.getLocation()
         
-        let homeSale1 = HomeSale(name: "North Van Apt", description: "", location: LocationManager.theLocationManager.currentLocation, poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        let homeSale1 = HomeSale(name: "North Van Apt", description: "Test Description", location: CLLocation.init(latitude: 49.3200, longitude: -123.0724) , address:"1234 North Van", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         
-        let homeSale2 = HomeSale(name: "West Van Apt", description: "", location: LocationManager.theLocationManager.currentLocation, poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        let homeSale2 = HomeSale(name: "West Van Apt", description: "Test Description", location: CLLocation.init(latitude: 49.3349, longitude: -123.1168), address:"1234 West Van", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         
-        let homeSale3 = HomeSale(name: "Downtown Apt", description: "", location: LocationManager.theLocationManager.currentLocation, poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        let homeSale3 = HomeSale(name: "Downtown Apt", description: "Test Description", location: CLLocation.init(latitude: 49.2820, longitude: -123.1171), address:"1234 West Georgia", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         
-        let homeSale4 = HomeSale(name: "East Van House", description: "", location: LocationManager.theLocationManager.currentLocation, poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        let homeSale4 = HomeSale(name: "East Van House", description: "Test Description", location: CLLocation.init(latitude: 49.2467, longitude: -123.0578), address:"1234 East Van", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
         
-        let homeSale5 = HomeSale(name: "Vancouver West Apt", description: "", location: LocationManager.theLocationManager.currentLocation, poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        let homeSale5 = HomeSale(name: "Vancouver West Apt", description: "Test Description", location: CLLocation.init(latitude: 49.2606, longitude: -123.2460), address:"1234 West Van", poster: users[0], photos: [], size: 30, bedroomNumber: 2, bathroomNumber: 2, UID: nil, price: 300000, owner: users[1], availabilityDate: Date())
+        
+        
         
         homesForSale.append(homeSale1)
         homesForSale.append(homeSale2)

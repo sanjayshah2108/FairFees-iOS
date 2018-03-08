@@ -24,5 +24,6 @@ class Listing: NSObject, MKAnnotation {
     var listingPhotos: [UIImage]!
     var listingSize: Int!
     var listingLocation: CLLocation!
+    var listingAddress: String!
     
 }
