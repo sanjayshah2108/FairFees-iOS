@@ -60,8 +60,7 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         postMapView.translatesAutoresizingMaskIntoConstraints = false
         
         postMapView.delegate = self
-        //MapViewDelegate.theMapViewDelegate.theMapView = postMapView
-        
+    
         let span = MKCoordinateSpanMake(0.045, 0.045)
         postMapView.setRegion(MKCoordinateRegionMake(LocationManager.theLocationManager.currentLocation.coordinate, span) , animated: true)
         
@@ -226,7 +225,6 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
             previousVC.zipcodeTextField.text = self.zipcode ?? ""
             previousVC.location = CLLocation(latitude: self.pointAnnotation.coordinate.latitude, longitude: self.pointAnnotation.coordinate.longitude)
             
-            //previousVC.selectedLocationCoordinates = self.pointAnnotation.coordinate
         }
         else {
             
@@ -250,11 +248,9 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         }
         
         pointAnnotation = MKPointAnnotation()
-        
         pointAnnotation.coordinate = locationCoordinate
         
         reverseGeocode(location: CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
-    
     }
     
     
