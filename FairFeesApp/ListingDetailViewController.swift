@@ -33,7 +33,7 @@ class ListingDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
         tabBarHeight = self.tabBarController?.tabBar.frame.height
     
@@ -62,6 +62,7 @@ class ListingDetailViewController: UIViewController {
         imageViewCarousel.addGestureRecognizer(imageCarouselSwipeGesture)
         
         nextImageButton = UIButton(type: .custom)
+        nextImageButton.setTitle("Next", for: .normal)
         nextImageButton.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         nextImageButton.addTarget(self, action: #selector(nextImage), for: .touchUpInside)
         nextImageButton.layer.cornerRadius = 3
@@ -69,6 +70,7 @@ class ListingDetailViewController: UIViewController {
         imageViewCarousel.addSubview(nextImageButton)
         
         previousImageButton = UIButton(type: .custom)
+        previousImageButton.setTitle("Prev.", for: .normal)
         previousImageButton.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         previousImageButton.addTarget(self, action: #selector(previousImage), for: .touchUpInside)
         previousImageButton.layer.cornerRadius = 3
@@ -87,6 +89,7 @@ class ListingDetailViewController: UIViewController {
         setupFeatureLabels()
         
         descriptionLabel = UILabel()
+        descriptionLabel.textAlignment = .center
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.backgroundColor = UIColor.white
         view.addSubview(descriptionLabel)
@@ -192,8 +195,8 @@ class ListingDetailViewController: UIViewController {
         
         //descriptionLabel
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         //mapView

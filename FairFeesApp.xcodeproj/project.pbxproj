@@ -16,6 +16,9 @@
 		CE51485620506A350021DB67 /* ListingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485520506A350021DB67 /* ListingDetailViewController.swift */; };
 		CE5148592050C1A50021DB67 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */; };
 		CE51485A2050C1A50021DB67 /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5148582050C1A50021DB67 /* HomeTableViewCell.xib */; };
+		CE51485C2051B7000021DB67 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485B2051B7000021DB67 /* PostViewController.swift */; };
+		CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485D205200880021DB67 /* PostMapViewController.swift */; };
+		CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */; };
@@ -57,6 +60,9 @@
 		CE51485520506A350021DB67 /* ListingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingDetailViewController.swift; sourceTree = "<group>"; };
 		CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		CE5148582050C1A50021DB67 /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
+		CE51485B2051B7000021DB67 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		CE51485D205200880021DB67 /* PostMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapViewController.swift; sourceTree = "<group>"; };
+		CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapSearchResultsTableViewController.swift; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +140,9 @@
 				CE7F7E29204DE7B700548D5F /* Building.swift */,
 				CE7F7E2B204DE8C100548D5F /* Rental.swift */,
 				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
+				CE51485B2051B7000021DB67 /* PostViewController.swift */,
+				CE51485D205200880021DB67 /* PostMapViewController.swift */,
+				CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */,
 				CE51484D204F778F0021DB67 /* Sale.swift */,
 				CE514851204F7A580021DB67 /* HomeSale.swift */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
@@ -307,12 +316,15 @@
 				CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */,
 				CE51484E204F778F0021DB67 /* Sale.swift in Sources */,
 				CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */,
+				CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */,
 				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
 				CE5148592050C1A50021DB67 /* HomeTableViewCell.swift in Sources */,
 				CE7F7E28204DE78500548D5F /* Listing.swift in Sources */,
+				CE51485C2051B7000021DB67 /* PostViewController.swift in Sources */,
 				CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */,
 				CE51485620506A350021DB67 /* ListingDetailViewController.swift in Sources */,
 				CE514850204F77C20021DB67 /* User.swift in Sources */,
+				CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */,
 				CE51485420505FAE0021DB67 /* UIProperties.swift in Sources */,
 				CE7F7E2A204DE7B700548D5F /* Building.swift in Sources */,
 				CE51484C204F74540021DB67 /* DummyData.swift in Sources */,

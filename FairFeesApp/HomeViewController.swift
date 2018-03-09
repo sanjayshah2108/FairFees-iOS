@@ -18,6 +18,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
      var homeMapView: MKMapView!
      var homeTableView: UITableView!
      var mapListSegmentedControl: UISegmentedControl!
+    var topRightButton: UIBarButtonItem!
      var searchBar: UISearchBar!
      var filterView: UIView!
     
@@ -46,6 +47,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupDummyData()
         
         setupMapListSegmentTitle()
+        setupTopRightButton()
         setupHomeMapView()
         setupHomeTableView()
         setupSearchBar()
@@ -112,6 +114,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.titleView = mapListSegmentedControl
     }
     
+    func setupTopRightButton(){
+        topRightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newPostAction))
+        self.navigationItem.rightBarButtonItem = topRightButton
+    }
+    
     @objc func bringMapOrListToFront(){
         switch mapListSegmentedControl.selectedSegmentIndex {
         case 0:
@@ -121,6 +128,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         default:
             print("SHOULDNT RUN")
         }
+    }
+    
+    @objc func newPostAction(){
+        let postViewController = PostViewController()
+        self.navigationController?.pushViewController(postViewController, animated: true)
     }
     
     func setupSearchBar(){
@@ -167,7 +179,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         applyFilterButton.isEnabled = false
         applyFilterButton.setTitle("Apply Filters", for: .normal)
         applyFilterButton.isEnabled = true
-        applyFilterButton.backgroundColor = UIColor.white
+        applyFilterButton.backgroundColor = UIColor.blue
         applyFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(applyFilterButton)
