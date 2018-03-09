@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import CoreLocation
 
 class PostViewController: UIViewController {
     
     var navigationBarHeight: CGFloat!
     var tabBarHeight: CGFloat!
+    
+    var submitButton: UIBarButtonItem!
 
     var nameTextField: UITextField!
     var priceTextField: UITextField!
@@ -31,11 +34,14 @@ class PostViewController: UIViewController {
     var addressTextField: UITextField!
     var zipcodeTextField: UITextField!
     
+    var location: CLLocation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         self.navigationItem.title = "New Listing"
+        submitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submitPost))
+        self.navigationItem.rightBarButtonItem = submitButton
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         tabBarHeight = self.tabBarController?.tabBar.frame.height
         
@@ -300,5 +306,12 @@ class PostViewController: UIViewController {
     
     @objc func addPhotos(){
         print("Add photos")
+    }
+    
+    @objc func submitPost(){
+        
+        //let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, poster: nil, photos: [], size: sizeTextField.text!, bedroomNumber: bedroomNumberTextField.text!, bathroomNumber: bathroomNumberTextField.text!, UID: nil, price: priceTextField.text!, owner: nil, availabilityDate: nil)
+        
+        self.navigationController?.popViewController(animated: true)
     }
 }

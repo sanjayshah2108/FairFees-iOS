@@ -8,26 +8,32 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDelegate, MKLocalSearchCompleterDelegate  {
 
     var previousVC: PostViewController!
     
     var searchController: UISearchController!
-    var annotation:MKAnnotation!
+   
     var localSearchRequest:MKLocalSearchRequest!
     var localSearch:MKLocalSearch!
     var localSearchResponse:MKLocalSearchResponse!
-    var error:NSError!
-    var pointAnnotation:MKPointAnnotation!
-    
-    var markerAnnotationView:MKMarkerAnnotationView!
     var searchCompleter: MKLocalSearchCompleter!
-    
     var searchResultsTableViewController: PostMapSearchResultsTableViewController!
-    
-    var tapGestureRecognizer: UITapGestureRecognizer!
+
+    //var annotation:MKAnnotation!
+    var pointAnnotation:MKPointAnnotation!
+    var markerAnnotationView:MKMarkerAnnotationView!
     var selectedAnnotation: MKPointAnnotation!
+    
+    var city: String!
+    var country: String!
+    var province: String!
+    var zipcode: String!
+    var address: String!
+
+    var tapGestureRecognizer: UITapGestureRecognizer!
     
     var saveButton: UIButton!
     var myLocationButton: UIButton!
@@ -36,73 +42,74 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Select Location"
         definesPresentationContext = true
         
+        setupMapView()
+        setupSearchFunctionality()
+        setupButtons()
+        setupConstraints()
+        
+        let thisViewControllerIndex = self.navigationController?.viewControllers.index(of: self)
+        previousVC = self.navigationController?.viewControllers[thisViewControllerIndex!-1] as! PostViewController
+    }
+    func setupMapView(){
         postMapView = MKMapView()
         postMapView.showsUserLocation = true
         view.addSubview(postMapView)
         postMapView.translatesAutoresizingMaskIntoConstraints = false
         
+        postMapView.delegate = self
+        //MapViewDelegate.theMapViewDelegate.theMapView = postMapView
         
-        searchResultsTableViewController = PostMapSearchResultsTableViewController()
+        let span = MKCoordinateSpanMake(0.045, 0.045)
+        postMapView.setRegion(MKCoordinateRegionMake(LocationManager.theLocationManager.currentLocation.coordinate, span) , animated: true)
         
+        postMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "postLocationMarkerView")
         
-        selectedAnnotation = MKPointAnnotation()
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedALocation(sender:)))
         postMapView.addGestureRecognizer(tapGestureRecognizer)
         
-        let myVCindex = self.navigationController?.viewControllers.index(of: self)
-        previousVC = self.navigationController?.viewControllers[myVCindex!-1] as! PostViewController
+        selectedAnnotation = MKPointAnnotation()
+    }
+    
+    func setupSearchFunctionality(){
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: self, action: #selector(searchButtonClicked))
-        self.navigationItem.title = "Select Location"
-        
-        //mapView Delegate stuff
-        self.postMapView.delegate = MapViewDelegate.theMapViewDelegate
-        MapViewDelegate.theMapViewDelegate.theMapView = postMapView
-        MapViewDelegate.theMapViewDelegate.setPostVCMapRegion()
+      
+        searchResultsTableViewController = PostMapSearchResultsTableViewController()
         
         //searchCompleter delegate stuff
-        self.searchCompleter = MKLocalSearchCompleter()
-        self.searchCompleter.delegate = self
-        self.searchCompleter.region = self.postMapView.region
-        self.searchCompleter.filterType = MKSearchCompletionFilterType.locationsAndQueries
-        
+        searchCompleter = MKLocalSearchCompleter()
+        searchCompleter.delegate = self
+        searchCompleter.region = self.postMapView.region
+        searchCompleter.filterType = MKSearchCompletionFilterType.locationsAndQueries
+    }
+    
+    func setupButtons(){
         saveButton = UIButton()
-        self.saveButton.tintColor = UIProperties.sharedUIProperties.primaryRedColor
-        self.saveButton.layer.backgroundColor =  UIProperties.sharedUIProperties.primaryBlackColor.cgColor
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.tintColor = UIProperties.sharedUIProperties.primaryRedColor
+        saveButton.layer.backgroundColor =  UIProperties.sharedUIProperties.primaryBlackColor.cgColor
         saveButton.addTarget(self, action: #selector(saveLocationButon), for: .touchUpInside)
-        self.saveButton.layer.cornerRadius = 8
-        self.saveButton.layer.masksToBounds = false
-        self.saveButton.layer.shadowOffset = CGSize.init(width: 0, height: 2.0)
-        self.saveButton.layer.shadowColor = (UIColor.black).cgColor
-        self.saveButton.layer.shadowOpacity = 0.5
-        self.saveButton.layer.shadowRadius = 1.0
+        saveButton.layer.cornerRadius = 8
+        saveButton.layer.masksToBounds = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(saveButton)
         view.bringSubview(toFront: saveButton)
         
-        
         myLocationButton = UIButton()
-        self.myLocationButton.tintColor = UIProperties.sharedUIProperties.primaryRedColor
-        self.myLocationButton.layer.backgroundColor = UIProperties.sharedUIProperties.primaryBlackColor.cgColor
+        myLocationButton.setTitle("My", for: .normal)
+        myLocationButton.tintColor = UIProperties.sharedUIProperties.primaryRedColor
+        myLocationButton.layer.backgroundColor = UIProperties.sharedUIProperties.primaryBlackColor.cgColor
         myLocationButton.addTarget(self, action: #selector(useMyLocationButton), for: .touchUpInside)
-        self.myLocationButton.layer.cornerRadius = 8
-        self.myLocationButton.layer.masksToBounds = false
-        self.myLocationButton.layer.shadowOffset = CGSize.init(width: 0, height: 2.0)
-        self.myLocationButton.layer.shadowColor = (UIColor.black).cgColor
-        self.myLocationButton.layer.shadowOpacity = 0.5
-        self.myLocationButton.layer.shadowRadius = 1.0
+        myLocationButton.layer.cornerRadius = 8
+        myLocationButton.layer.masksToBounds = false
         myLocationButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(myLocationButton)
         view.bringSubview(toFront: myLocationButton)
-        
-        
-        self.postMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "postLocationMarkerView")
-        
-        setupConstraints()
-    }
     
+    }
     func setupConstraints(){
         //postMapView
         NSLayoutConstraint(item: postMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
@@ -188,6 +195,11 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
             self.pointAnnotation = MKPointAnnotation()
             self.pointAnnotation.title = self.searchResultsTableViewController.placeToSearch
             
+            self.reverseGeocode(location: CLLocation(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude: localSearchResponse!.boundingRegion.center.longitude))
+        
+            
+            self.postMapView.addAnnotation(self.pointAnnotation)
+            
             // self.pointAnnotation = localSearchResponse?.mapItems[0].placemark.thoroughfare
             
             self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
@@ -207,6 +219,13 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         if (self.pointAnnotation != nil){
             self.navigationController?.popViewController(animated: true)
             previousVC.addressTextField.text = self.pointAnnotation.title ?? ""
+            previousVC.addressTextField.text = self.address ?? ""
+            previousVC.cityTextField.text = self.city ?? ""
+            previousVC.provinceTextField.text = self.province ?? ""
+            previousVC.countryTextField.text = self.country ?? ""
+            previousVC.zipcodeTextField.text = self.zipcode ?? ""
+            previousVC.location = CLLocation(latitude: self.pointAnnotation.coordinate.latitude, longitude: self.pointAnnotation.coordinate.longitude)
+            
             //previousVC.selectedLocationCoordinates = self.pointAnnotation.coordinate
         }
         else {
@@ -218,9 +237,6 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
             noLocationAlert.addAction(okayAction)
             present(noLocationAlert, animated: true, completion: nil)
         }
-        
-        
-        
     }
     
     
@@ -237,7 +253,20 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         
         pointAnnotation.coordinate = locationCoordinate
         
-        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude), completionHandler: {(placemarks, error) -> Void in
+        reverseGeocode(location: CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
+    
+    }
+    
+    
+    @objc func useMyLocationButton(_ sender: UIButton) {
+        
+        reverseGeocode(location: LocationManager.theLocationManager.getLocation())
+    
+    }
+    
+    func reverseGeocode(location: CLLocation){
+    
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if error != nil {
                 print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
                 return
@@ -248,16 +277,25 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
                 
                 if(pm.thoroughfare != nil && pm.subThoroughfare != nil){
                     // not all places have thoroughfare & subThoroughfare so validate those values
-                    self.pointAnnotation.title = pm.thoroughfare! + ", " + pm.subThoroughfare!
+                    self.pointAnnotation.title = pm.subThoroughfare! + ", " + pm.thoroughfare!
                     self.pointAnnotation.subtitle = pm.subLocality
+                    self.address = pm.subThoroughfare! + pm.thoroughfare!
+                    self.city = pm.locality
+                    self.province = pm.administrativeArea
+                    self.country = pm.country
+                    self.zipcode = pm.postalCode
                     self.postMapView.addAnnotation(self.pointAnnotation)
-                    print(pm)
+                    
                 }
                 else if(pm.subThoroughfare != nil) {
                     self.pointAnnotation.title = pm.thoroughfare!
                     self.pointAnnotation.subtitle = pm.subLocality
+                    self.address = pm.thoroughfare!
+                    self.city = pm.locality
+                    self.province = pm.administrativeArea
+                    self.country = pm.country
+                    self.zipcode = pm.postalCode
                     self.postMapView.addAnnotation(self.pointAnnotation)
-                    print(pm)
                 }
                     
                 else {
@@ -272,36 +310,7 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
                 self.postMapView.addAnnotation(self.pointAnnotation)
                 print("Problem with the data received from geocoder")
             }
-            // places.append(["name":annotation.title,"latitude":"\(locationCoordinate.latitude)","longitude":"\(locationCoordinate.longitude)"])
         })
         
-    }
-    
-    
-    @objc func useMyLocationButton(_ sender: UIButton) {
-        
-        
-        CLGeocoder().reverseGeocodeLocation(LocationManager.theLocationManager.getLocation(), completionHandler: {(placemarks, error) -> Void in
-            if error != nil {
-                print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
-                return
-            }
-            
-            if (placemarks!.count > 0) {
-                let pm = placemarks![0]
-                
-                self.navigationController?.popViewController(animated: true)
-                self.previousVC.addressTextField.text = pm.thoroughfare! + ", " + pm.subThoroughfare!
-                //self.previousVC.selectedLocationCoordinates = LocationManager.theLocationManager.getLocation().coordinate
-                
-                // not all places have thoroughfare & subThoroughfare so validate those values
-            }
-            else {
-                self.pointAnnotation.title = "Unknown Place"
-                self.postMapView.addAnnotation(self.pointAnnotation)
-                print("Problem with the data received from geocoder")
-            }
-            // places.append(["name":annotation.title,"latitude":"\(locationCoordinate.latitude)","longitude":"\(locationCoordinate.longitude)"])
-        })
     }
 }
