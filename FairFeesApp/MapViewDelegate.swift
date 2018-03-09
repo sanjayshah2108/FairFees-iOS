@@ -22,6 +22,12 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         theMapView.setRegion(MKCoordinateRegionMake(myLocation.coordinate, span) , animated: true)
     }
     
+    func setPostVCMapRegion(){
+        
+        let span = MKCoordinateSpanMake(0.045, 0.045)
+        theMapView.setRegion(MKCoordinateRegionMake(myLocation.coordinate, span) , animated: true)
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if (annotation is MKUserLocation){
             return nil
