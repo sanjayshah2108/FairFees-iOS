@@ -13,19 +13,19 @@ import MapKit
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate {
     
-     var locationManager: CLLocationManager!
+    var locationManager: CLLocationManager!
     
-     var homeMapView: MKMapView!
-     var homeTableView: UITableView!
-     var mapListSegmentedControl: UISegmentedControl!
+    var homeMapView: MKMapView!
+    var homeTableView: UITableView!
+    var mapListSegmentedControl: UISegmentedControl!
     var topRightButton: UIBarButtonItem!
-     var searchBar: UISearchBar!
-     var filterView: UIView!
+    var searchBar: UISearchBar!
+    var filterView: UIView!
     
-     var priceFilterSlider: UISlider!
-     var noOfBedroomsLabel: UILabel!
-     var noOfBedroomsSegmentedControl: UISegmentedControl!
-     var applyFilterButton: UIButton!
+    var priceFilterSlider: UISlider!
+    var noOfBedroomsLabel: UILabel!
+    var noOfBedroomsSegmentedControl: UISegmentedControl!
+    var applyFilterButton: UIButton!
     
     var navigationBarHeight: CGFloat!
     var tabBarHeight: CGFloat!
@@ -33,11 +33,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var tapGesture: UITapGestureRecognizer!
     var swipeUpGesture: UISwipeGestureRecognizer!
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-   
+        
         locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
@@ -54,10 +54,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupFilterView()
         
         setupConstraints()
-    
+        
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
-      
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +65,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -76,7 +76,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DummyData.theDummyData.createUsers()
         DummyData.theDummyData.createListings()
     }
-
+    
     func setupHomeMapView(){
         
         homeMapView = MKMapView()
@@ -85,7 +85,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
         MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
         homeMapView.showsUserLocation = true
-     
+        
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -199,7 +199,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (navigationBarHeight+searchBarHeight)).isActive = true
-
+        
         //searchBar
         NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
@@ -237,11 +237,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     @objc func applyFilters(){
-
+        
         print("apply filters")
     }
     
-
+    
     //tableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return DummyData.theDummyData.homesForSale.count
@@ -251,9 +251,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
         
-//        if (cell == nil){
-//            tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
-//        }
+        //        if (cell == nil){
+        //            tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
+        //        }
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
@@ -285,7 +285,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
     }
-
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         view.bringSubview(toFront: filterView)
         
@@ -298,7 +298,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    
+        
         self.view.removeGestureRecognizer(tapGesture)
     }
     
