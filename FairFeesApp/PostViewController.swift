@@ -14,8 +14,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var navigationBarHeight: CGFloat!
     var tabBarHeight: CGFloat!
-    
-    var submitButton: UIBarButtonItem!
 
     var nameTextField: UITextField!
     var priceTextField: UITextField!
@@ -23,20 +21,20 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var bedroomNumberTextField: UITextField!
     var bathroomNumberTextField: UITextField!
     var descriptionTextField: UITextView!
-    
-    var addressInstructionLabel: UILabel!
-    
-    var locationButton: UIButton!
-    var addPhotosButton: UIButton!
-    var photosArray: [UIImage]!
-    var photoCollectionView: UICollectionView!
-    
     var countryTextField: UITextField!
     var cityTextField: UITextField!
     var provinceTextField: UITextField!
     var addressTextField: UITextField!
     var zipcodeTextField: UITextField!
     
+    var addressInstructionLabel: UILabel!
+    
+    var submitButton: UIBarButtonItem!
+    var locationButton: UIButton!
+    var addPhotosButton: UIButton!
+    var photosArray: [UIImage]!
+    var photoCollectionView: UICollectionView!
+
     var location: CLLocation!
     
     var tapGesture: UITapGestureRecognizer!
@@ -44,6 +42,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = UIColor.white
         self.navigationItem.title = "New Listing"
         submitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submitPost))
@@ -192,7 +191,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func setupLocationButton(){
         locationButton = UIButton()
-        locationButton.setTitle("Pick Location:", for: .normal)
+        locationButton.setTitle("Pick Location", for: .normal)
         locationButton.titleLabel?.textAlignment = .left
         locationButton.addTarget(self, action: #selector(showMapForSelectingLocation), for: .touchUpInside)
         locationButton.backgroundColor = UIColor.blue
@@ -217,7 +216,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         addPhotosButton.setTitle("Add Photos", for: .normal)
         addPhotosButton.titleLabel?.textAlignment = .center
         addPhotosButton.addTarget(self, action: #selector(addPhotos), for: .touchUpInside)
-        addPhotosButton.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
+        addPhotosButton.backgroundColor = UIColor.blue
         addPhotosButton.layer.cornerRadius = 4
         addPhotosButton.layer.borderColor = UIColor.blue.cgColor
         addPhotosButton.layer.borderWidth = 3
@@ -354,7 +353,9 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc func submitPost(){
         
-        //let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, poster: nil, photos: [], size: sizeTextField.text!, bedroomNumber: bedroomNumberTextField.text!, bathroomNumber: bathroomNumberTextField.text!, UID: nil, price: priceTextField.text!, owner: nil, availabilityDate: nil)
+        let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, poster: DummyData.theDummyData.users[0], photos: photosArray, size: Int(sizeTextField.text!)!, bedroomNumber: Int(bedroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, owner: DummyData.theDummyData.users[0], availabilityDate: Date())
+        
+        DummyData.theDummyData.addListing(listing: post)
         
         self.navigationController?.popViewController(animated: true)
     }

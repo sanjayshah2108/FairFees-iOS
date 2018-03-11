@@ -217,7 +217,7 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         
         if (self.pointAnnotation != nil){
             self.navigationController?.popViewController(animated: true)
-            previousVC.addressTextField.text = self.pointAnnotation.title ?? ""
+           // previousVC.addressTextField.text = self.pointAnnotation.title ?? ""
             previousVC.addressTextField.text = self.address ?? ""
             previousVC.cityTextField.text = self.city ?? ""
             previousVC.provinceTextField.text = self.province ?? ""
@@ -275,7 +275,7 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
                     // not all places have thoroughfare & subThoroughfare so validate those values
                     self.pointAnnotation.title = pm.subThoroughfare! + ", " + pm.thoroughfare!
                     self.pointAnnotation.subtitle = pm.subLocality
-                    self.address = pm.subThoroughfare! + pm.thoroughfare!
+                    self.address = pm.subThoroughfare! + "" + pm.thoroughfare!
                     self.city = pm.locality
                     self.province = pm.administrativeArea
                     self.country = pm.country
