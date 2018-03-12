@@ -12,7 +12,6 @@ import MapKit
 class ListingDetailViewController: UIViewController {
     
     var navigationBarHeight: CGFloat!
-    var tabBarHeight: CGFloat!
     
     weak var currentListing: HomeSale!
 
@@ -35,7 +34,6 @@ class ListingDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
-        tabBarHeight = self.tabBarController?.tabBar.frame.height
     
         self.title = currentListing.name
         setupImageView()
@@ -200,7 +198,7 @@ class ListingDetailViewController: UIViewController {
         NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         //mapView
-        NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true

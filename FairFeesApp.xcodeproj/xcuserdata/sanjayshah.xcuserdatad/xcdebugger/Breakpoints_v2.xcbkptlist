@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/ListingDetailViewController.swift"
-            timestampString = "542574479.941987"
+            timestampString = "542575351.398162"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "swipeThroughImages(gesture:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/ListingDetailViewController.swift"
-            timestampString = "542574479.942237"
+            timestampString = "542575351.398255"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "swipeThroughImages(gesture:)"
             landmarkType = "7">
          </BreakpointContent>

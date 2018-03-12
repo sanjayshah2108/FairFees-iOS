@@ -28,7 +28,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var applyFilterButton: UIButton!
     
     var navigationBarHeight: CGFloat!
-    var tabBarHeight: CGFloat!
     var searchBarHeight: CGFloat!
     
     var tapGesture: UITapGestureRecognizer!
@@ -41,7 +40,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
-        tabBarHeight = self.tabBarController?.tabBar.frame.height
         searchBarHeight = 40
         
         setupDummyData()
@@ -193,14 +191,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //homeMapView
         NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (searchBarHeight + navigationBarHeight)).isActive = true
         
         
         //homeTableView
         NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (navigationBarHeight+searchBarHeight)).isActive = true
         

@@ -13,7 +13,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     
     var navigationBarHeight: CGFloat!
-    var tabBarHeight: CGFloat!
 
     var nameTextField: UITextField!
     var priceTextField: UITextField!
@@ -60,7 +59,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         submitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submitPost))
         self.navigationItem.rightBarButtonItem = submitButton
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
-        tabBarHeight = self.tabBarController?.tabBar.frame.height
         
         setupTextFields()
         setupSteppers()
@@ -453,7 +451,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: addPhotosButton, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -(tabBarHeight+10)).isActive = true
+        NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -10).isActive = true
         
     }
     
@@ -462,7 +460,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             bedroomNumber = bedroomNumber + 1
             bedroomNumberLabel.text = String(bedroomNumber)
             bedroomNumberLabel.textColor = UIColor.black
-
+            
+            
         }
         else if (sender.superview == customBathroomStepper){
             bathroomNumber = bathroomNumber + 1
@@ -473,14 +472,31 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc func reduceCount(sender: UIButton){
         if (sender.superview == customBedroomStepper){
-            bedroomNumber = bedroomNumber - 1
-            bedroomNumberLabel.text = String(bedroomNumber)
-            bedroomNumberLabel.textColor = UIColor.black
+            
+            if(bedroomNumber == 1){
+                bedroomNumber = 0
+                bedroomNumberLabel.text = "Bedroom #"
+                bedroomNumberLabel.textColor = UIColor.gray
+            }
+            
+            else {
+                bedroomNumber = bedroomNumber - 1
+                bedroomNumberLabel.text = String(bedroomNumber)
+                bedroomNumberLabel.textColor = UIColor.black
+            }
         }
         else if (sender.superview == customBathroomStepper){
-            bathroomNumber = bathroomNumber - 1
-            bathroomNumberLabel.text = String(bathroomNumber)
-            bathroomNumberLabel.textColor = UIColor.black
+            
+            if(bathroomNumber == 1){
+                bathroomNumber = 0
+                bathroomNumberLabel.text = "Bathroom #"
+                bathroomNumberLabel.textColor = UIColor.gray
+            }
+            else {
+                bathroomNumber = bathroomNumber - 1
+                bathroomNumberLabel.text = String(bathroomNumber)
+                bathroomNumberLabel.textColor = UIColor.black
+            }
         }
     }
     
@@ -654,12 +670,11 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         newImageView.addGestureRecognizer(tap)
         self.view.addSubview(newImageView)
         self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
+
     }
     
     @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
         self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
         sender.view?.removeFromSuperview()
     }
     

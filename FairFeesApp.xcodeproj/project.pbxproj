@@ -57,7 +57,6 @@
 		CE5148642054C0560021DB67 /* PostPhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
-		CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */; };
 		CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DF7204DD32D00548D5F /* Main.storyboard */; };
 		CE7F7DFB204DD32D00548D5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DFA204DD32D00548D5F /* Assets.xcassets */; };
 		CE7F7DFE204DD32D00548D5F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */; };
@@ -138,7 +137,6 @@
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		CE7F7DF8204DD32D00548D5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE7F7DFA204DD32D00548D5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE7F7DFD204DD32D00548D5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 				CE51485320505FAE0021DB67 /* UIProperties.swift */,
 				CE51484B204F74540021DB67 /* DummyData.swift */,
 				CE51484F204F77C20021DB67 /* User.swift */,
-				CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */,
 				CE7F7DF7204DD32D00548D5F /* Main.storyboard */,
 				CE7F7DFA204DD32D00548D5F /* Assets.xcassets */,
 				CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */,
@@ -463,7 +460,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE7F7E22204DDB6600548D5F /* MapViewDelegate.swift in Sources */,
-				CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */,
 				CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */,
 				CE51484E204F778F0021DB67 /* Sale.swift in Sources */,
 				CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */,
