@@ -53,6 +53,8 @@
 		CE51485C2051B7000021DB67 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485B2051B7000021DB67 /* PostViewController.swift */; };
 		CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485D205200880021DB67 /* PostMapViewController.swift */; };
 		CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */; };
+		CE5148632054C0560021DB67 /* PostPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5148612054C0560021DB67 /* PostPhotoCollectionViewCell.swift */; };
+		CE5148642054C0560021DB67 /* PostPhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF6204DD32D00548D5F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF5204DD32D00548D5F /* SecondViewController.swift */; };
@@ -131,6 +133,8 @@
 		CE51485B2051B7000021DB67 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		CE51485D205200880021DB67 /* PostMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapViewController.swift; sourceTree = "<group>"; };
 		CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapSearchResultsTableViewController.swift; sourceTree = "<group>"; };
+		CE5148612054C0560021DB67 /* PostPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostPhotoCollectionViewCell.xib; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +246,8 @@
 			children = (
 				292304A42054D5F1000ECFCF /* listing images */,
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
+				CE5148612054C0560021DB67 /* PostPhotoCollectionViewCell.swift */,
+				CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */,
 				CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */,
 				CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */,
 				CE5148582050C1A50021DB67 /* HomeTableViewCell.xib */,
@@ -427,6 +433,7 @@
 				292305002054D844000ECFCF /* 00N0N_dC0hJzZuUZr_1200x900.jpg in Resources */,
 				292305052054D844000ECFCF /* 00w0w_e8JqNq4nDgI_1200x900.jpg in Resources */,
 				2923050C2054D844000ECFCF /* 00B0B_79jyoTMowLD_1200x900.jpg in Resources */,
+				CE5148642054C0560021DB67 /* PostPhotoCollectionViewCell.xib in Resources */,
 				CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */,
 				292304F52054D844000ECFCF /* 00l0l_38ixPXcxZhW_1200x900.jpg in Resources */,
 				2923050F2054D844000ECFCF /* 00L0L_i9sDtSXuHjz_1200x900.jpg in Resources */,
@@ -466,6 +473,7 @@
 				CE7F7E28204DE78500548D5F /* Listing.swift in Sources */,
 				CE51485C2051B7000021DB67 /* PostViewController.swift in Sources */,
 				CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */,
+				CE5148632054C0560021DB67 /* PostPhotoCollectionViewCell.swift in Sources */,
 				CE51485620506A350021DB67 /* ListingDetailViewController.swift in Sources */,
 				CE514850204F77C20021DB67 /* User.swift in Sources */,
 				CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */,

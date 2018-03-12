@@ -64,6 +64,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(true)
         
         MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+        
+        homeTableView.reloadData()
+        homeMapView.removeAnnotations(homeMapView.annotations)
+        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     override func didReceiveMemoryWarning() {

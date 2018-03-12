@@ -132,6 +132,7 @@ class DummyData: NSObject {
                                  owner: users[1],
                                  availabilityDate: Date())
         
+
         let homeSale5 = HomeSale(name: "Vancouver West Apt",
                                  description: "Test Description",
                                  location: CLLocation.init(latitude: 49.281439, longitude: -123.089564),
@@ -147,10 +148,17 @@ class DummyData: NSObject {
                                  owner: users[1],
                                  availabilityDate: Date())
         
+
         homesForSale.append(homeSale1)
         homesForSale.append(homeSale2)
         homesForSale.append(homeSale3)
         homesForSale.append(homeSale4)
         homesForSale.append(homeSale5)
     }
+
+    
+    func addListing(listing: HomeSale){
+        homesForSale.append(listing)
+    }
+    
 }
