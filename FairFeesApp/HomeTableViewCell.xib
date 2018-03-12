@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -67,11 +66,11 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="listingCellAddressLabel" destination="GFj-hn-QPl" id="Ci2-az-Kpf"/>
-                <outlet property="listingCellImageView" destination="Aqo-bQ-hDS" id="eOY-2V-UeP"/>
-                <outlet property="listingCellNameLabel" destination="SVQ-7O-oZU" id="okv-aY-43g"/>
-                <outlet property="listingCellPriceLabel" destination="kl7-Nv-sU1" id="erS-qr-cVu"/>
-                <outlet property="listingCellSizeLabel" destination="nCq-L0-U7c" id="egw-b0-XDC"/>
+                <outlet property="addressLabel" destination="GFj-hn-QPl" id="zGx-95-y2e"/>
+                <outlet property="leftImageView" destination="Aqo-bQ-hDS" id="Myh-w3-I9R"/>
+                <outlet property="nameLabel" destination="SVQ-7O-oZU" id="C8T-PT-Pop"/>
+                <outlet property="priceLabel" destination="kl7-Nv-sU1" id="xbf-iu-MaL"/>
+                <outlet property="sizeLabel" destination="nCq-L0-U7c" id="E5i-Vc-o8P"/>
             </connections>
         </tableViewCell>
     </objects>

@@ -10,15 +10,15 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var listingCellImageView: UIImageView!
+    @IBOutlet weak var leftImageView: UIImageView!
     
-    @IBOutlet weak var listingCellNameLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var listingCellAddressLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     
-    @IBOutlet weak var listingCellPriceLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
     
-    @IBOutlet weak var listingCellSizeLabel: UILabel!
+    @IBOutlet weak var sizeLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

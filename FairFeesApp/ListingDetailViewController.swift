@@ -37,7 +37,7 @@ class ListingDetailViewController: UIViewController {
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
         tabBarHeight = self.tabBarController?.tabBar.frame.height
     
-        self.title = currentListing.listingName
+        self.title = currentListing.name
         setupImageView()
         setupLabels()
         setupMapView()
@@ -83,7 +83,7 @@ class ListingDetailViewController: UIViewController {
         addressLabel.textAlignment = .center
         addressLabel.translatesAutoresizingMaskIntoConstraints = false
         addressLabel.backgroundColor = UIColor.white
-        addressLabel.text = currentListing.listingAddress
+        addressLabel.text = currentListing.address
         view.addSubview(addressLabel)
         
         setupFeatureLabels()
@@ -120,10 +120,10 @@ class ListingDetailViewController: UIViewController {
         featuresView.addSubview(bedroomLabel)
         featuresView.addSubview(bathroomLabel)
         
-        priceLabel.text = "$\(currentListing.salePrice!)"
-        sizeLabel.text = "\(currentListing.listingSize!) SF"
-        bedroomLabel.text = "\(currentListing.homeBedroomNumber!) Bed"
-        bathroomLabel.text = "\(currentListing.homeBathroomNumber!) Bath"
+        priceLabel.text = "$\(currentListing.price!)"
+        sizeLabel.text = "\(currentListing.size!) SF"
+        bedroomLabel.text = "\(currentListing.bedroomNumber!) Bed"
+        bathroomLabel.text = "\(currentListing.bathroomNumber!) Bath"
         
         
     }

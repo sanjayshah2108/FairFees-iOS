@@ -261,10 +261,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
-        cell.listingCellNameLabel.text = listing.listingName
-        cell.listingCellSizeLabel.text = "\(listing.listingSize!) SF"
-        cell.listingCellPriceLabel.text = "$\(listing.salePrice!)"
-        cell.listingCellAddressLabel.text = listing.listingAddress
+        cell.nameLabel.text = listing.name
+        cell.sizeLabel.text = "\(listing.size!) SF"
+        cell.priceLabel.text = "$\(listing.price!)"
+        cell.addressLabel.text = listing.address
         
         return cell
     }

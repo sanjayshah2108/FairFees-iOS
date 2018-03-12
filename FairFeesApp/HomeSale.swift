@@ -12,8 +12,8 @@ import MapKit
 
 class HomeSale: Sale {
     
-    var homeBedroomNumber: Int!
-    var homeBathroomNumber: Int!
+    var bedroomNumber: Int!
+    var bathroomNumber: Int!
    
  
     init(name:String,
@@ -33,26 +33,26 @@ class HomeSale: Sale {
         
         super.init()
         
-        super.listingName = name
+        super.name = name
         super.listingDescription = description
-        super.listingLocation = location
-        super.listingAddress = address
-        super.listingPoster = poster
-        super.listingSize = size
-        super.listingPhotos = photos
+        super.location = location
+        super.address = address
+        super.poster = poster
+        super.size = size
+        super.photos = photos
         
-        super.saleOwner = owner
-        super.salePrice = price
-        super.saleAvailabilityDate = availabilityDate
+        super.owner = owner
+        super.price = price
+        super.availabilityDate = availabilityDate
         
-        self.homeBedroomNumber = bathroomNumber
-        self.homeBathroomNumber = bedroomNumber
+        self.bedroomNumber = bathroomNumber
+        self.bathroomNumber = bedroomNumber
         
         if (UID == nil){
-            super.listingUID = UUID().uuidString
+            super.UID = UUID().uuidString
         }
         else {
-            super.listingUID = UID!
+            super.UID = UID!
         }
     }
     

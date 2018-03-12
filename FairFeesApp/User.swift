@@ -10,13 +10,13 @@ import UIKit
 
 class User: NSObject {
 
-    var userFirstName: String
-    var userLastName: String
-    var userEmail: String
-    var userPhoneNumber: Int
-    var userListings: [Listing]
-    var userRating: Int
-    var userUID: String
+    var firstName: String
+    var lastName: String
+    var email: String
+    var phoneNumber: Int
+    var listings: [Listing]
+    var rating: Int
+    var UID: String
     
     init(firstName:String,
          lastName:String,
@@ -26,18 +26,18 @@ class User: NSObject {
          listings: [Listing],
          UID:String?) {
         
-        self.userFirstName = firstName
-        self.userLastName = lastName
-        self.userEmail = email
-        self.userPhoneNumber = phoneNumber
-        self.userListings = listings
-        self.userRating = rating
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.phoneNumber = phoneNumber
+        self.listings = listings
+        self.rating = rating
         
         if (UID == nil){
-            userUID = UUID().uuidString
+            self.UID = UUID().uuidString
         }
         else {
-            userUID = UID!
+            self.UID = UID!
         }
     }
 
