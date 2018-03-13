@@ -8,8 +8,9 @@
 
 import UIKit
 import MapKit
+import GoogleMaps
 
-class ListingDetailViewController: UIViewController {
+class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     var navigationBarHeight: CGFloat!
     
@@ -20,7 +21,8 @@ class ListingDetailViewController: UIViewController {
     var previousImageButton: UIButton!
     var addressLabel: UILabel!
     var descriptionLabel: UILabel!
-    var mapView: MKMapView!
+    //var mapView: MKMapView!
+    var mapView: GMSMapView!
     
     var featuresView: UIView!
     var priceLabel: UILabel!
@@ -127,17 +129,34 @@ class ListingDetailViewController: UIViewController {
     }
     func setupMapView(){
         
-        mapView = MKMapView()
-        mapView.delegate = MapViewDelegate.theMapViewDelegate
-        MapViewDelegate.theMapViewDelegate.theMapView = mapView
         
-        let span = MKCoordinateSpanMake(0.009, 0.009)
-    MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
+        mapView = GMSMapView()
+        mapView.delegate = self
         
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        //mapView.addAnnotation(currentListing)
+        let camera = GMSCameraPosition.camera(withLatitude: currentListing.coordinate.latitude, longitude: currentListing.coordinate.longitude, zoom: 15.0)
+        mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        
         mapView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView)
+        
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: currentListing.coordinate.latitude, longitude: currentListing.coordinate.longitude)
+        //marker.title = currentListing.name
+        //marker.snippet = currentListing.address
+        marker.map = mapView
+        
+        
+//        mapView = MKMapView()
+//        mapView.delegate = MapViewDelegate.theMapViewDelegate
+//        MapViewDelegate.theMapViewDelegate.theMapView = mapView
+//
+//        let span = MKCoordinateSpanMake(0.009, 0.009)
+//    MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
+//
+//        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
+//        mapView.addAnnotation(currentListing)
+//        mapView.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(mapView)
     }
     
     func setupConstraints(){
