@@ -9,13 +9,15 @@
 import UIKit
 import CoreLocation
 import MapKit
+import GoogleMaps
 
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate {
     
     var locationManager: CLLocationManager!
     
-    var homeMapView: MKMapView!
+    //var homeMapView: MKMapView!
+    var homeMapView: GMSMapView!
     var homeTableView: UITableView!
     var mapListSegmentedControl: UISegmentedControl!
     var topRightButton: UIBarButtonItem!
@@ -56,16 +58,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
         
+
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+        //MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
         
         homeTableView.reloadData()
-        homeMapView.removeAnnotations(homeMapView.annotations)
-        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
+        //homeMapView.removeAnnotations(homeMapView.annotations)
+        //homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     override func didReceiveMemoryWarning() {
@@ -79,21 +83,46 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DummyData.theDummyData.createListings()
     }
     
+    
     func setupHomeMapView(){
         
-        homeMapView = MKMapView()
-        homeMapView.frame = CGRect.zero
+        // Create a GMSCameraPosition that tells the map to display the
+        // coordinate -33.86,151.20 at zoom level 6.
+        let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 15.0)
+        homeMapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
-        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
-        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
-        homeMapView.showsUserLocation = true
+        MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
+        homeMapView.settings.myLocationButton = true
+        homeMapView.isMyLocationEnabled = true
+        homeMapView.settings.compassButton = true
+        homeMapView.settings.indoorPicker = true
+        
+    
+        for listing in DummyData.theDummyData.homesForSale{
+        // Creates a marker in the center of the map.
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            marker.title = listing.name
+            marker.snippet = listing.address
+            marker.map = homeMapView
+        }
         
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
-        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        
-        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
+//        homeMapView = MKMapView()
+//        homeMapView.frame = CGRect.zero
+//        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
+//        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+//        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
+//        homeMapView.showsUserLocation = true
+//
+//        view.addSubview(homeMapView)
+//        homeMapView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
+//
+//        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     func setupHomeTableView(){

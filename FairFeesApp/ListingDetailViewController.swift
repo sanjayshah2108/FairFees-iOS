@@ -135,7 +135,7 @@ class ListingDetailViewController: UIViewController {
     MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
         
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        mapView.addAnnotation(currentListing)
+        //mapView.addAnnotation(currentListing)
         mapView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView)
     }

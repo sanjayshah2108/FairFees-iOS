@@ -9,8 +9,9 @@
 import UIKit
 import CoreLocation
 import MapKit
+import GoogleMaps
 
-class Listing: NSObject, MKAnnotation {
+class Listing: GMSMarker, MKAnnotation  {
     
     var coordinate: CLLocationCoordinate2D {
         get { return self.location.coordinate }

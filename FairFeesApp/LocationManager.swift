@@ -16,7 +16,7 @@ class LocationManager: CLLocationManager {
         static let theLocationManager = LocationManager()
         
         func getLocation() -> CLLocation {
-            LocationManager.theLocationManager.desiredAccuracy = kCLLocationAccuracyBest
+            LocationManager.theLocationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
             LocationManager.theLocationManager.requestWhenInUseAuthorization()
             
             if CLLocationManager.locationServicesEnabled() {
