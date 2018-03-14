@@ -8,11 +8,11 @@
 
 import UIKit
 import MapKit
+import GoogleMaps
 
-class ListingDetailViewController: UIViewController {
+class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     var navigationBarHeight: CGFloat!
-    var tabBarHeight: CGFloat!
     
     weak var currentListing: HomeSale!
 
@@ -21,7 +21,8 @@ class ListingDetailViewController: UIViewController {
     var previousImageButton: UIButton!
     var addressLabel: UILabel!
     var descriptionLabel: UILabel!
-    var mapView: MKMapView!
+    //var mapView: MKMapView!
+    var mapView: GMSMapView!
     
     var featuresView: UIView!
     var priceLabel: UILabel!
@@ -29,15 +30,19 @@ class ListingDetailViewController: UIViewController {
     var bedroomLabel: UILabel!
     var bathroomLabel: UILabel!
     
-    var imageCarouselSwipeGesture: UISwipeGestureRecognizer!
+    var imageViewCarouselLeftSwipeGesture: UISwipeGestureRecognizer!
+    var imageViewCarouselRightSwipeGesture: UISwipeGestureRecognizer!
+    var imageViewCarouselExpandPinchGesture: UIPinchGestureRecognizer!
+    var imageViewCarouselExpandTapGesture: UITapGestureRecognizer!
+    
+    var photoIndex: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
-        tabBarHeight = self.tabBarController?.tabBar.frame.height
     
-        self.title = currentListing.listingName
+        self.title = currentListing.name
         setupImageView()
         setupLabels()
         setupMapView()
@@ -54,12 +59,26 @@ class ListingDetailViewController: UIViewController {
     func setupImageView(){
         
         imageViewCarousel = UIImageView()
+        imageViewCarousel.isUserInteractionEnabled = true
         imageViewCarousel.backgroundColor = UIColor.blue
+        photoIndex = 0
+        imageViewCarousel.image = currentListing.photos[photoIndex]
+        imageViewCarousel.contentMode = .scaleAspectFill
         imageViewCarousel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageViewCarousel)
     
-        imageCarouselSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
-        imageViewCarousel.addGestureRecognizer(imageCarouselSwipeGesture)
+        imageViewCarouselLeftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
+        imageViewCarouselLeftSwipeGesture.direction = .left
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselLeftSwipeGesture)
+        imageViewCarouselRightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
+        imageViewCarouselRightSwipeGesture.direction = .right
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselRightSwipeGesture)
+        
+//        imageViewCarouselExpandPinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(fullscreenImage))
+//        imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandPinchGesture)
+//        
+        imageViewCarouselExpandTapGesture = UITapGestureRecognizer(target: self, action: #selector(fullscreenImage))
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandTapGesture)
         
         nextImageButton = UIButton(type: .custom)
         nextImageButton.setTitle("Next", for: .normal)
@@ -83,7 +102,7 @@ class ListingDetailViewController: UIViewController {
         addressLabel.textAlignment = .center
         addressLabel.translatesAutoresizingMaskIntoConstraints = false
         addressLabel.backgroundColor = UIColor.white
-        addressLabel.text = currentListing.listingAddress
+        addressLabel.text = currentListing.address
         view.addSubview(addressLabel)
         
         setupFeatureLabels()
@@ -120,26 +139,42 @@ class ListingDetailViewController: UIViewController {
         featuresView.addSubview(bedroomLabel)
         featuresView.addSubview(bathroomLabel)
         
-        priceLabel.text = "$\(currentListing.salePrice!)"
-        sizeLabel.text = "\(currentListing.listingSize!) SF"
-        bedroomLabel.text = "\(currentListing.homeBedroomNumber!) Bed"
-        bathroomLabel.text = "\(currentListing.homeBathroomNumber!) Bath"
+        priceLabel.text = "$\(currentListing.price!)"
+        sizeLabel.text = "\(currentListing.size!) SF"
+        bedroomLabel.text = "\(currentListing.bedroomNumber!) Bed"
+        bathroomLabel.text = "\(currentListing.bathroomNumber!) Bath"
         
         
     }
     func setupMapView(){
         
-        mapView = MKMapView()
-        mapView.delegate = MapViewDelegate.theMapViewDelegate
-        MapViewDelegate.theMapViewDelegate.theMapView = mapView
+        mapView = GMSMapView()
+        mapView.delegate = self
         
-        let span = MKCoordinateSpanMake(0.009, 0.009)
-    MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
+        let camera = GMSCameraPosition.camera(withLatitude: currentListing.coordinate.latitude, longitude: currentListing.coordinate.longitude, zoom: 15.0)
+        mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        mapView.addAnnotation(currentListing)
         mapView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView)
+        
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: currentListing.coordinate.latitude, longitude: currentListing.coordinate.longitude)
+        //marker.title = currentListing.name
+        //marker.snippet = currentListing.address
+        marker.map = mapView
+        
+        
+//        mapView = MKMapView()
+//        mapView.delegate = MapViewDelegate.theMapViewDelegate
+//        MapViewDelegate.theMapViewDelegate.theMapView = mapView
+//
+//        let span = MKCoordinateSpanMake(0.009, 0.009)
+//    MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
+//
+//        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
+//        mapView.addAnnotation(currentListing)
+//        mapView.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(mapView)
     }
     
     func setupConstraints(){
@@ -200,29 +235,64 @@ class ListingDetailViewController: UIViewController {
         NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         //mapView
-        NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0).isActive = true
     }
     
-    @objc func nextImage(sender: UIButton){
-        print("nextImage")
+    @objc func nextImage(){
+        if (photoIndex == currentListing.photos.count-1){
+            photoIndex = -1
+        }
+        photoIndex = photoIndex + 1
+        imageViewCarousel.image = currentListing.photos[photoIndex]
     }
     
-    @objc func previousImage(sender: UIButton){
-        print("previousImage")
+    @objc func previousImage(){
+        if (photoIndex == 0){
+            photoIndex = currentListing.photos.count
+        }
+        photoIndex = photoIndex - 1
+        imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){
     
         if (gesture.direction == .left){
+            nextImage()
             print("swiped left")
         }
         
         else if (gesture.direction == .right){
+            previousImage()
             print("swiped right")
         }
+    }
+    
+    //fullcreen image methods
+    @objc func fullscreenImage() {
+    
+        
+        let newImageView = ImageScrollView()
+        newImageView.translatesAutoresizingMaskIntoConstraints = true
+        newImageView.frame = UIScreen.main.bounds
+        newImageView.backgroundColor = .black
+        
+        newImageView.display(image: currentListing.photos[photoIndex])
+        
+//        newImageView.contentMode = .scaleAspectFit
+//        newImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        
+        newImageView.addGestureRecognizer(tap)
+        self.view.addSubview(newImageView)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        sender.view?.removeFromSuperview()
     }
 }

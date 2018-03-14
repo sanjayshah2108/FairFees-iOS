@@ -9,13 +9,15 @@
 import UIKit
 import CoreLocation
 import MapKit
+import GoogleMaps
 
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate {
     
     var locationManager: CLLocationManager!
     
-    var homeMapView: MKMapView!
+    //var homeMapView: MKMapView!
+    var homeMapView: GMSMapView!
     var homeTableView: UITableView!
     var mapListSegmentedControl: UISegmentedControl!
     var topRightButton: UIBarButtonItem!
@@ -28,7 +30,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var applyFilterButton: UIButton!
     
     var navigationBarHeight: CGFloat!
-    var tabBarHeight: CGFloat!
     var searchBarHeight: CGFloat!
     
     var tapGesture: UITapGestureRecognizer!
@@ -41,7 +42,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
-        tabBarHeight = self.tabBarController?.tabBar.frame.height
         searchBarHeight = 40
         
         setupDummyData()
@@ -57,17 +57,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+        //MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
         
         homeTableView.reloadData()
-        homeMapView.removeAnnotations(homeMapView.annotations)
-        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
+        //homeMapView.removeAnnotations(homeMapView.annotations)
+        //homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     override func didReceiveMemoryWarning() {
@@ -81,21 +80,46 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DummyData.theDummyData.createListings()
     }
     
+    
     func setupHomeMapView(){
         
-        homeMapView = MKMapView()
-        homeMapView.frame = CGRect.zero
+        // Create a GMSCameraPosition that tells the map to display the
+        // coordinate -33.86,151.20 at zoom level 6.
+        let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 10.0)
+        homeMapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
-        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
-        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
-        homeMapView.showsUserLocation = true
+        MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
+        homeMapView.settings.myLocationButton = true
+        homeMapView.isMyLocationEnabled = true
+        homeMapView.settings.compassButton = true
+        homeMapView.settings.indoorPicker = true
+        
+    
+        for listing in DummyData.theDummyData.homesForSale{
+        // Creates a marker in the center of the map.
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            marker.title = listing.name
+            marker.snippet = listing.address
+            marker.map = homeMapView
+        }
         
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
-        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        
-        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
+//        homeMapView = MKMapView()
+//        homeMapView.frame = CGRect.zero
+//        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
+//        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+//        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
+//        homeMapView.showsUserLocation = true
+//
+//        view.addSubview(homeMapView)
+//        homeMapView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
+//
+//        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     func setupHomeTableView(){
@@ -141,7 +165,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupSearchBar(){
         searchBar = UISearchBar()
-        searchBar.frame = CGRect(x: 0, y: navigationBarHeight, width: view.frame.width, height: 40)
+        searchBar.frame = CGRect.zero
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.delegate = self
         searchBar.placeholder = "Search Address, Zip or City"
         view.addSubview(searchBar)
@@ -193,14 +218,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //homeMapView
         NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (searchBarHeight + navigationBarHeight)).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         
         
         //homeTableView
         NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: -tabBarHeight).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (navigationBarHeight+searchBarHeight)).isActive = true
         
@@ -208,7 +233,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: searchBar, attribute: .bottom, relatedBy: .equal, toItem: homeMapView, attribute: .top , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: searchBar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
         
         //filterView
         NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
@@ -261,10 +286,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
-        cell.listingCellNameLabel.text = listing.listingName
-        cell.listingCellSizeLabel.text = "\(listing.listingSize!) SF"
-        cell.listingCellPriceLabel.text = "$\(listing.salePrice!)"
-        cell.listingCellAddressLabel.text = listing.listingAddress
+        cell.leftImageView.image = listing.photos[0]
+        cell.leftImageView.contentMode = .scaleToFill
+        cell.nameLabel.text = listing.name
+        cell.sizeLabel.text = "\(listing.size!) SF"
+        cell.priceLabel.text = "$\(listing.price!)"
+        cell.addressLabel.text = listing.address
         
         return cell
     }
@@ -275,9 +302,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.navigationController?.pushViewController(listingViewController, animated: true)
         
-        
         tableView.deselectRow(at: indexPath, animated: true)
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     
@@ -287,7 +317,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             view.sendSubview(toBack: filterView)
             filterView.removeGestureRecognizer(swipeUpGesture)
         }
-        
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

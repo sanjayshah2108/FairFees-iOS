@@ -9,8 +9,13 @@
 import UIKit
 import MapKit
 import CoreLocation
+import GooglePlaces
+import GooglePlacePicker
 
 class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDelegate, MKLocalSearchCompleterDelegate  {
+    
+
+    
 
     var previousVC: PostViewController!
     
@@ -71,6 +76,7 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         
         selectedAnnotation = MKPointAnnotation()
     }
+    
     
     func setupSearchFunctionality(){
         

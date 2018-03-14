@@ -8,12 +8,13 @@
 
 import UIKit
 import CoreLocation
+import GooglePlaces
+import GooglePlacePicker
 
-class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, GMSPlacePickerViewControllerDelegate {
     
     
     var navigationBarHeight: CGFloat!
-    var tabBarHeight: CGFloat!
 
     var nameTextField: UITextField!
     var priceTextField: UITextField!
@@ -26,6 +27,18 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var provinceTextField: UITextField!
     var addressTextField: UITextField!
     var zipcodeTextField: UITextField!
+    
+    var customBedroomStepper: UIView!
+    var bedroomMinusButton: UIButton!
+    var bedroomPlusButton: UIButton!
+    var bedroomNumberLabel: UILabel!
+    var bedroomNumber: Int!
+    
+    var customBathroomStepper: UIView!
+    var bathroomPlusButton: UIButton!
+    var bathroomMinusButton: UIButton!
+    var bathroomNumberLabel: UILabel!
+    var bathroomNumber: Int!
     
     var addressInstructionLabel: UILabel!
     
@@ -48,9 +61,9 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         submitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submitPost))
         self.navigationItem.rightBarButtonItem = submitButton
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
-        tabBarHeight = self.tabBarController?.tabBar.frame.height
         
         setupTextFields()
+        setupSteppers()
         setupLabels()
         setupLocationButton()
         setupPhotosButton()
@@ -98,27 +111,27 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sizeTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sizeTextField)
         
-        bedroomNumberTextField = UITextField()
-        bedroomNumberTextField.delegate = self
-        bedroomNumberTextField.frame = CGRect.zero
-        bedroomNumberTextField.layer.borderWidth = 1
-        bedroomNumberTextField.layer.borderColor = UIColor.gray.cgColor
-        bedroomNumberTextField.layer.cornerRadius = 3
-        bedroomNumberTextField.placeholder = "No. of Bedrooms"
-        bedroomNumberTextField.textAlignment = .center
-        bedroomNumberTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bedroomNumberTextField)
-        
-        bathroomNumberTextField = UITextField()
-        bathroomNumberTextField.delegate = self
-        bathroomNumberTextField.frame = CGRect.zero
-        bathroomNumberTextField.layer.borderWidth = 1
-        bathroomNumberTextField.layer.borderColor = UIColor.gray.cgColor
-        bathroomNumberTextField.layer.cornerRadius = 3
-        bathroomNumberTextField.placeholder = "No. of Bathrooms"
-        bathroomNumberTextField.textAlignment = .center
-        bathroomNumberTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bathroomNumberTextField)
+//        bedroomNumberTextField = UITextField()
+//        bedroomNumberTextField.delegate = self
+//        bedroomNumberTextField.frame = CGRect.zero
+//        bedroomNumberTextField.layer.borderWidth = 1
+//        bedroomNumberTextField.layer.borderColor = UIColor.gray.cgColor
+//        bedroomNumberTextField.layer.cornerRadius = 3
+//        bedroomNumberTextField.placeholder = "No. of Bedrooms"
+//        bedroomNumberTextField.textAlignment = .center
+//        bedroomNumberTextField.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(bedroomNumberTextField)
+//
+//        bathroomNumberTextField = UITextField()
+//        bathroomNumberTextField.delegate = self
+//        bathroomNumberTextField.frame = CGRect.zero
+//        bathroomNumberTextField.layer.borderWidth = 1
+//        bathroomNumberTextField.layer.borderColor = UIColor.gray.cgColor
+//        bathroomNumberTextField.layer.cornerRadius = 3
+//        bathroomNumberTextField.placeholder = "No. of Bathrooms"
+//        bathroomNumberTextField.textAlignment = .center
+//        bathroomNumberTextField.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(bathroomNumberTextField)
         
         descriptionTextField = UITextView()
         descriptionTextField.delegate = self
@@ -189,11 +202,87 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
     
+    func setupSteppers(){
+        setupBedroomStepper()
+        setupBathroomStepper()
+    }
+    
+    func setupBedroomStepper(){
+        customBedroomStepper = UIView()
+        customBedroomStepper.frame = CGRect.zero
+        customBedroomStepper.layer.borderColor = UIColor.blue.cgColor
+        customBedroomStepper.layer.borderWidth = 1
+        customBedroomStepper.layer.cornerRadius = 3
+        customBedroomStepper.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customBedroomStepper)
+        
+        bedroomMinusButton = UIButton()
+        bedroomMinusButton.addTarget(self, action: #selector(reduceCount), for: .touchUpInside)
+        bedroomMinusButton.setTitle("-", for: .normal)
+        bedroomMinusButton.backgroundColor = UIColor.blue
+        bedroomMinusButton.layer.cornerRadius = 3
+        bedroomMinusButton.translatesAutoresizingMaskIntoConstraints = false
+        customBedroomStepper.addSubview(bedroomMinusButton)
+        
+        bedroomNumberLabel = UILabel()
+        bedroomNumberLabel.textAlignment = .center
+        bedroomNumberLabel.translatesAutoresizingMaskIntoConstraints = false
+        bedroomNumber = 0
+        bedroomNumberLabel.text = "Bedroom #"
+        bedroomNumberLabel.textColor = UIColor.gray
+        bedroomNumberLabel.font = UIFont(name: "Avenir-Light", size: 10)
+        customBedroomStepper.addSubview(bedroomNumberLabel)
+        
+        bedroomPlusButton = UIButton()
+        bedroomPlusButton.addTarget(self, action: #selector(addCount), for: .touchUpInside)
+        bedroomPlusButton.setTitle("+", for: .normal)
+        bedroomPlusButton.backgroundColor = UIColor.blue
+        bedroomPlusButton.layer.cornerRadius = 3
+        bedroomPlusButton.translatesAutoresizingMaskIntoConstraints = false
+        customBedroomStepper.addSubview(bedroomPlusButton)
+    }
+
+    func setupBathroomStepper(){
+        customBathroomStepper = UIView()
+        customBathroomStepper.frame = CGRect.zero
+        customBathroomStepper.layer.borderColor = UIColor.blue.cgColor
+        customBathroomStepper.layer.borderWidth = 1
+        customBathroomStepper.layer.cornerRadius = 5
+        customBathroomStepper.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customBathroomStepper)
+        
+        bathroomMinusButton = UIButton()
+        bathroomMinusButton.addTarget(self, action: #selector(reduceCount), for: .touchUpInside)
+        bathroomMinusButton.backgroundColor = UIColor.blue
+        bathroomMinusButton.layer.cornerRadius = 3
+        bathroomMinusButton.setTitle("-", for: .normal)
+        bathroomMinusButton.translatesAutoresizingMaskIntoConstraints = false
+        customBathroomStepper.addSubview(bathroomMinusButton)
+        
+        bathroomNumberLabel = UILabel()
+        bathroomNumberLabel.textAlignment = .center
+        bathroomNumberLabel.translatesAutoresizingMaskIntoConstraints = false
+        bathroomNumber = 0
+        bathroomNumberLabel.text = "Bathroom #"
+        bathroomNumberLabel.textColor = UIColor.gray
+        bathroomNumberLabel.font = UIFont(name: "Avenir-Light", size: 10)
+        customBathroomStepper.addSubview(bathroomNumberLabel)
+        
+        bathroomPlusButton = UIButton()
+        bathroomPlusButton.addTarget(self, action: #selector(addCount), for: .touchUpInside)
+        bathroomPlusButton.backgroundColor = UIColor.blue
+        bathroomPlusButton.layer.cornerRadius = 3
+        bathroomPlusButton.setTitle("+", for: .normal)
+        bathroomPlusButton.translatesAutoresizingMaskIntoConstraints = false
+        customBathroomStepper.addSubview(bathroomPlusButton)
+    }
+    
     func setupLocationButton(){
         locationButton = UIButton()
         locationButton.setTitle("Pick Location", for: .normal)
         locationButton.titleLabel?.textAlignment = .left
-        locationButton.addTarget(self, action: #selector(showMapForSelectingLocation), for: .touchUpInside)
+        //locationButton.addTarget(self, action: #selector(showMapForSelectingLocation), for: .touchUpInside)
+        locationButton.addTarget(self, action: #selector(pickPlace), for: .touchUpInside)
         locationButton.backgroundColor = UIColor.blue
         locationButton.layer.cornerRadius = 4
         locationButton.layer.borderColor = UIColor.blue.cgColor
@@ -250,43 +339,75 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: (navigationBarHeight + 10)).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //priceTextField
         NSLayoutConstraint(item: priceTextField, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: priceTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: priceTextField, attribute: .trailing, relatedBy: .equal, toItem: sizeTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: priceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: priceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //sizeTextField
         NSLayoutConstraint(item: sizeTextField, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: sizeTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: sizeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: sizeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: sizeTextField, attribute: .width, relatedBy: .equal, toItem: priceTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
         
-        //bedroomsNumberTextField
-        NSLayoutConstraint(item: bedroomNumberTextField, attribute: .top, relatedBy: .equal, toItem: priceTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: bedroomNumberTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: bedroomNumberTextField, attribute: .trailing, relatedBy: .equal, toItem: bathroomNumberTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: bedroomNumberTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
         
-        //bathroomsNumberTextField
-        NSLayoutConstraint(item: bathroomNumberTextField, attribute: .top, relatedBy: .equal, toItem: sizeTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: bathroomNumberTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: bathroomNumberTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-        NSLayoutConstraint(item: bathroomNumberTextField, attribute: .width, relatedBy: .equal, toItem: bedroomNumberTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
+        //bedroomsNumberStepper
+        NSLayoutConstraint(item: customBedroomStepper, attribute: .top, relatedBy: .equal, toItem: priceTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: customBedroomStepper, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: customBedroomStepper, attribute: .trailing, relatedBy: .equal, toItem: customBathroomStepper, attribute: .leading , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: customBedroomStepper, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
+        NSLayoutConstraint(item: bedroomMinusButton, attribute: .top, relatedBy: .equal, toItem: customBedroomStepper, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomMinusButton, attribute: .leading, relatedBy: .equal, toItem: customBedroomStepper, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomMinusButton, attribute: .trailing, relatedBy: .equal, toItem: bedroomNumberLabel, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomMinusButton, attribute: .bottom, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: bedroomNumberLabel, attribute: .top, relatedBy: .equal, toItem: customBedroomStepper, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomNumberLabel, attribute: .width, relatedBy: .equal, toItem: bedroomMinusButton, attribute: .width, multiplier: 1.5, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomNumberLabel, attribute: .trailing, relatedBy: .equal, toItem: bedroomPlusButton, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomNumberLabel, attribute: .bottom, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: bedroomPlusButton, attribute: .top, relatedBy: .equal, toItem: customBedroomStepper, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomPlusButton, attribute: .width, relatedBy: .equal, toItem: bedroomMinusButton, attribute: .width, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomPlusButton, attribute: .trailing, relatedBy: .equal, toItem: customBedroomStepper, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bedroomPlusButton, attribute: .bottom, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
+        
+        //bathroomsNumberStepper
+        NSLayoutConstraint(item: customBathroomStepper, attribute: .top, relatedBy: .equal, toItem: sizeTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: customBathroomStepper, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: customBathroomStepper, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: customBathroomStepper, attribute: .width, relatedBy: .equal, toItem: customBedroomStepper, attribute: .width, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: bathroomMinusButton, attribute: .top, relatedBy: .equal, toItem: customBathroomStepper, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomMinusButton, attribute: .leading, relatedBy: .equal, toItem: customBathroomStepper, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomMinusButton, attribute: .trailing, relatedBy: .equal, toItem: bathroomNumberLabel, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomMinusButton, attribute: .bottom, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: bathroomNumberLabel, attribute: .top, relatedBy: .equal, toItem: customBathroomStepper, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomNumberLabel, attribute: .width, relatedBy: .equal, toItem: bathroomMinusButton, attribute: .width, multiplier: 1.5, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomNumberLabel, attribute: .trailing, relatedBy: .equal, toItem: bathroomPlusButton, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomNumberLabel, attribute: .bottom, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: bathroomPlusButton, attribute: .top, relatedBy: .equal, toItem: customBathroomStepper, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomPlusButton, attribute: .width, relatedBy: .equal, toItem: bathroomMinusButton, attribute: .width, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomPlusButton, attribute: .trailing, relatedBy: .equal, toItem: customBathroomStepper, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bathroomPlusButton, attribute: .bottom, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
         //descriptionTextField
-        NSLayoutConstraint(item: descriptionTextField, attribute: .top, relatedBy: .equal, toItem: bathroomNumberTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: descriptionTextField, attribute: .top, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         //addressInstructionLabel
-        NSLayoutConstraint(item: addressInstructionLabel, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: addressInstructionLabel, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: addressInstructionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
        
-        NSLayoutConstraint(item: addressInstructionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: addressInstructionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         
         
@@ -294,35 +415,35 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: addressTextField, attribute: .top, relatedBy: .equal, toItem: addressInstructionLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: addressTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: addressTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: addressTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: addressTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //cityTextField
         NSLayoutConstraint(item: cityTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .trailing, relatedBy: .equal, toItem: provinceTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: cityTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: cityTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //provinceTextField
         NSLayoutConstraint(item: provinceTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: provinceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: provinceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .width, relatedBy: .equal, toItem: cityTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
         
         //countryTextField
         NSLayoutConstraint(item: countryTextField, attribute: .top, relatedBy: .equal, toItem: cityTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: countryTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: countryTextField, attribute: .trailing, relatedBy: .equal, toItem: zipcodeTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: countryTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: countryTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //zipCodeTextField
         NSLayoutConstraint(item: zipcodeTextField, attribute: .top, relatedBy: .equal, toItem: cityTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: zipcodeTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: zipcodeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: zipcodeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: zipcodeTextField, attribute: .width, relatedBy: .equal, toItem: countryTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
         
         
         //locationButton
-        NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: locationButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
          NSLayoutConstraint(item: locationButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: locationButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
@@ -337,8 +458,53 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: addPhotosButton, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -(tabBarHeight+10)).isActive = true
+        NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -10).isActive = true
         
+    }
+    
+    @objc func addCount(sender: UIButton){
+        if (sender.superview == customBedroomStepper){
+            bedroomNumber = bedroomNumber + 1
+            bedroomNumberLabel.text = String(bedroomNumber)
+            bedroomNumberLabel.textColor = UIColor.black
+            
+            
+        }
+        else if (sender.superview == customBathroomStepper){
+            bathroomNumber = bathroomNumber + 1
+            bathroomNumberLabel.text = String(bathroomNumber)
+            bathroomNumberLabel.textColor = UIColor.black
+        }
+    }
+    
+    @objc func reduceCount(sender: UIButton){
+        if (sender.superview == customBedroomStepper){
+            
+            if(bedroomNumber == 1){
+                bedroomNumber = 0
+                bedroomNumberLabel.text = "Bedroom #"
+                bedroomNumberLabel.textColor = UIColor.gray
+            }
+            
+            else {
+                bedroomNumber = bedroomNumber - 1
+                bedroomNumberLabel.text = String(bedroomNumber)
+                bedroomNumberLabel.textColor = UIColor.black
+            }
+        }
+        else if (sender.superview == customBathroomStepper){
+            
+            if(bathroomNumber == 1){
+                bathroomNumber = 0
+                bathroomNumberLabel.text = "Bathroom #"
+                bathroomNumberLabel.textColor = UIColor.gray
+            }
+            else {
+                bathroomNumber = bathroomNumber - 1
+                bathroomNumberLabel.text = String(bathroomNumber)
+                bathroomNumberLabel.textColor = UIColor.black
+            }
+        }
     }
     
     @objc func showMapForSelectingLocation(){
@@ -444,6 +610,99 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         self.present(changePhotoAlert, animated: true, completion: nil)
     }
+    
+    
+    @objc func pickPlace(sender: UIButton) {
+        let config = GMSPlacePickerConfig(viewport: nil)
+        let placePicker = GMSPlacePickerViewController(config: config)
+        placePicker.delegate = self
+        
+        present(placePicker, animated: true, completion: nil)
+    }
+    
+    // To receive the results from the place picker 'self' will need to conform to
+    // GMSPlacePickerViewControllerDelegate and implement this code.
+    func placePicker(_ viewController: GMSPlacePickerViewController, didPick place: GMSPlace) {
+        // Dismiss the place picker, as it cannot dismiss itself.
+        viewController.dismiss(animated: true, completion: nil)
+        
+        location = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        
+        if (place.addressComponents != nil){
+        
+            for component in place.addressComponents! {
+                if(component.type == "route"){
+                    addressTextField.text = component.name
+                }
+                if (component.type == "locality") {
+                    cityTextField.text = component.name
+                }
+                if (component.type == "country") {
+                    countryTextField.text = component.name
+                }
+                if (component.type == "postal_code"){
+                    zipcodeTextField.text = component.name
+                }
+                if (component.type == "administrative_area_level_1"){
+                    provinceTextField.text = component.name
+                }
+            }
+        }
+        
+        else {
+            reverseGeocode(location: location)
+        }
+    }
+    
+    func placePickerDidCancel(_ viewController: GMSPlacePickerViewController) {
+        // Dismiss the place picker, as it cannot dismiss itself.
+        viewController.dismiss(animated: true, completion: nil)
+        
+        print("No place selected")
+    }
+    
+    func reverseGeocode(location: CLLocation){
+        
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            if error != nil {
+                print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
+                return
+            }
+            
+            if (placemarks!.count > 0) {
+                let pm = placemarks![0]
+                
+                if(pm.thoroughfare != nil && pm.subThoroughfare != nil){
+                    // not all places have thoroughfare & subThoroughfare so validate those values
+
+                    self.addressTextField.text = pm.subThoroughfare! + " " + pm.thoroughfare!
+                    self.cityTextField.text = pm.locality
+                    self.provinceTextField.text = pm.administrativeArea
+                    self.countryTextField.text = pm.country
+                    self.zipcodeTextField.text = pm.postalCode
+            
+                }
+                else if(pm.subThoroughfare != nil) {
+                    
+                    self.addressTextField.text = pm.thoroughfare!
+                    self.cityTextField.text = pm.locality
+                    self.provinceTextField.text = pm.administrativeArea
+                    self.countryTextField.text = pm.country
+                    self.zipcodeTextField.text = pm.postalCode
+                }
+                    
+                else {
+                    print("Problem with the data received from geocoder")
+                }
+            }
+            else {
+                print("Problem with the data received from geocoder")
+            }
+        })
+        
+    }
+    
+    
         
     
     //textView methods
@@ -488,8 +747,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         nameTextField.resignFirstResponder()
         priceTextField.resignFirstResponder()
         sizeTextField.resignFirstResponder()
-        bedroomNumberTextField.resignFirstResponder()
-        bathroomNumberTextField.resignFirstResponder()
+        //bedroomNumberTextField.resignFirstResponder()
+        //bathroomNumberTextField.resignFirstResponder()
         descriptionTextField.resignFirstResponder()
         addressTextField.resignFirstResponder()
         cityTextField.resignFirstResponder()
@@ -511,12 +770,11 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         newImageView.addGestureRecognizer(tap)
         self.view.addSubview(newImageView)
         self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
+
     }
     
     @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
         self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
         sender.view?.removeFromSuperview()
     }
     

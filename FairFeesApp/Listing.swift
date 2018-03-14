@@ -9,21 +9,22 @@
 import UIKit
 import CoreLocation
 import MapKit
+import GoogleMaps
 
-class Listing: NSObject, MKAnnotation {
+class Listing: GMSMarker, MKAnnotation  {
     
     var coordinate: CLLocationCoordinate2D {
-        get { return self.listingLocation.coordinate }
+        get { return self.location.coordinate }
         //set { self.listingLocation.coordinate = newValue }
     }
     
-    var listingUID: String!
-    var listingName: String!
-    var listingPoster: User!
+    var UID: String!
+    var name: String!
+    var poster: User!
     var listingDescription: String!
-    var listingPhotos: [UIImage]!
-    var listingSize: Int!
-    var listingLocation: CLLocation!
-    var listingAddress: String!
+    var photos: [UIImage]!
+    var size: Int!
+    var location: CLLocation!
+    var address: String!
     
 }
