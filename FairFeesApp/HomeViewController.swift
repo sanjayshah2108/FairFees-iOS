@@ -57,9 +57,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
-        
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -168,7 +165,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupSearchBar(){
         searchBar = UISearchBar()
-        searchBar.frame = CGRect(x: 0, y: navigationBarHeight, width: view.frame.width, height: 40)
+        searchBar.frame = CGRect.zero
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.delegate = self
         searchBar.placeholder = "Search Address, Zip or City"
         view.addSubview(searchBar)
@@ -222,7 +220,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (searchBarHeight + navigationBarHeight)).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         
         
         //homeTableView
@@ -235,7 +233,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: searchBar, attribute: .bottom, relatedBy: .equal, toItem: homeMapView, attribute: .top , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: searchBar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
         
         //filterView
         NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
@@ -288,6 +286,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
+        cell.leftImageView.image = listing.photos[0]
+        cell.leftImageView.contentMode = .scaleToFill
         cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"
         cell.priceLabel.text = "$\(listing.price!)"
@@ -302,9 +302,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.navigationController?.pushViewController(listingViewController, animated: true)
         
-        
         tableView.deselectRow(at: indexPath, animated: true)
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     
@@ -314,7 +317,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             view.sendSubview(toBack: filterView)
             filterView.removeGestureRecognizer(swipeUpGesture)
         }
-        
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

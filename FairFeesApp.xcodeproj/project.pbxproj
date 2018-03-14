@@ -81,6 +81,16 @@
 		CE51488D205717BF0021DB67 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE51488C205717BF0021DB67 /* QuartzCore.framework */; };
 		CE51488F205717CC0021DB67 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE51488E205717CC0021DB67 /* SystemConfiguration.framework */; };
 		CE514891205717D70021DB67 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE514890205717D70021DB67 /* UIKit.framework */; };
+		CE514893205860590021DB67 /* ImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514892205860570021DB67 /* ImageScrollView.swift */; };
+		CE514897205882A10021DB67 /* GooglePlacePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5148962058829F0021DB67 /* GooglePlacePicker.framework */; };
+		CE514898205882A20021DB67 /* GooglePlacePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5148962058829F0021DB67 /* GooglePlacePicker.framework */; };
+		CE514899205882A20021DB67 /* GooglePlacePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5148962058829F0021DB67 /* GooglePlacePicker.framework */; };
+		CE51489B205882CD0021DB67 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE51489A205882CC0021DB67 /* GooglePlaces.framework */; };
+		CE51489C205882CD0021DB67 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE51489A205882CC0021DB67 /* GooglePlaces.framework */; };
+		CE51489D205882CD0021DB67 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE51489A205882CC0021DB67 /* GooglePlaces.framework */; };
+		CE5148A0205883910021DB67 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE51489F205883900021DB67 /* GooglePlacePicker.bundle */; };
+		CE5148A1205883910021DB67 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE51489F205883900021DB67 /* GooglePlacePicker.bundle */; };
+		CE5148A2205883910021DB67 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE51489F205883900021DB67 /* GooglePlacePicker.bundle */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DF7204DD32D00548D5F /* Main.storyboard */; };
@@ -178,6 +188,11 @@
 		CE51488C205717BF0021DB67 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CE51488E205717CC0021DB67 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CE514890205717D70021DB67 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CE514892205860570021DB67 /* ImageScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageScrollView.swift; sourceTree = "<group>"; };
+		CE5148962058829F0021DB67 /* GooglePlacePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlacePicker.framework; sourceTree = "<group>"; };
+		CE51489A205882CC0021DB67 /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlaces.framework; sourceTree = "<group>"; };
+		CE51489E2058837F0021DB67 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlaces.bundle; sourceTree = "<group>"; };
+		CE51489F205883900021DB67 /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlacePicker.bundle; path = FairFeesApp/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE514891205717D70021DB67 /* UIKit.framework in Frameworks */,
+				CE514897205882A10021DB67 /* GooglePlacePicker.framework in Frameworks */,
 				CE51488F205717CC0021DB67 /* SystemConfiguration.framework in Frameworks */,
 				CE51488D205717BF0021DB67 /* QuartzCore.framework in Frameworks */,
 				CE51488B205717B40021DB67 /* OpenGLES.framework in Frameworks */,
@@ -213,6 +229,7 @@
 				CE514881205717670021DB67 /* CoreText.framework in Frameworks */,
 				CE51487F205717600021DB67 /* CoreTelephony.framework in Frameworks */,
 				CE51487D205717550021DB67 /* CoreLocation.framework in Frameworks */,
+				CE51489B205882CD0021DB67 /* GooglePlaces.framework in Frameworks */,
 				CE51487B2057174E0021DB67 /* CoreImage.framework in Frameworks */,
 				CE514879205717440021DB67 /* CoreData.framework in Frameworks */,
 				CE514877205717380021DB67 /* Accelerate.framework in Frameworks */,
@@ -229,6 +246,8 @@
 				CE51486B205715FC0021DB67 /* GoogleMaps.framework in Frameworks */,
 				CE51486F2057161F0021DB67 /* GoogleMapsCore.framework in Frameworks */,
 				CE514867205715D80021DB67 /* GoogleMapsBase.framework in Frameworks */,
+				CE514898205882A20021DB67 /* GooglePlacePicker.framework in Frameworks */,
+				CE51489C205882CD0021DB67 /* GooglePlaces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +258,8 @@
 				CE51486C205715FC0021DB67 /* GoogleMaps.framework in Frameworks */,
 				CE5148702057161F0021DB67 /* GoogleMapsCore.framework in Frameworks */,
 				CE514868205715D90021DB67 /* GoogleMapsBase.framework in Frameworks */,
+				CE514899205882A20021DB67 /* GooglePlacePicker.framework in Frameworks */,
+				CE51489D205882CD0021DB67 /* GooglePlaces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +331,8 @@
 		CE7F7DE5204DD32D00548D5F = {
 			isa = PBXGroup;
 			children = (
+				CE51489F205883900021DB67 /* GooglePlacePicker.bundle */,
+				CE51489E2058837F0021DB67 /* GooglePlaces.bundle */,
 				CE514871205716F80021DB67 /* GoogleMaps.bundle */,
 				CE7F7DF0204DD32D00548D5F /* FairFeesApp */,
 				CE7F7E07204DD32E00548D5F /* FairFeesAppTests */,
@@ -335,10 +358,13 @@
 		CE7F7DF0204DD32D00548D5F /* FairFeesApp */ = {
 			isa = PBXGroup;
 			children = (
+				CE51489A205882CC0021DB67 /* GooglePlaces.framework */,
+				CE5148962058829F0021DB67 /* GooglePlacePicker.framework */,
 				292304A42054D5F1000ECFCF /* listing images */,
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
 				CE5148612054C0560021DB67 /* PostPhotoCollectionViewCell.swift */,
 				CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */,
+				CE514892205860570021DB67 /* ImageScrollView.swift */,
 				CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */,
 				CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */,
 				CE5148582050C1A50021DB67 /* HomeTableViewCell.xib */,
@@ -491,6 +517,7 @@
 			files = (
 				292305082054D844000ECFCF /* 01111_9LMDIdNYAfP_1200x900.jpg in Resources */,
 				292304F62054D844000ECFCF /* 00P0P_ei9EzDPme8E_1200x900.jpg in Resources */,
+				CE5148A0205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				2923050A2054D844000ECFCF /* 00V0V_1w79UkaNL93_1200x900.jpg in Resources */,
 				292305042054D844000ECFCF /* 00w0w_7Xm4T55PkAP_1200x900.jpg in Resources */,
 				292304F92054D844000ECFCF /* 00606_6BcSIrgOqof_1200x900.jpg in Resources */,
@@ -536,6 +563,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE5148A1205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				CE514873205716F80021DB67 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -544,6 +572,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE5148A2205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				CE514874205716F80021DB67 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,6 +587,7 @@
 				CE7F7E22204DDB6600548D5F /* MapViewDelegate.swift in Sources */,
 				CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */,
 				CE51484E204F778F0021DB67 /* Sale.swift in Sources */,
+				CE514893205860590021DB67 /* ImageScrollView.swift in Sources */,
 				CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */,
 				CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */,
 				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
@@ -743,6 +773,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FairFeesApp",
 				);
 				INFOPLIST_FILE = FairFeesApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -764,6 +795,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FairFeesApp",
 				);
 				INFOPLIST_FILE = FairFeesApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -785,6 +817,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FairFeesApp",
 				);
 				INFOPLIST_FILE = FairFeesAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -805,6 +838,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FairFeesApp",
 				);
 				INFOPLIST_FILE = FairFeesAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -824,6 +858,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FairFeesApp",
 				);
 				INFOPLIST_FILE = FairFeesAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -843,6 +878,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FairFeesApp",
 				);
 				INFOPLIST_FILE = FairFeesAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

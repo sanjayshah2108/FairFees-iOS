@@ -30,7 +30,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     var bedroomLabel: UILabel!
     var bathroomLabel: UILabel!
     
-    var imageCarouselSwipeGesture: UISwipeGestureRecognizer!
+    var imageViewCarouselLeftSwipeGesture: UISwipeGestureRecognizer!
+    var imageViewCarouselRightSwipeGesture: UISwipeGestureRecognizer!
+    var imageViewCarouselExpandPinchGesture: UIPinchGestureRecognizer!
+    var imageViewCarouselExpandTapGesture: UITapGestureRecognizer!
+    
+    var photoIndex: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,12 +59,26 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     func setupImageView(){
         
         imageViewCarousel = UIImageView()
+        imageViewCarousel.isUserInteractionEnabled = true
         imageViewCarousel.backgroundColor = UIColor.blue
+        photoIndex = 0
+        imageViewCarousel.image = currentListing.photos[photoIndex]
+        imageViewCarousel.contentMode = .scaleAspectFill
         imageViewCarousel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageViewCarousel)
     
-        imageCarouselSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
-        imageViewCarousel.addGestureRecognizer(imageCarouselSwipeGesture)
+        imageViewCarouselLeftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
+        imageViewCarouselLeftSwipeGesture.direction = .left
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselLeftSwipeGesture)
+        imageViewCarouselRightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
+        imageViewCarouselRightSwipeGesture.direction = .right
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselRightSwipeGesture)
+        
+//        imageViewCarouselExpandPinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(fullscreenImage))
+//        imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandPinchGesture)
+//        
+        imageViewCarouselExpandTapGesture = UITapGestureRecognizer(target: self, action: #selector(fullscreenImage))
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandTapGesture)
         
         nextImageButton = UIButton(type: .custom)
         nextImageButton.setTitle("Next", for: .normal)
@@ -128,7 +147,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
     }
     func setupMapView(){
-        
         
         mapView = GMSMapView()
         mapView.delegate = self
@@ -224,22 +242,57 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0).isActive = true
     }
     
-    @objc func nextImage(sender: UIButton){
-        print("nextImage")
+    @objc func nextImage(){
+        if (photoIndex == currentListing.photos.count-1){
+            photoIndex = -1
+        }
+        photoIndex = photoIndex + 1
+        imageViewCarousel.image = currentListing.photos[photoIndex]
     }
     
-    @objc func previousImage(sender: UIButton){
-        print("previousImage")
+    @objc func previousImage(){
+        if (photoIndex == 0){
+            photoIndex = currentListing.photos.count
+        }
+        photoIndex = photoIndex - 1
+        imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){
     
         if (gesture.direction == .left){
+            nextImage()
             print("swiped left")
         }
         
         else if (gesture.direction == .right){
+            previousImage()
             print("swiped right")
         }
+    }
+    
+    //fullcreen image methods
+    @objc func fullscreenImage() {
+    
+        
+        let newImageView = ImageScrollView()
+        newImageView.translatesAutoresizingMaskIntoConstraints = true
+        newImageView.frame = UIScreen.main.bounds
+        newImageView.backgroundColor = .black
+        
+        newImageView.display(image: currentListing.photos[photoIndex])
+        
+//        newImageView.contentMode = .scaleAspectFit
+//        newImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        
+        newImageView.addGestureRecognizer(tap)
+        self.view.addSubview(newImageView)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        sender.view?.removeFromSuperview()
     }
 }

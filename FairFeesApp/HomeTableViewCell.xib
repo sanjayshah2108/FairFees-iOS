@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,27 +20,26 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Aqo-bQ-hDS">
-                        <rect key="frame" x="0.0" y="0.0" width="46" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="GaF-nP-JE8"/>
-                            <constraint firstAttribute="width" constant="46" id="cwW-82-tLB"/>
+                            <constraint firstAttribute="width" secondItem="Aqo-bQ-hDS" secondAttribute="height" multiplier="1:1" id="dsn-Z4-7eS"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SVQ-7O-oZU">
-                        <rect key="frame" x="54" y="3" width="38" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <rect key="frame" x="52" y="6" width="45" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFj-hn-QPl">
-                        <rect key="frame" x="54" y="28.5" width="39.5" height="12"/>
+                        <rect key="frame" x="52" y="28.5" width="39.5" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kl7-Nv-sU1">
-                        <rect key="frame" x="286" y="5" width="29" height="14.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <rect key="frame" x="282" y="5" width="33" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -56,7 +56,7 @@
                     <constraint firstAttribute="bottom" secondItem="nCq-L0-U7c" secondAttribute="bottom" constant="5" id="RKe-XS-ecD"/>
                     <constraint firstAttribute="bottom" secondItem="GFj-hn-QPl" secondAttribute="bottom" constant="3" id="T3t-Mh-Htr"/>
                     <constraint firstItem="SVQ-7O-oZU" firstAttribute="leading" secondItem="Aqo-bQ-hDS" secondAttribute="trailing" constant="8" id="Wts-IF-hSK"/>
-                    <constraint firstItem="SVQ-7O-oZU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="acG-Wp-yZI"/>
+                    <constraint firstItem="SVQ-7O-oZU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="acG-Wp-yZI"/>
                     <constraint firstAttribute="trailing" secondItem="kl7-Nv-sU1" secondAttribute="trailing" constant="5" id="bHj-rM-jVG"/>
                     <constraint firstAttribute="bottom" secondItem="Aqo-bQ-hDS" secondAttribute="bottom" id="dPL-lt-wq3"/>
                     <constraint firstItem="Aqo-bQ-hDS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="e1B-2U-gRw"/>
