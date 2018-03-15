@@ -10,10 +10,11 @@ import UIKit
 import CoreLocation
 import MapKit
 import GoogleMaps
+import GooglePlaces
 
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate {
-    
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, GMSAutocompleteResultsViewControllerDelegate {
+
     var locationManager: CLLocationManager!
     
     //var homeMapView: MKMapView!
@@ -21,6 +22,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var homeTableView: UITableView!
     var mapListSegmentedControl: UISegmentedControl!
     var topRightButton: UIBarButtonItem!
+    var topLeftButton: UIBarButtonItem!
     var searchBar: UISearchBar!
     var filterView: UIView!
     
@@ -36,18 +38,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var swipeUpGesture: UISwipeGestureRecognizer!
     
     
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    var resultView: UITextView?
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
-        searchBarHeight = 40
+        searchBarHeight = 0
         
         setupDummyData()
         
         setupMapListSegmentTitle()
         setupTopRightButton()
+        setupTopLeftButton()
         setupHomeMapView()
         setupHomeTableView()
         setupSearchBar()
@@ -83,8 +92,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupHomeMapView(){
         
-        // Create a GMSCameraPosition that tells the map to display the
-        // coordinate -33.86,151.20 at zoom level 6.
         let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 10.0)
         homeMapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
@@ -94,9 +101,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeMapView.settings.compassButton = true
         homeMapView.settings.indoorPicker = true
         
-    
         for listing in DummyData.theDummyData.homesForSale{
-        // Creates a marker in the center of the map.
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
             marker.title = listing.name
@@ -147,6 +152,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.rightBarButtonItem = topRightButton
     }
     
+    func setupTopLeftButton(){
+        topLeftButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+        self.navigationItem.leftBarButtonItem = topLeftButton
+    }
+    
     @objc func bringMapOrListToFront(){
         switch mapListSegmentedControl.selectedSegmentIndex {
         case 0:
@@ -163,7 +173,44 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
     
+    @objc func showSearchBar(){
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        searchController = UISearchController(searchResultsController: resultsViewController)
+        searchController?.searchResultsUpdater = resultsViewController
+        searchController?.searchBar.delegate = self
+        
+        // Add the search bar to the right of the nav bar,
+        // use a popover to display the results.
+        // Set an explicit size as we don't want to use the entire nav bar.
+        searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44.0))
+        navigationItem.rightBarButtonItem = nil
+//        navigationItem.leftBarButtonItem = nil
+//        navigationItem.titleView = searchController?.searchBar
+        view.addSubview((searchController?.searchBar)!)
+        searchController?.searchBar.setShowsCancelButton(true, animated: true)
+        searchController?.searchBar.placeholder = "Search Address, Zip or City"
+        searchController?.searchBar.becomeFirstResponder()
+        
+        searchBarHeight = 0
+        searchBar.translatesAutoresizingMaskIntoConstraints = true
+        searchBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        view.layoutIfNeeded()
+        setupConstraints()
+        
+        // When UISearchController presents the results view, present it in
+        // this view controller, not one further up the chain.
+        definesPresentationContext = true
+        
+        // Keep the navigation bar visible.
+        searchController?.hidesNavigationBarDuringPresentation = true
+        searchController?.modalPresentationStyle = .popover
+        
+    }
+    
     func setupSearchBar(){
+        
         searchBar = UISearchBar()
         searchBar.frame = CGRect.zero
         searchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -227,7 +274,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: (navigationBarHeight+searchBarHeight)).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
         
         //searchBar
         NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
@@ -266,7 +313,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     @objc func applyFilters(){
-        
         print("apply filters")
     }
     
@@ -279,10 +325,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
-        
-        //        if (cell == nil){
-        //            tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
-        //        }
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
@@ -320,7 +362,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        view.bringSubview(toFront: filterView)
+        
+        //view.bringSubview(toFront: filterView)
+        //self.navigationController?.navigationBar.isHidden = true
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
         self.view.addGestureRecognizer(tapGesture)
@@ -330,13 +374,75 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterView.addGestureRecognizer(swipeUpGesture)
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        //searchBarHeight = 40
+        self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        setupConstraints()
+        self.navigationItem.rightBarButtonItem = topRightButton
+    }
+    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        
         self.view.removeGestureRecognizer(tapGesture)
+        //searchBarHeight = 40
+        self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        setupConstraints()
+        self.navigationItem.rightBarButtonItem = topRightButton
     }
     
     @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
         searchBar.resignFirstResponder()
+        //searchBarHeight = 40
+        self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        setupConstraints()
+        self.navigationItem.rightBarButtonItem = topRightButton
     }
+    
+    
+        
+        // Handle the user's selection.
+        func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+            print("Place name: \(place.name)")
+            print("Place address: \(place.formattedAddress)")
+            print("Place attributions: \(place.attributions)")
+            dismiss(animated: true, completion: nil)
+        }
+        
+        func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+            // TODO: handle the error.
+            print("Error: ", error.localizedDescription)
+        }
+        
+        // User canceled the operation.
+        func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+            dismiss(animated: true, completion: nil)
+        }
+    
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didAutocompleteWith place: GMSPlace) {
+        searchController?.isActive = false
+        // Do something with the selected place.
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+    }
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didFailAutocompleteWithError error: Error){
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    
+
 }
 
