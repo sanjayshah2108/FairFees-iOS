@@ -23,6 +23,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var mapListSegmentedControl: UISegmentedControl!
     var topRightButton: UIBarButtonItem!
     var topLeftButton: UIBarButtonItem!
+    var filterButton: UIBarButtonItem!
     var searchBar: UISearchBar!
     var filterView: UIView!
     
@@ -56,7 +57,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         setupMapListSegmentTitle()
         setupTopRightButton()
-        setupTopLeftButton()
+        setupTopLeftButtons()
+        
         setupHomeMapView()
         setupHomeTableView()
         setupSearchBar()
@@ -104,8 +106,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         for listing in DummyData.theDummyData.homesForSale{
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-            marker.title = listing.name
-            marker.snippet = listing.address
+            //marker.title = listing.name
+            //marker.snippet = listing.address
             marker.map = homeMapView
         }
         
@@ -152,9 +154,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.rightBarButtonItem = topRightButton
     }
     
-    func setupTopLeftButton(){
+    func setupTopLeftButtons(){
         topLeftButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-        self.navigationItem.leftBarButtonItem = topLeftButton
+        //self.navigationItem.leftBarButtonItem = topLeftButton
+        
+        filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(bringFilterViewtoFront))
+        
+        self.navigationItem.leftBarButtonItems = [topLeftButton, filterButton]
     }
     
     @objc func bringMapOrListToFront(){
@@ -185,7 +191,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // use a popover to display the results.
         // Set an explicit size as we don't want to use the entire nav bar.
         searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44.0))
-        navigationItem.rightBarButtonItem = nil
+//        navigationItem.rightBarButtonItem = nil
 //        navigationItem.leftBarButtonItem = nil
 //        navigationItem.titleView = searchController?.searchBar
         view.addSubview((searchController?.searchBar)!)
@@ -193,15 +199,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
         searchController?.searchBar.becomeFirstResponder()
         
-        searchBarHeight = 0
-        searchBar.translatesAutoresizingMaskIntoConstraints = true
-        searchBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        view.layoutIfNeeded()
-        setupConstraints()
+//        searchBarHeight = 30
+//        searchBar.translatesAutoresizingMaskIntoConstraints = true
+//        searchBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+//        view.layoutIfNeeded()
+//        setupConstraints()
         
         // When UISearchController presents the results view, present it in
         // this view controller, not one further up the chain.
-        definesPresentationContext = true
+        definesPresentationContext = false
         
         // Keep the navigation bar visible.
         searchController?.hidesNavigationBarDuringPresentation = true
@@ -220,11 +226,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.bringSubview(toFront: searchBar)
     }
     
-    func setupFilterView(){
+     func setupFilterView(){
         filterView = UIView(frame: CGRect(x: 0, y: navigationBarHeight + 40, width: view.frame.width, height: 200))
         filterView.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         filterView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterView)
+        view.bringSubview(toFront: filterView)
         
         priceFilterSlider = UISlider()
         priceFilterSlider.maximumValue = 10000000
@@ -259,6 +266,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         applyFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(applyFilterButton)
+    }
+    
+    @objc func bringFilterViewtoFront(){
+        view.bringSubview(toFront: filterView)
+        
+        swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+        swipeUpGesture.direction = .up
+        filterView.addGestureRecognizer(swipeUpGesture)
     }
     
     func setupConstraints(){

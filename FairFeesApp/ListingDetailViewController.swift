@@ -17,12 +17,14 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     weak var currentListing: HomeSale!
 
     var imageViewCarousel: UIImageView!
+    var imageViewPageControl: UIPageControl!
     var nextImageButton: UIButton!
     var previousImageButton: UIButton!
     var addressLabel: UILabel!
     var descriptionLabel: UILabel!
     //var mapView: MKMapView!
     var mapView: GMSMapView!
+    var directionsButton: UIButton!
     
     var featuresView: UIView!
     var priceLabel: UILabel!
@@ -95,6 +97,15 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         previousImageButton.layer.cornerRadius = 3
         previousImageButton.translatesAutoresizingMaskIntoConstraints = false
         imageViewCarousel.addSubview(previousImageButton)
+        
+        imageViewPageControl = UIPageControl()
+        imageViewPageControl.currentPage = 0
+        imageViewPageControl.numberOfPages = currentListing.photos.count
+        imageViewPageControl.pageIndicatorTintColor = UIColor.gray
+        imageViewPageControl.currentPageIndicatorTintColor = UIColor.white
+        imageViewPageControl.translatesAutoresizingMaskIntoConstraints = false
+        imageViewCarousel.addSubview(imageViewPageControl)
+        
     }
     
     func setupLabels(){
@@ -153,16 +164,25 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         let camera = GMSCameraPosition.camera(withLatitude: currentListing.coordinate.latitude, longitude: currentListing.coordinate.longitude, zoom: 15.0)
         mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        
+        mapView.isMyLocationEnabled = true
         mapView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView)
         
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: currentListing.coordinate.latitude, longitude: currentListing.coordinate.longitude)
-        //marker.title = currentListing.name
-        //marker.snippet = currentListing.address
         marker.map = mapView
         
+        directionsButton = UIButton()
+        directionsButton.addTarget(self, action: #selector(showDirections), for: .touchUpInside)
+        directionsButton.setTitle("D", for: .normal)
+        directionsButton.setTitle("C", for: .selected)
+        directionsButton.setTitleColor(UIColor.blue, for: .normal)
+        directionsButton.setTitleColor(UIColor.red, for: .selected)
+        directionsButton.backgroundColor = UIColor.white
+        directionsButton.layer.cornerRadius = 5
+        
+        directionsButton.translatesAutoresizingMaskIntoConstraints = false
+        mapView.addSubview(directionsButton)
         
 //        mapView = MKMapView()
 //        mapView.delegate = MapViewDelegate.theMapViewDelegate
@@ -195,6 +215,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: previousImageButton, attribute: .leading, relatedBy: .equal, toItem: imageViewCarousel, attribute: .leading, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: previousImageButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         NSLayoutConstraint(item: previousImageButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        
+        //imageViewPageControl
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .bottom, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: -5).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .centerX, relatedBy: .equal, toItem: imageViewCarousel, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         //addressLabel
         NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
@@ -240,21 +266,37 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0).isActive = true
+        
+        //directionsButton
+        NSLayoutConstraint(item: directionsButton, attribute: .top, relatedBy: .equal, toItem: mapView, attribute: .top, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: directionsButton, attribute: .trailing, relatedBy: .equal, toItem: mapView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: directionsButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: directionsButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
     }
     
     @objc func nextImage(){
         if (photoIndex == currentListing.photos.count-1){
-            photoIndex = -1
+            photoIndex = 0
+            imageViewPageControl.currentPage = 0
         }
-        photoIndex = photoIndex + 1
+        else {
+            photoIndex = photoIndex + 1
+            imageViewPageControl.currentPage += 1
+        }
+        
         imageViewCarousel.image = currentListing.photos[photoIndex]
     }
     
     @objc func previousImage(){
         if (photoIndex == 0){
-            photoIndex = currentListing.photos.count
+            photoIndex = currentListing.photos.count-1
+            imageViewPageControl.currentPage = currentListing.photos.count-1
         }
-        photoIndex = photoIndex - 1
+        else {
+            photoIndex = photoIndex - 1
+            imageViewPageControl.currentPage -= 1
+        }
+    
         imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
@@ -271,10 +313,34 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         }
     }
     
-    //fullcreen image methods
+    @objc func showDirections(){
+        
+        let destinationLocation = currentListing.location
+        let originLocation = LocationManager.theLocationManager.getLocation()
+        
+        DirectionsManager.theDirectionsManager.mapView = mapView
+        
+        if !(directionsButton.isSelected){
+            
+            directionsButton.isSelected = true
+
+            DirectionsManager.theDirectionsManager.getPolylineRoute(from: originLocation, to: destinationLocation!)
+        }
+        
+        else {
+            directionsButton.isSelected = false
+            
+            DirectionsManager.theDirectionsManager.removePath()
+            
+            let update = GMSCameraUpdate.setTarget(currentListing.coordinate, zoom: 15.0)
+            self.mapView.animate(with: update)
+        }
+        
+    }
+    
+    //fullcreen image methods -- NOT BEING USED AT THE MOMENT
     @objc func fullscreenImage() {
     
-        
         let newImageView = ImageScrollView()
         newImageView.translatesAutoresizingMaskIntoConstraints = true
         newImageView.frame = UIScreen.main.bounds
@@ -282,8 +348,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         newImageView.display(image: currentListing.photos[photoIndex])
         
-//        newImageView.contentMode = .scaleAspectFit
-//        newImageView.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
         
         newImageView.addGestureRecognizer(tap)
