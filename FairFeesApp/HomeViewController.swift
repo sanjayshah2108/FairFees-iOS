@@ -26,6 +26,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var filterButton: UIBarButtonItem!
     var searchBar: UISearchBar!
     var filterView: UIView!
+    var filterViewIsInFront: Bool!
+    var filterViewHeight: CGFloat!
     
     var priceFilterSlider: UISlider!
     var noOfBedroomsLabel: UILabel!
@@ -52,6 +54,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         searchBarHeight = 0
+        filterViewHeight = 120
         
         setupDummyData()
         
@@ -172,6 +175,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         default:
             print("SHOULDNT RUN")
         }
+        
+        if(filterViewIsInFront){
+            view.bringSubview(toFront: filterView)
+        }
     }
     
     @objc func newPostAction(){
@@ -182,6 +189,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func showSearchBar(){
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
+        
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
@@ -227,11 +235,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
      func setupFilterView(){
-        filterView = UIView(frame: CGRect(x: 0, y: navigationBarHeight + 40, width: view.frame.width, height: 200))
+        filterView = UIView()
         filterView.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         filterView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterView)
-        view.bringSubview(toFront: filterView)
+        //view.bringSubview(toFront: filterView)
         
         priceFilterSlider = UISlider()
         priceFilterSlider.maximumValue = 10000000
@@ -266,14 +274,44 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         applyFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(applyFilterButton)
+        
+        filterViewIsInFront = false
     }
     
     @objc func bringFilterViewtoFront(){
-        view.bringSubview(toFront: filterView)
         
-        swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
-        swipeUpGesture.direction = .up
-        filterView.addGestureRecognizer(swipeUpGesture)
+        if(!filterViewIsInFront){
+            
+            UIView.animate(withDuration: 0, animations: {
+                
+    
+            }, completion: { (finished: Bool) in
+                self.filterView.frame.size.height = 120
+                self.filterView.isHidden = false
+            })
+            
+            view.bringSubview(toFront: filterView)
+            filterViewIsInFront = true
+            view.layoutIfNeeded()
+            
+            swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+            swipeUpGesture.direction = .up
+            filterView.addGestureRecognizer(swipeUpGesture)
+            }
+        
+        else {
+            UIView.animate(withDuration: 0, animations: {
+                
+                
+            }, completion: { (finished: Bool) in
+                self.filterView.frame.size.height = 0
+                self.filterView.isHidden = true
+            })
+            
+            filterViewIsInFront = false
+            view.layoutIfNeeded()
+            
+        }
     }
     
     func setupConstraints(){
@@ -299,7 +337,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //filterView
         NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: filterView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 120).isActive = true
+        NSLayoutConstraint(item: filterView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: filterViewHeight).isActive = true
         NSLayoutConstraint(item: filterView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: filterView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         
@@ -371,8 +409,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func handleSwipeGestures(swipeGesture: UISwipeGestureRecognizer){
         
         if(swipeGesture.direction == .up){
-            view.sendSubview(toBack: filterView)
+            //view.sendSubview(toBack: filterView)
             filterView.removeGestureRecognizer(swipeUpGesture)
+            self.bringFilterViewtoFront()
         }
     }
     
@@ -414,7 +453,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
         
-        // Handle the user's selection.
+        // Handle the user's selection in place search.
         func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
             print("Place name: \(place.name)")
             print("Place address: \(place.formattedAddress)")
@@ -440,6 +479,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
+        
+        let cameraUpdate = GMSCameraUpdate.setTarget(place.coordinate, zoom: 10.0)
+        
+        homeMapView.moveCamera(cameraUpdate)
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,

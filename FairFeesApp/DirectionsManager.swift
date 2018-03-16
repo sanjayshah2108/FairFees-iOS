@@ -17,21 +17,6 @@ class DirectionsManager: NSObject {
     var mapView: GMSMapView!
     var activePolylines: [GMSPolyline]!
     
-//    func topController(_ parent:UIViewController? = nil) -> UIViewController {
-//        if let vc = parent {
-//            if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
-//                return topController(selected)
-//            } else if let nav = vc as? UINavigationController, let top = nav.topViewController {
-//                return topController(top)
-//            } else if let presented = vc.presentedViewController {
-//                return topController(presented)
-//            } else {
-//                return vc
-//            }
-//        } else {
-//            return topController(UIApplication.shared.keyWindow!.rootViewController!)
-//        }
-//    }
     
     func getMidpoint(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         
@@ -92,10 +77,7 @@ class DirectionsManager: NSObject {
                             DispatchQueue.main.async {
                                 //self.activityIndicator.stopAnimating()
                                 
-                                //let bounds = GMSCoordinateBounds(coordinate: sourceCoordinate, coordinate: destinationCoordinate)
-                                //let update = GMSCameraUpdate.fit(bounds, with: UIEdgeInsetsMake(170, 30, 30, 30))
-                                //let update = GMSCameraUpdate.zoom(to: Float(distance/730))
-                                let update = GMSCameraUpdate.setTarget(midPointCoordinate, zoom: Float(pow(1,1/(distance/1000))))
+                                let update = GMSCameraUpdate.setTarget(midPointCoordinate, zoom: 10)
                                 self.mapView.animate(with: update)
                                 //self.mapView!.moveCamera(update)
                             }

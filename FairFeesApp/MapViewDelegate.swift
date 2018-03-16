@@ -130,7 +130,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
             }
         }
         
-        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 60))
+        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 250, height: 60))
         view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 6
         
