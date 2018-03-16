@@ -86,6 +86,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         nameTextField.layer.cornerRadius = 3
         nameTextField.placeholder = "Name"
         nameTextField.textAlignment = .center
+        nameTextField.font = UIFont(name: "Avenir-Light", size: 15)
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameTextField)
         
@@ -97,6 +98,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         priceTextField.layer.cornerRadius = 3
         priceTextField.placeholder = "Price"
         priceTextField.textAlignment = .center
+        priceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         priceTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(priceTextField)
         
@@ -108,6 +110,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sizeTextField.layer.cornerRadius = 3
         sizeTextField.placeholder = "Size (SF)"
         sizeTextField.textAlignment = .center
+        sizeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         sizeTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sizeTextField)
         
@@ -142,6 +145,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         descriptionTextField.text = "Description"
         descriptionTextField.textColor = UIColor.gray
         descriptionTextField.textAlignment = .center
+        descriptionTextField.font = UIFont(name: "Avenir-Light", size: 15)
         descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionTextField)
         
@@ -153,6 +157,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         cityTextField.layer.cornerRadius = 3
         cityTextField.placeholder = "City"
         cityTextField.textAlignment = .center
+        cityTextField.font = UIFont(name: "Avenir-Light", size: 15)
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cityTextField)
         
@@ -164,6 +169,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         countryTextField.layer.cornerRadius = 3
         countryTextField.placeholder = "Country"
         countryTextField.textAlignment = .center
+        countryTextField.font = UIFont(name: "Avenir-Light", size: 15)
         countryTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(countryTextField)
         
@@ -175,6 +181,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         provinceTextField.layer.cornerRadius = 3
         provinceTextField.placeholder = "Province"
         provinceTextField.textAlignment = .center
+        provinceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         provinceTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(provinceTextField)
         
@@ -186,6 +193,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         addressTextField.layer.cornerRadius = 3
         addressTextField.placeholder = "Address"
         addressTextField.textAlignment = .center
+        addressTextField.font = UIFont(name: "Avenir-Light", size: 15)
         addressTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addressTextField)
         
@@ -197,6 +205,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         zipcodeTextField.layer.cornerRadius = 3
         zipcodeTextField.placeholder = "Zipcode"
         zipcodeTextField.textAlignment = .center
+        zipcodeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         zipcodeTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(zipcodeTextField)
         
@@ -210,7 +219,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func setupBedroomStepper(){
         customBedroomStepper = UIView()
         customBedroomStepper.frame = CGRect.zero
-        customBedroomStepper.layer.borderColor = UIColor.blue.cgColor
+        customBedroomStepper.layer.borderColor = UIColor.gray.cgColor
         customBedroomStepper.layer.borderWidth = 1
         customBedroomStepper.layer.cornerRadius = 3
         customBedroomStepper.translatesAutoresizingMaskIntoConstraints = false
@@ -219,7 +228,12 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         bedroomMinusButton = UIButton()
         bedroomMinusButton.addTarget(self, action: #selector(reduceCount), for: .touchUpInside)
         bedroomMinusButton.setTitle("-", for: .normal)
-        bedroomMinusButton.backgroundColor = UIColor.blue
+        bedroomMinusButton.backgroundColor = UIColor.white
+        bedroomMinusButton.setTitleColor(UIColor.blue, for: .normal)
+        bedroomMinusButton.setTitleColor(UIColor.gray, for: .disabled)
+        bedroomMinusButton.isEnabled = false
+        bedroomMinusButton.layer.borderColor = UIColor.blue.cgColor
+        bedroomMinusButton.layer.borderWidth = 2
         bedroomMinusButton.layer.cornerRadius = 3
         bedroomMinusButton.translatesAutoresizingMaskIntoConstraints = false
         customBedroomStepper.addSubview(bedroomMinusButton)
@@ -236,7 +250,10 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         bedroomPlusButton = UIButton()
         bedroomPlusButton.addTarget(self, action: #selector(addCount), for: .touchUpInside)
         bedroomPlusButton.setTitle("+", for: .normal)
-        bedroomPlusButton.backgroundColor = UIColor.blue
+        bedroomPlusButton.backgroundColor = UIColor.white
+        bedroomPlusButton.setTitleColor(UIColor.blue, for: .normal)
+        bedroomPlusButton.layer.borderColor = UIColor.blue.cgColor
+        bedroomPlusButton.layer.borderWidth = 2
         bedroomPlusButton.layer.cornerRadius = 3
         bedroomPlusButton.translatesAutoresizingMaskIntoConstraints = false
         customBedroomStepper.addSubview(bedroomPlusButton)
@@ -245,7 +262,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func setupBathroomStepper(){
         customBathroomStepper = UIView()
         customBathroomStepper.frame = CGRect.zero
-        customBathroomStepper.layer.borderColor = UIColor.blue.cgColor
+        customBathroomStepper.layer.borderColor = UIColor.gray.cgColor
         customBathroomStepper.layer.borderWidth = 1
         customBathroomStepper.layer.cornerRadius = 5
         customBathroomStepper.translatesAutoresizingMaskIntoConstraints = false
@@ -253,8 +270,13 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         bathroomMinusButton = UIButton()
         bathroomMinusButton.addTarget(self, action: #selector(reduceCount), for: .touchUpInside)
-        bathroomMinusButton.backgroundColor = UIColor.blue
+        bathroomMinusButton.backgroundColor = UIColor.white
+        bathroomMinusButton.setTitleColor(UIColor.blue, for: .normal)
+        bathroomMinusButton.setTitleColor(UIColor.gray, for: .disabled)
+        bathroomMinusButton.isEnabled = false
         bathroomMinusButton.layer.cornerRadius = 3
+        bathroomMinusButton.layer.borderColor = UIColor.blue.cgColor
+        bathroomMinusButton.layer.borderWidth = 2
         bathroomMinusButton.setTitle("-", for: .normal)
         bathroomMinusButton.translatesAutoresizingMaskIntoConstraints = false
         customBathroomStepper.addSubview(bathroomMinusButton)
@@ -270,8 +292,11 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         bathroomPlusButton = UIButton()
         bathroomPlusButton.addTarget(self, action: #selector(addCount), for: .touchUpInside)
-        bathroomPlusButton.backgroundColor = UIColor.blue
+        bathroomPlusButton.backgroundColor = UIColor.white
+        bathroomPlusButton.setTitleColor(UIColor.blue, for: .normal)
         bathroomPlusButton.layer.cornerRadius = 3
+        bathroomPlusButton.layer.borderColor = UIColor.blue.cgColor
+        bathroomPlusButton.layer.borderWidth = 2
         bathroomPlusButton.setTitle("+", for: .normal)
         bathroomPlusButton.translatesAutoresizingMaskIntoConstraints = false
         customBathroomStepper.addSubview(bathroomPlusButton)
@@ -280,13 +305,15 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func setupLocationButton(){
         locationButton = UIButton()
         locationButton.setTitle("Pick Location", for: .normal)
+        locationButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 15)
+        locationButton.setTitleColor(UIColor.blue, for: .normal)
         locationButton.titleLabel?.textAlignment = .left
         //locationButton.addTarget(self, action: #selector(showMapForSelectingLocation), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(pickPlace), for: .touchUpInside)
-        locationButton.backgroundColor = UIColor.blue
+        locationButton.backgroundColor = UIColor.white
         locationButton.layer.cornerRadius = 4
         locationButton.layer.borderColor = UIColor.blue.cgColor
-        locationButton.layer.borderWidth = 3
+        locationButton.layer.borderWidth = 1
         locationButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(locationButton)
     }
@@ -303,6 +330,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func setupPhotosButton(){
         addPhotosButton = UIButton()
         addPhotosButton.setTitle("Add Photos", for: .normal)
+        addPhotosButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 15)
         addPhotosButton.titleLabel?.textAlignment = .center
         addPhotosButton.addTarget(self, action: #selector(addPhotos), for: .touchUpInside)
         addPhotosButton.backgroundColor = UIColor.blue
@@ -318,7 +346,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         photosArray = []
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize.init(width: 50, height: 50)
+        layout.itemSize = CGSize.init(width: 150, height: 150)
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 5.0
         photoCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
@@ -329,8 +357,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         photoCollectionView.backgroundColor = UIColor.white
         
         photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        photoCollectionView.layer.borderWidth = 2
-        photoCollectionView.layer.borderColor = UIProperties.sharedUIProperties.primaryBlackColor.cgColor
+        
     }
     
     func setupConstraints(){
@@ -342,20 +369,20 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //priceTextField
-        NSLayoutConstraint(item: priceTextField, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: priceTextField, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: priceTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: priceTextField, attribute: .trailing, relatedBy: .equal, toItem: sizeTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //sizeTextField
-        NSLayoutConstraint(item: sizeTextField, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: sizeTextField, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: sizeTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: sizeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: sizeTextField, attribute: .width, relatedBy: .equal, toItem: priceTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
         
         
         //bedroomsNumberStepper
-        NSLayoutConstraint(item: customBedroomStepper, attribute: .top, relatedBy: .equal, toItem: priceTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: customBedroomStepper, attribute: .top, relatedBy: .equal, toItem: priceTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: customBedroomStepper, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: customBedroomStepper, attribute: .trailing, relatedBy: .equal, toItem: customBathroomStepper, attribute: .leading , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: customBedroomStepper, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
@@ -377,7 +404,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         
         //bathroomsNumberStepper
-        NSLayoutConstraint(item: customBathroomStepper, attribute: .top, relatedBy: .equal, toItem: sizeTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: customBathroomStepper, attribute: .top, relatedBy: .equal, toItem: sizeTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: customBathroomStepper, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: customBathroomStepper, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: customBathroomStepper, attribute: .width, relatedBy: .equal, toItem: customBedroomStepper, attribute: .width, multiplier: 1, constant: 0).isActive = true
@@ -398,7 +425,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: bathroomPlusButton, attribute: .bottom, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
         //descriptionTextField
-        NSLayoutConstraint(item: descriptionTextField, attribute: .top, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: descriptionTextField, attribute: .top, relatedBy: .equal, toItem: customBathroomStepper, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
@@ -418,25 +445,25 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: addressTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //cityTextField
-        NSLayoutConstraint(item: cityTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: cityTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .trailing, relatedBy: .equal, toItem: provinceTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //provinceTextField
-        NSLayoutConstraint(item: provinceTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: provinceTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .width, relatedBy: .equal, toItem: cityTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
         
         //countryTextField
-        NSLayoutConstraint(item: countryTextField, attribute: .top, relatedBy: .equal, toItem: cityTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: countryTextField, attribute: .top, relatedBy: .equal, toItem: cityTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: countryTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: countryTextField, attribute: .trailing, relatedBy: .equal, toItem: zipcodeTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: countryTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //zipCodeTextField
-        NSLayoutConstraint(item: zipcodeTextField, attribute: .top, relatedBy: .equal, toItem: cityTextField, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: zipcodeTextField, attribute: .top, relatedBy: .equal, toItem: cityTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: zipcodeTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: zipcodeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: zipcodeTextField, attribute: .width, relatedBy: .equal, toItem: countryTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
@@ -445,17 +472,17 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //locationButton
         NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: locationButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
-         NSLayoutConstraint(item: locationButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+         NSLayoutConstraint(item: locationButton, attribute: .leading, relatedBy: .equal, toItem: addressInstructionLabel, attribute: .trailing , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: locationButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //addPhotosButton
-        NSLayoutConstraint(item: addPhotosButton, attribute: .top, relatedBy: .equal, toItem: zipcodeTextField, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: addPhotosButton, attribute: .top, relatedBy: .equal, toItem: zipcodeTextField, attribute: .bottom, multiplier: 1, constant: 14).isActive = true
         NSLayoutConstraint(item: addPhotosButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: addPhotosButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: addPhotosButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //photoCollectionView
-        NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: addPhotosButton, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: addPhotosButton, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -10).isActive = true
@@ -467,6 +494,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             bedroomNumber = bedroomNumber + 1
             bedroomNumberLabel.text = String(bedroomNumber)
             bedroomNumberLabel.textColor = UIColor.black
+            bedroomMinusButton.isEnabled = true
             
             
         }
@@ -474,6 +502,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             bathroomNumber = bathroomNumber + 1
             bathroomNumberLabel.text = String(bathroomNumber)
             bathroomNumberLabel.textColor = UIColor.black
+            bathroomMinusButton.isEnabled = true
         }
     }
     
@@ -484,6 +513,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 bedroomNumber = 0
                 bedroomNumberLabel.text = "Bedroom #"
                 bedroomNumberLabel.textColor = UIColor.gray
+                bedroomMinusButton.isEnabled = false
             }
             
             else {
@@ -498,6 +528,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 bathroomNumber = 0
                 bathroomNumberLabel.text = "Bathroom #"
                 bathroomNumberLabel.textColor = UIColor.gray
+                bathroomMinusButton.isEnabled = false
             }
             else {
                 bathroomNumber = bathroomNumber - 1
@@ -593,7 +624,9 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
 
         let viewAction = UIAlertAction(title: "View Photo", style: UIAlertActionStyle.default, handler:{ (action) in
-                self.fullscreenImage(image: self.photosArray[indexPath.item])
+            
+            let imageScrollView = ImageScrollView()
+            imageScrollView.display(image: self.photosArray[indexPath.item])
                 
             })
             

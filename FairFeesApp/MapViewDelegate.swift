@@ -119,22 +119,58 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
 //    }
     
     /* set a custom Info Window */
-//    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
-//        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 70))
-//        view.backgroundColor = UIColor.white
-//        view.layer.cornerRadius = 6
-//
-//        let lbl1 = UILabel(frame: CGRect.init(x: 8, y: 8, width: view.frame.size.width - 16, height: 15))
-//        lbl1.text = "Hi there!"
-//        view.addSubview(lbl1)
-//
-//        let lbl2 = UILabel(frame: CGRect.init(x: lbl1.frame.origin.x, y: lbl1.frame.origin.y + lbl1.frame.size.height + 3, width: view.frame.size.width - 16, height: 15))
-//        lbl2.text = "I am a custom info window."
-//        lbl2.font = UIFont.systemFont(ofSize: 14, weight: .light)
-//        view.addSubview(lbl2)
-//
-//        return view
-//    }
+    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
+        
+        var listingToPresent: Listing!
+        
+        //NOT THE BEST WAY TO FIND THE LISTING
+        for listing in DummyData.theDummyData.homesForSale {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                listingToPresent = listing
+            }
+        }
+        
+        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 250, height: 60))
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 6
+        
+        let imageView =  UIImageView(frame: CGRect(x: 2, y: 2, width: view.frame.size.width/3, height: view.frame.size.height))
+        imageView.image = listingToPresent.photos[0]
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 6
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+
+        let nameLabel = UILabel(frame: CGRect(x: 8, y: 8, width: view.frame.size.width - 16, height: 15))
+        nameLabel.text = listingToPresent.name
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nameLabel)
+
+        let addressLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
+        addressLabel.text = listingToPresent.address
+        addressLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        addressLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addressLabel)
+        
+        NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 65).isActive = true
+        
+        NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 8).isActive = true
+        //NSLayoutConstraint(item: nameLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -5).isActive = true
+        NSLayoutConstraint(item: nameLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: nameLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+        
+        NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
+        //NSLayoutConstraint(item: addressLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -8).isActive = true
+        NSLayoutConstraint(item: addressLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: addressLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+        
+
+        return view
+    }
     
     //MARK - GMSMarker Dragging
     func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
