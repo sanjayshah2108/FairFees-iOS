@@ -93,6 +93,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         priceTextField = UITextField()
         priceTextField.delegate = self
         priceTextField.frame = CGRect.zero
+        priceTextField.keyboardType = .numberPad
         priceTextField.layer.borderWidth = 1
         priceTextField.layer.borderColor = UIColor.gray.cgColor
         priceTextField.layer.cornerRadius = 3
@@ -105,6 +106,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sizeTextField = UITextField()
         sizeTextField.delegate = self
         sizeTextField.frame = CGRect.zero
+        sizeTextField.keyboardType = .numberPad
         sizeTextField.layer.borderWidth = 1
         sizeTextField.layer.borderColor = UIColor.gray.cgColor
         sizeTextField.layer.cornerRadius = 3
@@ -143,7 +145,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         descriptionTextField.layer.borderColor = UIColor.gray.cgColor
         descriptionTextField.layer.cornerRadius = 3
         descriptionTextField.text = "Description"
-        descriptionTextField.textColor = UIColor.gray
+        descriptionTextField.textColor = UIColor.lightGray
         descriptionTextField.textAlignment = .center
         descriptionTextField.font = UIFont(name: "Avenir-Light", size: 15)
         descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -308,7 +310,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         locationButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 15)
         locationButton.setTitleColor(UIColor.blue, for: .normal)
         locationButton.titleLabel?.textAlignment = .left
-        //locationButton.addTarget(self, action: #selector(showMapForSelectingLocation), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(pickPlace), for: .touchUpInside)
         locationButton.backgroundColor = UIColor.white
         locationButton.layer.cornerRadius = 4
@@ -538,6 +539,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    //NOT BEING USED ANYMORE
     @objc func showMapForSelectingLocation(){
 
         let postMapViewController = PostMapViewController()
@@ -549,12 +551,90 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     @objc func submitPost(){
+        if (validateFields()){
         
         let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, poster: DummyData.theDummyData.users[0], photos: photosArray, size: Int(sizeTextField.text!)!, bedroomNumber: Int(bedroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, owner: DummyData.theDummyData.users[0], availabilityDate: Date())
         
         DummyData.theDummyData.addListing(listing: post)
         
         self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    func validateFields() -> Bool{
+        
+        guard (nameTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a title", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (priceTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a price", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (sizeTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a size", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (bedroomNumber > 0) else {
+            let alert = UIAlertController(title: "Whoops", message: "Number of bedrooms must be at least 1", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (bathroomNumber > 0) else {
+            let alert = UIAlertController(title: "Whoops", message: "Number of bathrooms must be at least 1", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        
+        guard (descriptionTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a description", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        
+        guard (addressTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add an address", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (cityTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a city", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (provinceTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a province", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (zipcodeTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a zipcode", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (countryTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a country", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        
+        return true
+        
+        
     }
     
     //imagePicker delegate methods
@@ -780,8 +860,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         nameTextField.resignFirstResponder()
         priceTextField.resignFirstResponder()
         sizeTextField.resignFirstResponder()
-        //bedroomNumberTextField.resignFirstResponder()
-        //bathroomNumberTextField.resignFirstResponder()
         descriptionTextField.resignFirstResponder()
         addressTextField.resignFirstResponder()
         cityTextField.resignFirstResponder()

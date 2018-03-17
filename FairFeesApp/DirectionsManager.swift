@@ -75,16 +75,15 @@ class DirectionsManager: NSObject {
                             self.showPath(polyStr: points!)
                             
                             DispatchQueue.main.async {
-                                //self.activityIndicator.stopAnimating()
+                                //topController.activityIndicator.stopAnimating()
                                 
-                                let update = GMSCameraUpdate.setTarget(midPointCoordinate, zoom: 10)
+                                let update = GMSCameraUpdate.setTarget(midPointCoordinate, zoom: 11)
                                 self.mapView.animate(with: update)
-                                //self.mapView!.moveCamera(update)
                             }
                         }
                         else {
                             DispatchQueue.main.async {
-                                //self.activityIndicator.stopAnimating()
+                                //topController.activityIndicator.stopAnimating()
                             }
                         }
                     }
@@ -92,7 +91,7 @@ class DirectionsManager: NSObject {
                 catch {
                     print("error in JSONSerialization")
                     DispatchQueue.main.async {
-                        //self.activityIndicator.stopAnimating()
+                        //topController.activityIndicator.stopAnimating()
                     }
                 }
             }
@@ -106,9 +105,10 @@ class DirectionsManager: NSObject {
         
         let path = GMSPath(fromEncodedPath: polyStr)
         let polyline = GMSPolyline(path: path)
-        polyline.strokeWidth = 3.0
-        polyline.strokeColor = UIColor.red
-        polyline.map = mapView // Your map view
+        polyline.strokeWidth = 1.0
+
+        polyline.strokeColor = UIColor.blue
+        polyline.map = mapView
         
         activePolylines.append(polyline)
     }
@@ -117,7 +117,6 @@ class DirectionsManager: NSObject {
         
         activePolylines[0].map = nil
         activePolylines.removeAll()
-        
     }
 
 }

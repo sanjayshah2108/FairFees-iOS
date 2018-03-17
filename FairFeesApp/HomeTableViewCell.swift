@@ -20,6 +20,10 @@ class HomeTableViewCell: UITableViewCell {
     
     @IBOutlet weak var sizeLabel: UILabel!
     
+    @IBOutlet weak var bedroomsLabel: UILabel!
+    
+    @IBOutlet weak var bathroomsLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

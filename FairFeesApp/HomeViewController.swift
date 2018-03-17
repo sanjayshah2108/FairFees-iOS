@@ -32,6 +32,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var priceFilterSlider: UISlider!
     var noOfBedroomsLabel: UILabel!
     var noOfBedroomsSegmentedControl: UISegmentedControl!
+    var noOfBathroomsLabel: UILabel!
+    var noOfBathroomsSegmentedControl: UISegmentedControl!
     var applyFilterButton: UIButton!
     
     var navigationBarHeight: CGFloat!
@@ -39,7 +41,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var tapGesture: UITapGestureRecognizer!
     var swipeUpGesture: UISwipeGestureRecognizer!
-    
     
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
@@ -54,9 +55,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         searchBarHeight = 0
-        filterViewHeight = 120
+        filterViewHeight = 160
         
         setupDummyData()
+
         
         setupMapListSegmentTitle()
         setupTopRightButton()
@@ -76,11 +78,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        //MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+        self.navigationController?.navigationBar.tintColor = UIColor(red: 0.0, green: 122/255, blue: 1.0, alpha: 1)
+        //self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        //self.navigationController?.navigationBar.shadowImage = nil
         
+        //self.navigationController?.navigationBar.isTranslucent = false
         homeTableView.reloadData()
-        //homeMapView.removeAnnotations(homeMapView.annotations)
-        //homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     override func didReceiveMemoryWarning() {
@@ -109,14 +112,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         for listing in DummyData.theDummyData.homesForSale{
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-            //marker.title = listing.name
-            //marker.snippet = listing.address
             marker.map = homeMapView
         }
         
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
+        ///Apple Maps stuff
 //        homeMapView = MKMapView()
 //        homeMapView.frame = CGRect.zero
 //        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
@@ -161,7 +163,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         topLeftButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
         //self.navigationItem.leftBarButtonItem = topLeftButton
         
-        filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(bringFilterViewtoFront))
+        filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showHideFilterView))
         
         self.navigationItem.leftBarButtonItems = [topLeftButton, filterButton]
     }
@@ -194,35 +196,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
         searchController?.searchBar.delegate = self
-        
-        // Add the search bar to the right of the nav bar,
-        // use a popover to display the results.
-        // Set an explicit size as we don't want to use the entire nav bar.
         searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44.0))
-//        navigationItem.rightBarButtonItem = nil
-//        navigationItem.leftBarButtonItem = nil
-//        navigationItem.titleView = searchController?.searchBar
         view.addSubview((searchController?.searchBar)!)
         searchController?.searchBar.setShowsCancelButton(true, animated: true)
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
+        searchController?.searchBar.isHidden = false
         searchController?.searchBar.becomeFirstResponder()
-        
-//        searchBarHeight = 30
-//        searchBar.translatesAutoresizingMaskIntoConstraints = true
-//        searchBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-//        view.layoutIfNeeded()
-//        setupConstraints()
-        
-        // When UISearchController presents the results view, present it in
-        // this view controller, not one further up the chain.
+    
         definesPresentationContext = false
         
         // Keep the navigation bar visible.
         searchController?.hidesNavigationBarDuringPresentation = true
         searchController?.modalPresentationStyle = .popover
-        
     }
     
+    //NOT BEING USED
     func setupSearchBar(){
         
         searchBar = UISearchBar()
@@ -231,6 +219,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchBar.delegate = self
         searchBar.placeholder = "Search Address, Zip or City"
         view.addSubview(searchBar)
+        searchBar.isHidden = true
         view.bringSubview(toFront: searchBar)
     }
     
@@ -239,7 +228,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterView.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         filterView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterView)
-        //view.bringSubview(toFront: filterView)
         
         priceFilterSlider = UISlider()
         priceFilterSlider.maximumValue = 10000000
@@ -263,6 +251,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         noOfBedroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(noOfBedroomsSegmentedControl)
         
+        noOfBathroomsLabel = UILabel()
+        noOfBathroomsLabel.text = "No. of Bathrooms"
+        noOfBathroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
+        noOfBathroomsLabel.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(noOfBathroomsLabel)
+        
+        noOfBathroomsSegmentedControl = UISegmentedControl()
+        noOfBathroomsSegmentedControl.frame = CGRect.zero
+        noOfBathroomsSegmentedControl.insertSegment(withTitle: "1+", at: 0, animated: false)
+        noOfBathroomsSegmentedControl.insertSegment(withTitle: "2+", at: 1, animated: false)
+        noOfBathroomsSegmentedControl.insertSegment(withTitle: "3+", at: 2, animated: false)
+        noOfBathroomsSegmentedControl.insertSegment(withTitle: "4+", at: 3, animated: false)
+        noOfBathroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(noOfBathroomsSegmentedControl)
+        
         applyFilterButton = UIButton()
         applyFilterButton.frame = CGRect.zero
         applyFilterButton.addTarget(self, action: #selector(applyFilters), for: .touchUpInside)
@@ -278,7 +281,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterViewIsInFront = false
     }
     
-    @objc func bringFilterViewtoFront(){
+    @objc func showHideFilterView(){
         
         if(!filterViewIsInFront){
             
@@ -286,7 +289,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
     
             }, completion: { (finished: Bool) in
-                self.filterView.frame.size.height = 120
+                self.filterView.frame.size.height = self.filterViewHeight
                 self.filterView.isHidden = false
             })
             
@@ -299,7 +302,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             filterView.addGestureRecognizer(swipeUpGesture)
             }
         
-        else {
+        else if (filterViewIsInFront){
             UIView.animate(withDuration: 0, animations: {
                 
                 
@@ -310,7 +313,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             filterViewIsInFront = false
             view.layoutIfNeeded()
-            
         }
     }
     
@@ -321,7 +323,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
-        
         
         //homeTableView
         NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
@@ -342,21 +343,34 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: filterView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         
         //priceFilterSlider
-        NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: 0).isActive = true
-        
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -15).isActive = true
         
         //bedroomNumberLabel
-        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        //NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
         
         //bedroomNumberSegment
         NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: noOfBathroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        
+        //bathroomNumberLabel
+        //NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBathroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
+        
+        //bathroomNumberSegment
+        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
         //applyFilterButton
         NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
@@ -387,6 +401,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.sizeLabel.text = "\(listing.size!) SF"
         cell.priceLabel.text = "$\(listing.price!)"
         cell.addressLabel.text = listing.address
+        cell.bedroomsLabel.text = "\(listing.bedroomNumber!) br"
+        cell.bathroomsLabel.text = "\(listing.bathroomNumber!) ba"
         
         return cell
     }
@@ -398,27 +414,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationController?.pushViewController(listingViewController, animated: true)
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    
+    //gestureHandlers
     @objc func handleSwipeGestures(swipeGesture: UISwipeGestureRecognizer){
         
         if(swipeGesture.direction == .up){
-            //view.sendSubview(toBack: filterView)
             filterView.removeGestureRecognizer(swipeUpGesture)
-            self.bringFilterViewtoFront()
+            self.showHideFilterView()
         }
     }
     
+    //searchBarDelegateMethods
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-        //view.bringSubview(toFront: filterView)
-        //self.navigationController?.navigationBar.isHidden = true
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
         self.view.addGestureRecognizer(tapGesture)
@@ -438,6 +450,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         self.view.removeGestureRecognizer(tapGesture)
         //searchBarHeight = 40
+        searchController?.searchBar.isHidden = true
         self.searchBar.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
         self.navigationItem.rightBarButtonItem = topRightButton
@@ -453,33 +466,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
         
-        // Handle the user's selection in place search.
-        func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-            print("Place name: \(place.name)")
-            print("Place address: \(place.formattedAddress)")
-            print("Place attributions: \(place.attributions)")
-            dismiss(animated: true, completion: nil)
-        }
+    // Handle the user's selection in place search.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         
-        func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-            // TODO: handle the error.
-            print("Error: ", error.localizedDescription)
-        }
+        dismiss(animated: true, completion: nil)
+    }
         
-        // User canceled the operation.
-        func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-            dismiss(animated: true, completion: nil)
-        }
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
+            
+    }
+
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
     
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
-        // Do something with the selected place.
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
-        
         let cameraUpdate = GMSCameraUpdate.setTarget(place.coordinate, zoom: 10.0)
         
         homeMapView.moveCamera(cameraUpdate)
