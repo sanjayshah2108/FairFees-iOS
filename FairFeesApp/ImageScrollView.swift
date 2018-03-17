@@ -10,6 +10,8 @@ import UIKit
 
 open class ImageScrollView: UIScrollView {
     
+    var presentingVC: UIViewController!
+    
     static let kZoomInFactorFromMinWhenDoubleTap: CGFloat = 2
     
     public var landscapeAspectFill = true; // If TRUE, the ImageScrollView will have an 'aspect fill' behavior when in landscape orientation. Otherwise, it will be aspect fit, so that the image isn't zoomed in to fit the width of the display.
@@ -66,6 +68,7 @@ open class ImageScrollView: UIScrollView {
             return
         }
         
+        
         var frameToCenter = unwrappedZoomView.frame
         
         // center horizontally
@@ -87,6 +90,7 @@ open class ImageScrollView: UIScrollView {
         unwrappedZoomView.frame = frameToCenter
     }
     
+
     fileprivate func prepareToResize() {
         let boundsCenter = CGPoint(x: bounds.midX, y: bounds.midY)
         pointToCenterAfterResize = convert(boundsCenter, to: zoomView)
@@ -225,9 +229,43 @@ open class ImageScrollView: UIScrollView {
     @objc func changeOrientationNotification() {
         configureImageForSize(imageSize)
     }
+    
+
 }
 
+
 extension ImageScrollView: UIScrollViewDelegate{
+    
+    open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+      
+//        // go back if we are fully zoomed out
+//        if(zoomScale <= 1) {
+//        
+//            //if its a collapse pinch
+//            if(gestureRecognizer.isKind(of: UIPinchGestureRecognizer.self)){
+//                let pinch = gestureRecognizer as! UIPinchGestureRecognizer
+//                if (pinch.scale < 0.5){
+//                    self.removeFromSuperview()
+//                    presentingVC.navigationController?.isNavigationBarHidden = false
+//                }
+//            }
+//                
+//            //if its a swipe down
+//            else if (gestureRecognizer.isKind(of: UISwipeGestureRecognizer.self)){
+//                let swipe = gestureRecognizer as! UISwipeGestureRecognizer
+//
+//                if (swipe.direction == .down){
+//                    self.removeFromSuperview()
+//                    
+//                    presentingVC.navigationController?.isNavigationBarHidden = false
+//                    
+//                }
+//            }
+//        }
+        
+        return true
+    }
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return zoomView

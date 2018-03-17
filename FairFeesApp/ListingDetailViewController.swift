@@ -41,16 +41,26 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.clipsToBounds = true
         view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
-    
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        //self.navigationItem.titleView?.tintColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         self.title = currentListing.name
+        
         setupImageView()
         setupLabels()
         setupMapView()
         
         setupConstraints()
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -62,10 +72,16 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         imageViewCarousel = UIImageView()
         imageViewCarousel.isUserInteractionEnabled = true
-        imageViewCarousel.backgroundColor = UIColor.blue
         photoIndex = 0
         imageViewCarousel.image = currentListing.photos[photoIndex]
         imageViewCarousel.contentMode = .scaleAspectFill
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
+        gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
+        gradient.locations = [0.0, 0.7]
+        imageViewCarousel.layer.addSublayer(gradient)
+        
         imageViewCarousel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageViewCarousel)
     
@@ -75,12 +91,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         imageViewCarouselRightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughImages))
         imageViewCarouselRightSwipeGesture.direction = .right
         imageViewCarousel.addGestureRecognizer(imageViewCarouselRightSwipeGesture)
-        
-//        imageViewCarouselExpandPinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(fullscreenImage))
-//        imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandPinchGesture)
-//        
         imageViewCarouselExpandTapGesture = UITapGestureRecognizer(target: self, action: #selector(fullscreenImage))
         imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandTapGesture)
+        imageViewCarouselExpandPinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchImageToFullscreen))
+        
+        imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandPinchGesture)
+        
         
         nextImageButton = UIButton(type: .custom)
         nextImageButton.setTitle("Next", for: .normal)
@@ -154,9 +170,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         sizeLabel.text = "\(currentListing.size!) SF"
         bedroomLabel.text = "\(currentListing.bedroomNumber!) Bed"
         bathroomLabel.text = "\(currentListing.bathroomNumber!) Bath"
-        
-        
     }
+
     func setupMapView(){
         
         mapView = GMSMapView()
@@ -200,7 +215,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     func setupConstraints(){
         
         //imageViewCarousel
-        NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: navigationBarHeight).isActive = true
+        NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -navigationBarHeight).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
@@ -217,10 +232,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: previousImageButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         //imageViewPageControl
-        NSLayoutConstraint(item: imageViewPageControl, attribute: .bottom, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: -5).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .bottom, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewPageControl, attribute: .centerX, relatedBy: .equal, toItem: imageViewCarousel, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewPageControl, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: imageViewPageControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //addressLabel
         NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
@@ -315,21 +330,20 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func showDirections(){
         
+        print("tapped directions")
+        
         let destinationLocation = currentListing.location
         let originLocation = LocationManager.theLocationManager.getLocation()
         
         DirectionsManager.theDirectionsManager.mapView = mapView
         
         if !(directionsButton.isSelected){
-            
             directionsButton.isSelected = true
-
             DirectionsManager.theDirectionsManager.getPolylineRoute(from: originLocation, to: destinationLocation!)
         }
         
         else {
             directionsButton.isSelected = false
-            
             DirectionsManager.theDirectionsManager.removePath()
             
             let update = GMSCameraUpdate.setTarget(currentListing.coordinate, zoom: 15.0)
@@ -338,24 +352,40 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
     }
     
-    //fullcreen image methods -- NOT BEING USED AT THE MOMENT
-    @objc func fullscreenImage() {
+    @objc func pinchImageToFullscreen(sender: UIPinchGestureRecognizer){
+        
+        if (sender.scale > 1){
+            fullscreenImage()
+        }
+    }
     
+    
+    //fullcreen image methods
+    @objc func fullscreenImage() {
+        
         let newImageView = ImageScrollView()
         newImageView.translatesAutoresizingMaskIntoConstraints = true
         newImageView.frame = UIScreen.main.bounds
         newImageView.backgroundColor = .black
         
+        newImageView.presentingVC = self
+        
         newImageView.display(image: currentListing.photos[photoIndex])
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        
+
         newImageView.addGestureRecognizer(tap)
+        
+ //       let collapsePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        
+        
+        
         self.view.addSubview(newImageView)
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+    @objc func dismissFullscreenImage(_ sender: UIPinchGestureRecognizer) {
+        
         self.navigationController?.isNavigationBarHidden = false
         sender.view?.removeFromSuperview()
     }

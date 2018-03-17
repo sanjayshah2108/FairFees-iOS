@@ -121,7 +121,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
     /* set a custom Info Window */
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
         
-        var listingToPresent: Listing!
+        var listingToPresent: HomeSale!
         
         //NOT THE BEST WAY TO FIND THE LISTING
         for listing in DummyData.theDummyData.homesForSale {
@@ -153,20 +153,53 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         addressLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addressLabel)
         
+//        let bedroomsLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
+//        bedroomsLabel.text = String(listingToPresent.bedroomNumber!) + "br"
+//        bedroomsLabel.font = UIFont.systemFont(ofSize: 10, weight: .light)
+//        bedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(bedroomsLabel)
+//        
+//        let bathroomsLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
+//        bathroomsLabel.text = String(listingToPresent.bathroomNumber!) + "ba"
+//        bathroomsLabel.font = UIFont.systemFont(ofSize: 10, weight: .light)
+//        bathroomsLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(bathroomsLabel)
+//        
+//        let sizeLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
+//        sizeLabel.text = String(listingToPresent.bathroomNumber!) + "SF"
+//        sizeLabel.font = UIFont.systemFont(ofSize: 10, weight: .light)
+//        sizeLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(sizeLabel)
+        
+        //imageView
         NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 65).isActive = true
         
+        //nameLabel
         NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 8).isActive = true
         //NSLayoutConstraint(item: nameLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -5).isActive = true
         NSLayoutConstraint(item: nameLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: nameLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
         
+        //addressLabel
         NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
         //NSLayoutConstraint(item: addressLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -8).isActive = true
         NSLayoutConstraint(item: addressLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: addressLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+        
+//        //bedroomsLabel
+//        NSLayoutConstraint(item: bedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
+//        NSLayoutConstraint(item: bedroomsLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+//
+//        //bathroomsLabel
+//        NSLayoutConstraint(item: bathroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
+//        NSLayoutConstraint(item: bathroomsLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+//
+//        //sizeLabel
+//        NSLayoutConstraint(item: sizeLabel, attribute: .bottom, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
+//        NSLayoutConstraint(item: sizeLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
         
 
         return view
