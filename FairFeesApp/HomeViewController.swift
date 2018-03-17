@@ -200,6 +200,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.addSubview((searchController?.searchBar)!)
         searchController?.searchBar.setShowsCancelButton(true, animated: true)
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
+        searchController?.searchBar.isHidden = false
         searchController?.searchBar.becomeFirstResponder()
     
         definesPresentationContext = false
@@ -449,6 +450,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         self.view.removeGestureRecognizer(tapGesture)
         //searchBarHeight = 40
+        searchController?.searchBar.isHidden = true
         self.searchBar.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
         self.navigationItem.rightBarButtonItem = topRightButton
