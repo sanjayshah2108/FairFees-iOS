@@ -1,0 +1,6 @@
+framework module Pods_FairFeesApp {
+  umbrella header "Pods-FairFeesApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

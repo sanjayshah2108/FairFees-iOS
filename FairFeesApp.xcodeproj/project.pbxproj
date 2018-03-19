@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		045A9D98132F595F8D0AB21F /* Pods_FairFeesAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D54D2B7670EE1DE3674DF20F /* Pods_FairFeesAppUITests.framework */; };
 		292304F32054D844000ECFCF /* 00a0a_bHlb7rvOfrt_1200x900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 292304E52054D832000ECFCF /* 00a0a_bHlb7rvOfrt_1200x900.jpg */; };
 		292304F42054D844000ECFCF /* 00i0i_i58WRgAT0E5_1200x900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 292304E62054D832000ECFCF /* 00i0i_i58WRgAT0E5_1200x900.jpg */; };
 		292304F52054D844000ECFCF /* 00l0l_38ixPXcxZhW_1200x900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 292304E82054D833000ECFCF /* 00l0l_38ixPXcxZhW_1200x900.jpg */; };
@@ -94,6 +95,9 @@
 		CE59DAEF205AF391006FD39D /* DirectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59DAEE205AF38D006FD39D /* DirectionsManager.swift */; };
 		CE6EFD0D205C5B20009AFF6A /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD0C205C5B20009AFF6A /* FilterView.swift */; };
 		CE6EFD0F205C5D8A009AFF6A /* FilterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD0E205C5D8A009AFF6A /* FilterView.xib */; };
+		CE6EFD11206050D0009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */; };
+		CE6EFD12206050D1009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */; };
+		CE6EFD13206050D1009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DF7204DD32D00548D5F /* Main.storyboard */; };
@@ -105,6 +109,8 @@
 		CE7F7E28204DE78500548D5F /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E27204DE78500548D5F /* Listing.swift */; };
 		CE7F7E2A204DE7B700548D5F /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E29204DE7B700548D5F /* Building.swift */; };
 		CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7E2B204DE8C100548D5F /* Rental.swift */; };
+		D32A21875248C9799A303988 /* Pods_FairFeesAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FB8A529188D490A800E233 /* Pods_FairFeesAppTests.framework */; };
+		DE459E064610D0977ABD5CFB /* Pods_FairFeesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6121D021F4B3A54D6AF1A32A /* Pods_FairFeesApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +131,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0DFA2F96CCA1169634D2D0FE /* Pods-FairFeesApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp.debug.xcconfig"; sourceTree = "<group>"; };
 		292304D12054D81E000ECFCF /* 00P0P_buoO9jmpb6c_1200x900.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 00P0P_buoO9jmpb6c_1200x900.jpg; sourceTree = "<group>"; };
 		292304D22054D81F000ECFCF /* 00707_a4xJkZU2wIn_1200x900.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 00707_a4xJkZU2wIn_1200x900.jpg; sourceTree = "<group>"; };
 		292304D32054D81F000ECFCF /* 00l0l_a0QTvRBkXQy_1200x900.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 00l0l_a0QTvRBkXQy_1200x900.jpg; sourceTree = "<group>"; };
@@ -159,6 +166,13 @@
 		292304F02054D839000ECFCF /* 00G0G_iZpKq2kJbr8_1200x900.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 00G0G_iZpKq2kJbr8_1200x900.jpg; sourceTree = "<group>"; };
 		292304F12054D839000ECFCF /* 01111_9LMDIdNYAfP_1200x900.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 01111_9LMDIdNYAfP_1200x900.jpg; sourceTree = "<group>"; };
 		292304F22054D839000ECFCF /* 01010_bQE4g1cNSyD_1200x900.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 01010_bQE4g1cNSyD_1200x900.jpg; sourceTree = "<group>"; };
+		6121D021F4B3A54D6AF1A32A /* Pods_FairFeesApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FairFeesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70D860E49D3D53E64D9B5E64 /* Pods-FairFeesAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesAppTests/Pods-FairFeesAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		83708AB4367B80EBBA3E1144 /* Pods-FairFeesAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesAppTests/Pods-FairFeesAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		87FB8A529188D490A800E233 /* Pods_FairFeesAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FairFeesAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		960C162E6E4F2CBCE53EB28D /* Pods-FairFeesAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesAppUITests/Pods-FairFeesAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		AAC4FB017996BA05F30FFF74 /* Pods-FairFeesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp.release.xcconfig"; sourceTree = "<group>"; };
+		BA655933DA70A492664E8083 /* Pods-FairFeesAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesAppUITests/Pods-FairFeesAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CE514849204F70170021DB67 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		CE51484B204F74540021DB67 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		CE51484D204F778F0021DB67 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
@@ -199,6 +213,7 @@
 		CE59DAEE205AF38D006FD39D /* DirectionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsManager.swift; sourceTree = "<group>"; };
 		CE6EFD0C205C5B20009AFF6A /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		CE6EFD0E205C5D8A009AFF6A /* FilterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FilterView.xib; path = FairFeesApp/FilterView.xib; sourceTree = "<group>"; };
+		CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -216,6 +231,7 @@
 		CE7F7E27204DE78500548D5F /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		CE7F7E29204DE7B700548D5F /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		CE7F7E2B204DE8C100548D5F /* Rental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rental.swift; sourceTree = "<group>"; };
+		D54D2B7670EE1DE3674DF20F /* Pods_FairFeesAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FairFeesAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +258,7 @@
 				CE51486A205715FC0021DB67 /* GoogleMaps.framework in Frameworks */,
 				CE51486E2057161F0021DB67 /* GoogleMapsCore.framework in Frameworks */,
 				CE514866205715D60021DB67 /* GoogleMapsBase.framework in Frameworks */,
+				DE459E064610D0977ABD5CFB /* Pods_FairFeesApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +271,7 @@
 				CE514867205715D80021DB67 /* GoogleMapsBase.framework in Frameworks */,
 				CE514898205882A20021DB67 /* GooglePlacePicker.framework in Frameworks */,
 				CE51489C205882CD0021DB67 /* GooglePlaces.framework in Frameworks */,
+				D32A21875248C9799A303988 /* Pods_FairFeesAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +284,7 @@
 				CE514868205715D90021DB67 /* GoogleMapsBase.framework in Frameworks */,
 				CE514899205882A20021DB67 /* GooglePlacePicker.framework in Frameworks */,
 				CE51489D205882CD0021DB67 /* GooglePlaces.framework in Frameworks */,
+				045A9D98132F595F8D0AB21F /* Pods_FairFeesAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +332,19 @@
 			path = "listing images";
 			sourceTree = "<group>";
 		};
+		76B51FDE65852BEA0AFC989C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0DFA2F96CCA1169634D2D0FE /* Pods-FairFeesApp.debug.xcconfig */,
+				AAC4FB017996BA05F30FFF74 /* Pods-FairFeesApp.release.xcconfig */,
+				83708AB4367B80EBBA3E1144 /* Pods-FairFeesAppTests.debug.xcconfig */,
+				70D860E49D3D53E64D9B5E64 /* Pods-FairFeesAppTests.release.xcconfig */,
+				960C162E6E4F2CBCE53EB28D /* Pods-FairFeesAppUITests.debug.xcconfig */,
+				BA655933DA70A492664E8083 /* Pods-FairFeesAppUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		CE514875205717380021DB67 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +362,9 @@
 				CE51487A2057174E0021DB67 /* CoreImage.framework */,
 				CE514878205717440021DB67 /* CoreData.framework */,
 				CE514876205717380021DB67 /* Accelerate.framework */,
+				6121D021F4B3A54D6AF1A32A /* Pods_FairFeesApp.framework */,
+				87FB8A529188D490A800E233 /* Pods_FairFeesAppTests.framework */,
+				D54D2B7670EE1DE3674DF20F /* Pods_FairFeesAppUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -350,6 +385,7 @@
 				CE514869205715FC0021DB67 /* GoogleMaps.framework */,
 				CE51486D2057161F0021DB67 /* GoogleMapsCore.framework */,
 				CE514875205717380021DB67 /* Frameworks */,
+				76B51FDE65852BEA0AFC989C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -395,6 +431,7 @@
 				CE7F7DFA204DD32D00548D5F /* Assets.xcassets */,
 				CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */,
 				CE7F7DFF204DD32E00548D5F /* Info.plist */,
+				CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */,
 			);
 			path = FairFeesApp;
 			sourceTree = "<group>";
@@ -424,9 +461,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE7F7E18204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesApp" */;
 			buildPhases = (
+				E077EE15850490281E4591E1 /* [CP] Check Pods Manifest.lock */,
 				CE7F7DEA204DD32D00548D5F /* Sources */,
 				CE7F7DEB204DD32D00548D5F /* Frameworks */,
 				CE7F7DEC204DD32D00548D5F /* Resources */,
+				FB6B9C55985AF3FD2D6015BA /* [CP] Embed Pods Frameworks */,
+				1430D5FBFF1604B0B46F2982 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -441,9 +481,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE7F7E1B204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesAppTests" */;
 			buildPhases = (
+				245F2216E6999E0AC6BAC66F /* [CP] Check Pods Manifest.lock */,
 				CE7F7E00204DD32E00548D5F /* Sources */,
 				CE7F7E01204DD32E00548D5F /* Frameworks */,
 				CE7F7E02204DD32E00548D5F /* Resources */,
+				9B6E0EC529E996CA766290CB /* [CP] Embed Pods Frameworks */,
+				CF29DDAC4E36EB77CAD3D8EB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -459,9 +502,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE7F7E1E204DD32E00548D5F /* Build configuration list for PBXNativeTarget "FairFeesAppUITests" */;
 			buildPhases = (
+				023974C509F70A9738437176 /* [CP] Check Pods Manifest.lock */,
 				CE7F7E0B204DD32E00548D5F /* Sources */,
 				CE7F7E0C204DD32E00548D5F /* Frameworks */,
 				CE7F7E0D204DD32E00548D5F /* Resources */,
+				FDD0B54D2ECE6720142C5789 /* [CP] Embed Pods Frameworks */,
+				DC825FEE64AFB0D5D854F11D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -534,6 +580,7 @@
 				292305072054D844000ECFCF /* 01010_bQE4g1cNSyD_1200x900.jpg in Resources */,
 				292305012054D844000ECFCF /* 00Q0Q_2bYvj1iYMGi_1200x900.jpg in Resources */,
 				2923050B2054D844000ECFCF /* 01212_lbaPCrD1wkz_1200x900.jpg in Resources */,
+				CE6EFD11206050D0009AFF6A /* GoogleService-Info.plist in Resources */,
 				292304FE2054D844000ECFCF /* 00L0L_j3n0Ghg3May_1200x900.jpg in Resources */,
 				292305112054D844000ECFCF /* 00P0P_buoO9jmpb6c_1200x900.jpg in Resources */,
 				292305122054D844000ECFCF /* 00W0W_bqm9ca1gKws_1200x900.jpg in Resources */,
@@ -575,6 +622,7 @@
 			files = (
 				CE5148A1205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				CE514873205716F80021DB67 /* GoogleMaps.bundle in Resources */,
+				CE6EFD12206050D1009AFF6A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,10 +632,163 @@
 			files = (
 				CE5148A2205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				CE514874205716F80021DB67 /* GoogleMaps.bundle in Resources */,
+				CE6EFD13206050D1009AFF6A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		023974C509F70A9738437176 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FairFeesAppUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1430D5FBFF1604B0B46F2982 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		245F2216E6999E0AC6BAC66F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FairFeesAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B6E0EC529E996CA766290CB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesAppTests/Pods-FairFeesAppTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF29DDAC4E36EB77CAD3D8EB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesAppTests/Pods-FairFeesAppTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DC825FEE64AFB0D5D854F11D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesAppUITests/Pods-FairFeesAppUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E077EE15850490281E4591E1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FairFeesApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB6B9C55985AF3FD2D6015BA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FDD0B54D2ECE6720142C5789 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesAppUITests/Pods-FairFeesAppUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CE7F7DEA204DD32D00548D5F /* Sources */ = {
@@ -778,6 +979,7 @@
 		};
 		CE7F7E19204DD32E00548D5F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0DFA2F96CCA1169634D2D0FE /* Pods-FairFeesApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -790,7 +992,7 @@
 				INFOPLIST_FILE = FairFeesApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-Objc";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -800,6 +1002,7 @@
 		};
 		CE7F7E1A204DD32E00548D5F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AAC4FB017996BA05F30FFF74 /* Pods-FairFeesApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -812,7 +1015,7 @@
 				INFOPLIST_FILE = FairFeesApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-Objc";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -822,6 +1025,7 @@
 		};
 		CE7F7E1C204DD32E00548D5F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83708AB4367B80EBBA3E1144 /* Pods-FairFeesAppTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -843,6 +1047,7 @@
 		};
 		CE7F7E1D204DD32E00548D5F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70D860E49D3D53E64D9B5E64 /* Pods-FairFeesAppTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -864,6 +1069,7 @@
 		};
 		CE7F7E1F204DD32E00548D5F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 960C162E6E4F2CBCE53EB28D /* Pods-FairFeesAppUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -884,6 +1090,7 @@
 		};
 		CE7F7E20204DD32E00548D5F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA655933DA70A492664E8083 /* Pods-FairFeesAppUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
