@@ -395,7 +395,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         
-        cell.leftImageView.image = listing.photos[0]
+        //cell.leftImageView.image = listing.photos[0]
         cell.leftImageView.contentMode = .scaleToFill
         cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"

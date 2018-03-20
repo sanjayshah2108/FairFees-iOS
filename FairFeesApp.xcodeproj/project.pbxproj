@@ -95,11 +95,23 @@
 		CE59DAEF205AF391006FD39D /* DirectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59DAEE205AF38D006FD39D /* DirectionsManager.swift */; };
 		CE6EFD0D205C5B20009AFF6A /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD0C205C5B20009AFF6A /* FilterView.swift */; };
 		CE6EFD0F205C5D8A009AFF6A /* FilterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD0E205C5D8A009AFF6A /* FilterView.xib */; };
-		CE6EFD11206050D0009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */; };
-		CE6EFD12206050D1009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */; };
-		CE6EFD13206050D1009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */; };
 		CE6EFD1720606E00009AFF6A /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD1620606DFF009AFF6A /* FirebaseData.swift */; };
 		CE6EFD192060845D009AFF6A /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD182060845D009AFF6A /* ImageManager.swift */; };
+		CE6EFD2320619293009AFF6A /* WriteFirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2220619293009AFF6A /* WriteFirebaseData.swift */; };
+		CE6EFD2420619293009AFF6A /* WriteFirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2220619293009AFF6A /* WriteFirebaseData.swift */; };
+		CE6EFD2520619293009AFF6A /* WriteFirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2220619293009AFF6A /* WriteFirebaseData.swift */; };
+		CE6EFD2720619805009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */; };
+		CE6EFD2820619805009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */; };
+		CE6EFD2920619805009AFF6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */; };
+		CE6EFD2B2061994A009AFF6A /* ReadFirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2A2061994A009AFF6A /* ReadFirebaseData.swift */; };
+		CE6EFD2C2061994A009AFF6A /* ReadFirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2A2061994A009AFF6A /* ReadFirebaseData.swift */; };
+		CE6EFD2D2061994A009AFF6A /* ReadFirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2A2061994A009AFF6A /* ReadFirebaseData.swift */; };
+		CE6EFD2F2061A38B009AFF6A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */; };
+		CE6EFD302061A38B009AFF6A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */; };
+		CE6EFD312061A38B009AFF6A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */; };
+		CE6EFD332061A6E4009AFF6A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */; };
+		CE6EFD342061A6E4009AFF6A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */; };
+		CE6EFD352061A6E4009AFF6A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DF7204DD32D00548D5F /* Main.storyboard */; };
@@ -215,9 +227,13 @@
 		CE59DAEE205AF38D006FD39D /* DirectionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsManager.swift; sourceTree = "<group>"; };
 		CE6EFD0C205C5B20009AFF6A /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		CE6EFD0E205C5D8A009AFF6A /* FilterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FilterView.xib; path = FairFeesApp/FilterView.xib; sourceTree = "<group>"; };
-		CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE6EFD1620606DFF009AFF6A /* FirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebaseData.swift; path = "/Users/sanjayshah/Documents/Apps/Fair Fees/FairFeesApp/FairFeesApp/FirebaseData.swift"; sourceTree = "<absolute>"; };
 		CE6EFD182060845D009AFF6A /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
+		CE6EFD2220619293009AFF6A /* WriteFirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFirebaseData.swift; sourceTree = "<group>"; };
+		CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE6EFD2A2061994A009AFF6A /* ReadFirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadFirebaseData.swift; sourceTree = "<group>"; };
+		CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -411,6 +427,8 @@
 				292304A42054D5F1000ECFCF /* listing images */,
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
 				CE6EFD1620606DFF009AFF6A /* FirebaseData.swift */,
+				CE6EFD2A2061994A009AFF6A /* ReadFirebaseData.swift */,
+				CE6EFD2220619293009AFF6A /* WriteFirebaseData.swift */,
 				CE5148612054C0560021DB67 /* PostPhotoCollectionViewCell.swift */,
 				CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */,
 				CE514892205860570021DB67 /* ImageScrollView.swift */,
@@ -432,12 +450,14 @@
 				CE51485320505FAE0021DB67 /* UIProperties.swift */,
 				CE51484B204F74540021DB67 /* DummyData.swift */,
 				CE6EFD182060845D009AFF6A /* ImageManager.swift */,
+				CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */,
+				CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */,
+				CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */,
 				CE51484F204F77C20021DB67 /* User.swift */,
 				CE7F7DF7204DD32D00548D5F /* Main.storyboard */,
 				CE7F7DFA204DD32D00548D5F /* Assets.xcassets */,
 				CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */,
 				CE7F7DFF204DD32E00548D5F /* Info.plist */,
-				CE6EFD10206050CF009AFF6A /* GoogleService-Info.plist */,
 			);
 			path = FairFeesApp;
 			sourceTree = "<group>";
@@ -586,7 +606,7 @@
 				292305072054D844000ECFCF /* 01010_bQE4g1cNSyD_1200x900.jpg in Resources */,
 				292305012054D844000ECFCF /* 00Q0Q_2bYvj1iYMGi_1200x900.jpg in Resources */,
 				2923050B2054D844000ECFCF /* 01212_lbaPCrD1wkz_1200x900.jpg in Resources */,
-				CE6EFD11206050D0009AFF6A /* GoogleService-Info.plist in Resources */,
+				CE6EFD2720619805009AFF6A /* GoogleService-Info.plist in Resources */,
 				292304FE2054D844000ECFCF /* 00L0L_j3n0Ghg3May_1200x900.jpg in Resources */,
 				292305112054D844000ECFCF /* 00P0P_buoO9jmpb6c_1200x900.jpg in Resources */,
 				292305122054D844000ECFCF /* 00W0W_bqm9ca1gKws_1200x900.jpg in Resources */,
@@ -628,7 +648,7 @@
 			files = (
 				CE5148A1205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				CE514873205716F80021DB67 /* GoogleMaps.bundle in Resources */,
-				CE6EFD12206050D1009AFF6A /* GoogleService-Info.plist in Resources */,
+				CE6EFD2820619805009AFF6A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,7 +658,7 @@
 			files = (
 				CE5148A2205883910021DB67 /* GooglePlacePicker.bundle in Resources */,
 				CE514874205716F80021DB67 /* GoogleMaps.bundle in Resources */,
-				CE6EFD13206050D1009AFF6A /* GoogleService-Info.plist in Resources */,
+				CE6EFD2920619805009AFF6A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -805,6 +825,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE6EFD332061A6E4009AFF6A /* LoginViewController.swift in Sources */,
 				CE7F7E22204DDB6600548D5F /* MapViewDelegate.swift in Sources */,
 				CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */,
 				CE51484E204F778F0021DB67 /* Sale.swift in Sources */,
@@ -812,7 +833,10 @@
 				CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */,
 				CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */,
 				CE6EFD1720606E00009AFF6A /* FirebaseData.swift in Sources */,
+				CE6EFD2F2061A38B009AFF6A /* AuthenticationManager.swift in Sources */,
 				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
+				CE6EFD2320619293009AFF6A /* WriteFirebaseData.swift in Sources */,
+				CE6EFD2B2061994A009AFF6A /* ReadFirebaseData.swift in Sources */,
 				CE6EFD192060845D009AFF6A /* ImageManager.swift in Sources */,
 				CE6EFD0D205C5B20009AFF6A /* FilterView.swift in Sources */,
 				CE5148592050C1A50021DB67 /* HomeTableViewCell.swift in Sources */,
@@ -835,6 +859,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE6EFD2C2061994A009AFF6A /* ReadFirebaseData.swift in Sources */,
+				CE6EFD302061A38B009AFF6A /* AuthenticationManager.swift in Sources */,
+				CE6EFD2420619293009AFF6A /* WriteFirebaseData.swift in Sources */,
+				CE6EFD342061A6E4009AFF6A /* LoginViewController.swift in Sources */,
 				CE7F7E09204DD32E00548D5F /* FairFeesAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -843,6 +871,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE6EFD2D2061994A009AFF6A /* ReadFirebaseData.swift in Sources */,
+				CE6EFD312061A38B009AFF6A /* AuthenticationManager.swift in Sources */,
+				CE6EFD2520619293009AFF6A /* WriteFirebaseData.swift in Sources */,
+				CE6EFD352061A6E4009AFF6A /* LoginViewController.swift in Sources */,
 				CE7F7E14204DD32E00548D5F /* FairFeesAppUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1005,7 +1037,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFees;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1028,7 +1060,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFeesApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FairFees.FairFees;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

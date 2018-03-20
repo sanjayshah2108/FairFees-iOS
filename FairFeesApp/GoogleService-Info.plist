@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>842599518124-op8f7j627tv1dbpf23ut2p506524kjdu.apps.googleusercontent.com</string>
+	<string>689446871825-kipml75ln59vfbc96n4a7kb1v4ms9iqd.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.842599518124-op8f7j627tv1dbpf23ut2p506524kjdu</string>
+	<string>com.googleusercontent.apps.689446871825-kipml75ln59vfbc96n4a7kb1v4ms9iqd</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDsqbvmdCEGINfPuiXFrCSvYwFOkAR5XSY</string>
+	<string>AIzaSyA1nqE8mpDxb1_3ycrqXFCvLP0heHYz6rI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>842599518124</string>
+	<string>689446871825</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.FairFees.FairFeesApp</string>
+	<string>com.FairFees.FairFees</string>
 	<key>PROJECT_ID</key>
-	<string>curious-mender-197820</string>
+	<string>fair-fees</string>
 	<key>STORAGE_BUCKET</key>
-	<string>curious-mender-197820.appspot.com</string>
+	<string>fair-fees.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:842599518124:ios:f2011172fe0aa372</string>
+	<string>1:689446871825:ios:d5b966fef81dec5d</string>
 	<key>DATABASE_URL</key>
-	<string>https://curious-mender-197820.firebaseio.com</string>
+	<string>https://fair-fees.firebaseio.com</string>
 </dict>
 </plist>
