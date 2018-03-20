@@ -552,8 +552,23 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc func submitPost(){
         if (validateFields()){
+            
+            
         
-        let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, poster: DummyData.theDummyData.users[0], photos: photosArray, size: Int(sizeTextField.text!)!, bedroomNumber: Int(bedroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, owner: DummyData.theDummyData.users[0], availabilityDate: Date())
+        let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: DummyData.theDummyData.users[0].email, photosRef: [""], size: Int(sizeTextField.text!)!, bedroomNumber: Int(bathroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: DummyData.theDummyData.users[0].email, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+            
+
+            
+            var photoRefs: [String] = []
+            for index in 0..<photosArray.count {
+                let storagePath = "\(post.UID!)/\(index)"
+                
+                let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                                                           userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: post.UID,
+                                                           filename: storagePath)
+                photoRefs.append(photoRefStr)
+              
+            }
         
         DummyData.theDummyData.addListing(listing: post)
         
