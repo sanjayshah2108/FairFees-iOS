@@ -23,7 +23,7 @@ class Listing: GMSMarker, MKAnnotation  {
     var posterUID: String!
     var listingDescription: String!
     var photos: [UIImage]!
-    var photosRefs: [String]!
+    var photoRefs: [String]!
     var size: Int!
     var location: CLLocation!
     var address: String!

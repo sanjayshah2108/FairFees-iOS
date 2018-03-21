@@ -296,6 +296,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func loginSuccess() {
         self.dismiss(animated: true, completion: nil)
+        
+        //delete this
+//        let navC: UINavigationController = presentingViewController as! UINavigationController
+//        let presentingVC = navC.viewControllers[0] as! HomeViewController
+//        presentingVC.setupDummyData()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -380,14 +385,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
         else if titleLabel.text == loginTitleString {
     
-            if validateInputOf(textfield: emailTextfield).valid &&
-                validateInputOf(textfield: passwordTextfield).valid {
+            if  validateInputOf(textfield: passwordTextfield).valid {
                 print("Logging in...")
                 AuthenticationManager.login(withEmail: emailTextfield.text!, password: passwordTextfield.text!, completionHandler: { (success) -> Void in
                     if success == true {
                         loggedInBool = true
                         self.loginSuccess()
                         self.setUserDefaults()
+                        
                     }
                     else {
                         let loginFailedAlert = UIAlertController(title: "Login failed", message: "Incorrect Email or Password", preferredStyle: .alert)

@@ -10,6 +10,7 @@ import UIKit
 
 class User: NSObject {
 
+    var UID:String!
     var firstName: String
     var lastName: String
     var email: String
@@ -18,14 +19,15 @@ class User: NSObject {
     var rating: Int
     var listingsRefs: [String]!
     
-    init(firstName:String,
+    init(uid:String,
+         firstName:String,
          lastName:String,
          email:String,
          phoneNumber:Int,
          rating: Int,
          listings: [Listing]) {
     
-        
+        self.UID = uid
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
@@ -38,6 +40,7 @@ class User: NSObject {
     
     convenience init?(with inpDict:[String:Any]) {
         guard
+            let inpUID: String = inpDict["UID"] as? String,
             let inpFirstName: String = inpDict["firstName"] as? String,
             let inpLastName: String = inpDict["lastName"] as? String,
             let inpEmail: String = inpDict["email"] as? String,
@@ -62,12 +65,13 @@ class User: NSObject {
 //            }
 //        }
         
-        self.init(firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings)
+        self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings)
     }
     
     
     func toDictionary() -> [String:Any] {
-        let userDict:[String:Any] = [ "email":self.email,
+        let userDict:[String:Any] = [ "UID":self.UID,
+                                      "email":self.email,
                                       "phoneNumber": self.phoneNumber,
                                       "firstName":self.firstName,
                                       "lastName": self.lastName,

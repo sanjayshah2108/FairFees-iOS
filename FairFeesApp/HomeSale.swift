@@ -24,7 +24,7 @@ class HomeSale: Sale {
          country: String,
          zipcode: String,
          posterUID:String,
-         photosRef:[String],
+         photoRefs:[String],
          size: Int,
          bedroomNumber: Int,
          bathroomNumber: Int,
@@ -46,7 +46,7 @@ class HomeSale: Sale {
         super.posterUID = posterUID
         super.size = size
         //super.photos = photos
-        super.photosRefs = photosRef
+        super.photoRefs = photoRefs
         super.ownerUID = ownerUID
         super.price = price
         super.availabilityDate = availabilityDate
@@ -79,10 +79,12 @@ class HomeSale: Sale {
             let inpSize: Int = inpDict["size"] as? Int,
             let inpBedroomNumber: Int =  inpDict["bedroomNumber"] as? Int,
             let inpLocationDict: [String:Double] = inpDict["location"] as? [String:Double],
-            let inpBathroomNumber: Int = inpDict["bathroomNumer"] as? Int,
+            let inpBathroomNumber: Int = inpDict["bathroomNumber"] as? Int,
             let inpPrice: Int = inpDict["price"] as? Int,
             let inpAvailabilityDate: NSNumber = inpDict["availabilityDate"] as! NSNumber,
-            let inpPhotos: [String] = inpDict["photos"] as? [String],
+            let inpPhotoRefs: [String] = inpDict["photoRefs"] as! [String],
+            //let inpPhotos: [String] = inpDict["photos"] as? [String],
+            
             let inpOwnerUID: String = inpDict["ownerUID"] as? String else
         {
             print("Error: Dictionary is not in the correct format")
@@ -97,10 +99,11 @@ class HomeSale: Sale {
             return nil
         }
         
+        //let inpPhotos: [String] = []
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
         
         
-        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photosRef: inpPhotos, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpOwnerUID, availabilityDate: inpAvailabilityDate)
+        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpOwnerUID, availabilityDate: inpAvailabilityDate)
         
     }
     
@@ -118,7 +121,7 @@ class HomeSale: Sale {
             "description": super.listingDescription,
             "location": locationDict,
             "posterUID":super.posterUID,
-            "photos":self.photos,
+            "photoRefs":self.photoRefs,
             "size" : super.size,
             "price": super.price,
             "bedroomNumber": self.bedroomNumber,

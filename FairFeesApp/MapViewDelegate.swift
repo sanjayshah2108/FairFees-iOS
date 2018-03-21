@@ -96,7 +96,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         var listingToPresent: Listing!
         
         //NOT THE BEST WAY TO PRESENT THE LISTING
-        for listing in DummyData.theDummyData.homesForSale {
+        for listing in FirebaseData.sharedInstance.homesForSale {
             if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
                 listingToPresent = listing
             }
@@ -124,7 +124,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         var listingToPresent: HomeSale!
         
         //NOT THE BEST WAY TO FIND THE LISTING
-        for listing in DummyData.theDummyData.homesForSale {
+        for listing in FirebaseData.sharedInstance.homesForSale {
             if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
                 listingToPresent = listing
             }

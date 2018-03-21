@@ -34,7 +34,7 @@ class AuthenticationManager: NSObject {
                 setUsername?.commitChanges(completion:
                     { (profileError) in
                         if profileError == nil {
-                            let addedUser = User(firstName: firstName, lastName: lastName, email: (newUser?.email)!, phoneNumber: phoneNumber, rating: 0, listings: [])
+                            let addedUser = User(uid: newUser!.uid, firstName: firstName, lastName: lastName, email: (newUser!.email)!, phoneNumber: phoneNumber, rating: 0, listings: [])
                             
                             
                             FirebaseData.sharedInstance.currentUser = addedUser
@@ -106,7 +106,7 @@ class AuthenticationManager: NSObject {
                 
                 let mainVC = appDelegate.window?.rootViewController as! LoginViewController
                 
-                let loginFailedAlert = UIAlertController(title: "Login failed", message: "Incorrect Email or Password", preferredStyle: .alert)
+                let loginFailedAlert = UIAlertController(title: "Login failed", message: "Have you verified your account?", preferredStyle: .alert)
                 let okayAction = UIAlertAction(title: "Try again", style: .default, handler: nil)
                 loginFailedAlert.addAction(okayAction)
                 mainVC.present(loginFailedAlert, animated: true, completion: nil)

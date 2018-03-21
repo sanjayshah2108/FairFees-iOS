@@ -19,7 +19,7 @@ class WriteFirebaseData: NSObject {
         let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
         let SecondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
         let ThirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
-        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).child("NHWEbBFEfzaL7B3d7PD49wuaUtW2").setValue(user.toDictionary())
+        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).child(user.UID).setValue(user.toDictionary())
         
     }
     
@@ -28,7 +28,7 @@ class WriteFirebaseData: NSObject {
         //let user = AppData.sharedInstance.currentUser!
         let user = DummyData.theDummyData.users[0]
         
-        let listingPath = "/\(homeForSale.country!)/\(homeForSale.province!)/\(homeForSale.city!)/\(homeForSale.zipcode!)/\(user.firstName)/\(homeForSale.UID!)"
+        let listingPath = "/\(homeForSale.country!)/\(homeForSale.province!)/\(homeForSale.city!)/\(homeForSale.zipcode!)/\(user.UID!)/\(homeForSale.UID!)"
       
         
         //            if sharedInstance.currentUser!.listings.first == "" {

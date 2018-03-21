@@ -22,14 +22,16 @@ class DummyData: NSObject {
         
         users = []
         
-        let user1 = User(firstName: "Sanjay",
+        let user1 = User(uid: "NHWEbBFEfzaL7B3d7PD49wuaUtW2",
+                         firstName: "Sanjay",
                          lastName: "Shah",
                          email: "sanjays_94@hotmail.com",
                          phoneNumber: 7788816399,
                          rating: 5,
                          listings: [])
         
-        let user2 = User(firstName: "Amir",
+        let user2 = User(uid: "notRealUID",
+                         firstName: "Amir",
                          lastName: "Jahanlou",
                          email: "amir.jahan@gmail.com",
                          phoneNumber: 6044413431,
@@ -67,8 +69,8 @@ class DummyData: NSObject {
             province:"BC",
             country:"Canada",
             zipcode:"VH60A9",
-            posterUID: users[0].email,
-            photosRef: [ImageManager.uploadImage(image: UIImage(named: "00G0G_iZpKq2kJbr8_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00G0G_iZpKq2kJbr8_1200x900.jpg"),
+            posterUID: users[0].UID,
+            photoRefs: [ImageManager.uploadImage(image: UIImage(named: "00G0G_iZpKq2kJbr8_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00G0G_iZpKq2kJbr8_1200x900.jpg"),
                         ImageManager.uploadImage(image: UIImage(named: "00w0w_7Xm4T55PkAP_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00w0w_7Xm4T55PkAP_1200x900.jpg"),
                         ImageManager.uploadImage(image: UIImage(named: "00w0w_e8JqNq4nDgI_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00w0w_e8JqNq4nDgI_1200x900.jpg"),
                         ImageManager.uploadImage(image: UIImage(named: "00404_8OmXsbv4SED_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00404_8OmXsbv4SED_1200x900.jpg"),
@@ -81,7 +83,7 @@ class DummyData: NSObject {
             bathroomNumber: 2,
             UID: homeSale1UID,
             price: 300000,
-            ownerUID: users[1].email,
+            ownerUID: users[0].UID,
             availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
         
 
@@ -97,8 +99,8 @@ class DummyData: NSObject {
                                  province:"BC",
                                  country:"Canada",
                                  zipcode:"VH60A8",
-                                 posterUID: users[0].email,
-                                 photosRef: [ImageManager.uploadImage(image: UIImage(named: "00B0B_79jyoTMowLD_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale2UID, filename: "00B0B_79jyoTMowLD_1200x900.jpg"),
+                                 posterUID: users[0].UID,
+                                 photoRefs: [ImageManager.uploadImage(image: UIImage(named: "00B0B_79jyoTMowLD_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale2UID, filename: "00B0B_79jyoTMowLD_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00B0B_anRDCMQfQ3p_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale2UID, filename: "00B0B_anRDCMQfQ3p_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00l0l_a0QTvRBkXQy_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale2UID, filename: "00l0l_a0QTvRBkXQy_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00L0L_i9sDtSXuHjz_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale2UID, filename: "00L0L_i9sDtSXuHjz_1200x900.jpg"),
@@ -112,7 +114,7 @@ class DummyData: NSObject {
                                  bathroomNumber: 2,
                                  UID: homeSale2UID,
                                  price: 300000,
-                                 ownerUID: users[1].email,
+                                 ownerUID: users[0].UID,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
         
         homeSale2.photos = []
@@ -126,8 +128,8 @@ class DummyData: NSObject {
                                  province:"BC",
                                  country:"Canada",
                                  zipcode:"VH60A7",
-                                 posterUID: users[0].email,
-                                 photosRef: [ImageManager.uploadImage(image:UIImage(named: "00e0e_dVd4VYsuulU_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale3UID, filename: "00e0e_dVd4VYsuulU_1200x900.jpg"),
+                                 posterUID: users[0].UID,
+                                 photoRefs: [ImageManager.uploadImage(image:UIImage(named: "00e0e_dVd4VYsuulU_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale3UID, filename: "00e0e_dVd4VYsuulU_1200x900.jpg"),
                                              ImageManager.uploadImage(image:UIImage(named: "00k0k_ccCBmnQdSPi_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale3UID, filename: "00k0k_ccCBmnQdSPi_1200x900.jpg"),
                                              ImageManager.uploadImage(image:UIImage(named: "00L0L_j3n0Ghg3May_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale3UID, filename: "00L0L_j3n0Ghg3May_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00M0M_8j7fiZJGN04_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale3UID, filename: "00M0M_8j7fiZJGN04_1200x900.jpg"),
@@ -141,7 +143,7 @@ class DummyData: NSObject {
                                  bathroomNumber: 2,
                                  UID: homeSale3UID,
                                  price: 300000,
-                                 ownerUID: users[1].email,
+                                 ownerUID: users[0].UID,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
         
         homeSale3.photos = []
@@ -155,8 +157,8 @@ class DummyData: NSObject {
                                  province:"BC",
                                  country:"Canada",
                                  zipcode:"VH60A7",
-                                 posterUID: users[0].email,
-                                 photosRef: [ImageManager.uploadImage(image: UIImage(named: "00a0a_bHlb7rvOfrt_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale4UID, filename: "00a0a_bHlb7rvOfrt_1200x900.jpg"),
+                                 posterUID: users[0].UID,
+                                 photoRefs: [ImageManager.uploadImage(image: UIImage(named: "00a0a_bHlb7rvOfrt_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale4UID, filename: "00a0a_bHlb7rvOfrt_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00i0i_i58WRgAT0E5_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale4UID, filename: "00i0i_i58WRgAT0E5_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00P0P_ei9EzDPme8E_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale4UID, filename: "00P0P_ei9EzDPme8E_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00l0l_38ixPXcxZhW_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale4UID, filename: "00l0l_38ixPXcxZhW_1200x900.jpg"),
@@ -168,7 +170,7 @@ class DummyData: NSObject {
                                  bathroomNumber: 2,
                                  UID: homeSale4UID,
                                  price: 300000,
-                                 ownerUID: users[1].email,
+                                 ownerUID: users[0].UID,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
         
         homeSale4.photos = []
@@ -183,34 +185,34 @@ class DummyData: NSObject {
                                  province:"BC",
                                  country:"Canada",
                                  zipcode:"VH60B9",
-                                 posterUID: users[0].email,
-                                 photosRef: [ImageManager.uploadImage(image: UIImage(named: "00f0f_g4KXDGQh7wV_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale5UID, filename: "00f0f_g4KXDGQh7wV_1200x900.jpg"),
+                                 posterUID: users[0].UID,
+                                 photoRefs: [ImageManager.uploadImage(image: UIImage(named: "00f0f_g4KXDGQh7wV_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale5UID, filename: "00f0f_g4KXDGQh7wV_1200x900.jpg"),
                                              ImageManager.uploadImage(image: UIImage(named: "00U0U_ALiRuz1mTx_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale5UID, filename: "00U0U_ALiRuz1mTx_1200x900.jpg")],
                                  size: 30,
                                  bedroomNumber: 2,
                                  bathroomNumber: 2,
                                  UID: homeSale5UID,
                                  price: 300000,
-                                 ownerUID: users[1].email,
+                                 ownerUID: users[0].UID,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
         
         homeSale5.photos = []
         
 
         homesForSale.append(homeSale1)
-       // WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
+        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
         
         homesForSale.append(homeSale2)
-        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale2)
+        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale2)
         
         homesForSale.append(homeSale3)
-    //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
+        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
         
         homesForSale.append(homeSale4)
-       // WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
+        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
         
         homesForSale.append(homeSale5)
-        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
+        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
     }
 
     
