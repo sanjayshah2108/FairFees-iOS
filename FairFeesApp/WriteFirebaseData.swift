@@ -19,7 +19,7 @@ class WriteFirebaseData: NSObject {
         let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
         let SecondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
         let ThirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
-        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).setValue(user.toDictionary())
+        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).child("NHWEbBFEfzaL7B3d7PD49wuaUtW2").setValue(user.toDictionary())
         
     }
     
@@ -44,7 +44,9 @@ class WriteFirebaseData: NSObject {
         let SecondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
         let ThirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
         
-        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).setValue(FirebaseData.sharedInstance.currentUser?.toDictionary())
+        
+        write(user: FirebaseData.sharedInstance.currentUser!)
+        //FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).setValue(FirebaseData.sharedInstance.currentUser?.toDictionary())
     }
     
 }

@@ -24,7 +24,7 @@ class DummyData: NSObject {
         
         let user1 = User(firstName: "Sanjay",
                          lastName: "Shah",
-                         email: "sanjays@gmail.com",
+                         email: "sanjays_94@hotmail.com",
                          phoneNumber: 7788816399,
                          rating: 5,
                          listings: [])
@@ -198,16 +198,16 @@ class DummyData: NSObject {
         
 
         homesForSale.append(homeSale1)
-        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
+       // WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
         
         homesForSale.append(homeSale2)
         //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale2)
         
         homesForSale.append(homeSale3)
-        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
+    //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
         
         homesForSale.append(homeSale4)
-        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
+       // WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
         
         homesForSale.append(homeSale5)
         //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
