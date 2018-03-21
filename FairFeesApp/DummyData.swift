@@ -36,8 +36,8 @@ class DummyData: NSObject {
                          rating: 5,
                          listings: [])
         
-        user1.listingsRefs = [""]
-        user2.listingsRefs = [""]
+        user1.listingsRefs = []
+        user2.listingsRefs = []
         
         self.users.append(user1)
         self.users.append(user2)
@@ -114,6 +114,8 @@ class DummyData: NSObject {
                                  price: 300000,
                                  ownerUID: users[1].email,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+        
+        homeSale2.photos = []
 
         let homeSale3UID = UUID().uuidString
         let homeSale3 = HomeSale(name: "Downtown Apt",
@@ -141,6 +143,8 @@ class DummyData: NSObject {
                                  price: 300000,
                                  ownerUID: users[1].email,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+        
+        homeSale3.photos = []
 
         let homeSale4UID = UUID().uuidString
         let homeSale4 = HomeSale(name: "East Van House",
@@ -166,6 +170,8 @@ class DummyData: NSObject {
                                  price: 300000,
                                  ownerUID: users[1].email,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+        
+        homeSale4.photos = []
 
 
         let homeSale5UID = UUID().uuidString
@@ -188,21 +194,23 @@ class DummyData: NSObject {
                                  ownerUID: users[1].email,
                                  availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
         
+        homeSale5.photos = []
+        
 
         homesForSale.append(homeSale1)
-        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
+        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
         
         homesForSale.append(homeSale2)
-        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale2)
+        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale2)
         
         homesForSale.append(homeSale3)
-        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
+        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
         
         homesForSale.append(homeSale4)
-        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
+        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
         
         homesForSale.append(homeSale5)
-        WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
+        //WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
     }
 
     

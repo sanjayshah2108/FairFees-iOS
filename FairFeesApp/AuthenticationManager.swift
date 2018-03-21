@@ -39,7 +39,14 @@ class AuthenticationManager: NSObject {
                             
                             FirebaseData.sharedInstance.currentUser = addedUser
                             
-                            FirebaseData.sharedInstance.usersNode
+                            let userEmail = addedUser.email
+                            
+                            let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
+                            let secondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
+                            let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
+                            
+                            
+                            FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail)
                                 .child(newUser!.uid)
                                 .setValue(addedUser.toDictionary())
                             print("Sign up successful")
@@ -65,8 +72,16 @@ class AuthenticationManager: NSObject {
                            password: password)
         { (authUser, loginError) in
             if loginError == nil {
+                
                 let userUID = Auth.auth().currentUser?.uid
-                FirebaseData.sharedInstance.usersNode.child(userUID!)
+                let userEmail = (Auth.auth().currentUser?.email)!
+                
+                let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
+                let secondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
+                let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
+                
+                
+                FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(userUID!)
                     .observeSingleEvent(of: .value, with: { (snapshot) in
                         let data = snapshot.value as? NSDictionary
                         

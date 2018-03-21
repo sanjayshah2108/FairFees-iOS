@@ -50,7 +50,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        guestUser = true
         locationManager = LocationManager.theLocationManager
         
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
@@ -184,8 +184,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func newPostAction(){
-        let postViewController = PostViewController()
-        self.navigationController?.pushViewController(postViewController, animated: true)
+        
+        if(guestUser == true){
+            
+            let postAsGuestAlert = UIAlertController(title: "Sorry", message: "You need an account to make a post", preferredStyle: .alert)
+            let createAccountAction = UIAlertAction(title: "Log in", style: .default, handler: { (alert: UIAlertAction!) in
+                
+                let loginViewController = LoginViewController()
+                self.present(loginViewController, animated: true, completion: nil)
+                
+                loggedInBool = false
+            })
+            let cancelAction = UIAlertAction(title: "Just browse", style: .cancel, handler: nil)
+            
+            postAsGuestAlert.addAction(createAccountAction)
+            postAsGuestAlert.addAction(cancelAction)
+            
+            self.present(postAsGuestAlert, animated: true, completion: nil)
+        }
+            
+        else {
+            let postViewController = PostViewController()
+            self.navigationController?.pushViewController(postViewController, animated: true)
+        }
     }
     
     @objc func showSearchBar(){

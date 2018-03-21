@@ -115,7 +115,7 @@ class HomeSale: Sale {
             "province" : super.province,
             "country": super.country,
             "zipcode" : super.zipcode,
-            "description": super.description,
+            "description": super.listingDescription,
             "location": locationDict,
             "posterUID":super.posterUID,
             "photos":self.photos,
