@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/ListingDetailViewController.swift"
-            timestampString = "543445517.366333"
+            timestampString = "543449503.409826"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "76"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/ReadFirebaseData.swift"
-            timestampString = "543445517.36641"
+            timestampString = "543449503.4102401"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/ReadFirebaseData.swift"
-            timestampString = "543445517.3664809"
+            timestampString = "543449503.410464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "21"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/LoginViewController.swift"
-            timestampString = "543445517.366551"
+            timestampString = "543449503.410749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "308"
@@ -74,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/LoginViewController.swift"
-            timestampString = "543445517.3666101"
+            timestampString = "543449503.410912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "327"
@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/LoginViewController.swift"
-            timestampString = "543445517.366666"
+            timestampString = "543449503.411042"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "340"
@@ -106,12 +106,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/User.swift"
-            timestampString = "543445517.366725"
+            timestampString = "543449503.411254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
             endingLineNumber = "42"
             landmarkName = "init(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FairFeesApp/EditPostViewController.swift"
+            timestampString = "543449503.4114521"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -7,14 +7,21 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseStorage
 
 class EditPostViewController: PostViewController {
     
     weak var listingToEdit: Listing!
+    weak var homeSaleToEdit: HomeSale!
 
     override func viewDidLoad() {
+        
+        
+        homeSaleToEdit = listingToEdit as! HomeSale
         super.viewDidLoad()
+        
+       
 
         // Do any additional setup after loading the view.
     }
@@ -40,7 +47,7 @@ class EditPostViewController: PostViewController {
         priceTextField.layer.borderWidth = 1
         priceTextField.layer.borderColor = UIColor.gray.cgColor
         priceTextField.layer.cornerRadius = 3
-        priceTextField.placeholder = "Price"
+        priceTextField.text = String((homeSaleToEdit.price)!)
         priceTextField.textAlignment = .center
         priceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         priceTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +60,7 @@ class EditPostViewController: PostViewController {
         sizeTextField.layer.borderWidth = 1
         sizeTextField.layer.borderColor = UIColor.gray.cgColor
         sizeTextField.layer.cornerRadius = 3
-        sizeTextField.placeholder = "Size (SF)"
+        sizeTextField.text = String((homeSaleToEdit.size)!)
         sizeTextField.textAlignment = .center
         sizeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         sizeTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +73,7 @@ class EditPostViewController: PostViewController {
         descriptionTextField.layer.borderWidth = 1
         descriptionTextField.layer.borderColor = UIColor.gray.cgColor
         descriptionTextField.layer.cornerRadius = 3
-        descriptionTextField.text = "Description"
+        descriptionTextField.text = homeSaleToEdit.listingDescription
         descriptionTextField.textColor = UIColor.lightGray
         descriptionTextField.textAlignment = .center
         descriptionTextField.font = UIFont(name: "Avenir-Light", size: 15)
@@ -79,7 +86,7 @@ class EditPostViewController: PostViewController {
         cityTextField.layer.borderWidth = 1
         cityTextField.layer.borderColor = UIColor.gray.cgColor
         cityTextField.layer.cornerRadius = 3
-        cityTextField.placeholder = "City"
+        cityTextField.text = homeSaleToEdit.city
         cityTextField.textAlignment = .center
         cityTextField.font = UIFont(name: "Avenir-Light", size: 15)
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -91,7 +98,7 @@ class EditPostViewController: PostViewController {
         countryTextField.layer.borderWidth = 1
         countryTextField.layer.borderColor = UIColor.gray.cgColor
         countryTextField.layer.cornerRadius = 3
-        countryTextField.placeholder = "Country"
+        countryTextField.text = homeSaleToEdit.country
         countryTextField.textAlignment = .center
         countryTextField.font = UIFont(name: "Avenir-Light", size: 15)
         countryTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -103,7 +110,7 @@ class EditPostViewController: PostViewController {
         provinceTextField.layer.borderWidth = 1
         provinceTextField.layer.borderColor = UIColor.gray.cgColor
         provinceTextField.layer.cornerRadius = 3
-        provinceTextField.placeholder = "Province"
+        provinceTextField.text - homeSaleToEdit.province
         provinceTextField.textAlignment = .center
         provinceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         provinceTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -115,7 +122,7 @@ class EditPostViewController: PostViewController {
         addressTextField.layer.borderWidth = 1
         addressTextField.layer.borderColor = UIColor.gray.cgColor
         addressTextField.layer.cornerRadius = 3
-        addressTextField.placeholder = "Address"
+        addressTextField.text = homeSaleToEdit.address
         addressTextField.textAlignment = .center
         addressTextField.font = UIFont(name: "Avenir-Light", size: 15)
         addressTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -127,7 +134,7 @@ class EditPostViewController: PostViewController {
         zipcodeTextField.layer.borderWidth = 1
         zipcodeTextField.layer.borderColor = UIColor.gray.cgColor
         zipcodeTextField.layer.cornerRadius = 3
-        zipcodeTextField.placeholder = "Zipcode"
+        zipcodeTextField.text = homeSaleToEdit.zipcode
         zipcodeTextField.textAlignment = .center
         zipcodeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         zipcodeTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -147,7 +154,7 @@ class EditPostViewController: PostViewController {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
         
-        //cell.cellImageView.sd_setImage(with: storageRef.child(listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+        cell.cellImageView.sd_setImage(with: storageRef.child(listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
         
         return cell
         
