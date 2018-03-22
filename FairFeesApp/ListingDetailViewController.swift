@@ -73,7 +73,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         imageViewCarousel = UIImageView()
         imageViewCarousel.isUserInteractionEnabled = true
         photoIndex = 0
-        imageViewCarousel.image = currentListing.photos[photoIndex]
+        //imageViewCarousel.image = currentListing.photos[photoIndex]
         imageViewCarousel.contentMode = .scaleAspectFill
         
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -299,7 +299,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             imageViewPageControl.currentPage += 1
         }
         
-        imageViewCarousel.image = currentListing.photos[photoIndex]
+        //imageViewCarousel.image = currentListing.photos[photoIndex]
     }
     
     @objc func previousImage(){
@@ -312,7 +312,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             imageViewPageControl.currentPage -= 1
         }
     
-        imageViewCarousel.image = currentListing.photos[photoIndex]
+        //imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){

@@ -11,12 +11,12 @@ import CoreLocation
 import MapKit
 import GoogleMaps
 import GooglePlaces
+import FirebaseStorage
 import Firebase
-
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, GMSAutocompleteResultsViewControllerDelegate {
 
-    let storageRef = Storage.storage().reference()
+    
     
     let myDownloadCompleteNotificationKey = "myDownloadCompleteNotificationKey"
     
@@ -431,14 +431,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let storageRef = Storage.storage().reference()
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
         
         //let listing = DummyData.theDummyData.homesForSale[indexPath.row]
         let listing = FirebaseData.sharedInstance.homesForSale[indexPath.row]
         
         //cell.leftImageView.image = listing.photos[0]
-        //cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage:nil)
+        //cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
         cell.leftImageView.contentMode = .scaleToFill
         cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"

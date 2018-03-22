@@ -18,7 +18,7 @@ class FirebaseData: NSObject {
     public var listings: [Listing] = []
     public var homesForSale: [HomeSale] = []
     public var users: [User] = []
-    var specificUserListings: [Listing] = []
+    public var specificUserListings: [Listing] = []
     
     public var listingsNode: DatabaseReference
     public var homesForSaleNode: DatabaseReference
