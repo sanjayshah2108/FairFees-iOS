@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import GoogleMaps
+import Firebase
 
 class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
     
@@ -17,6 +18,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
     weak var theMapView: MKMapView!
     weak var googleMapView: GMSMapView!
     weak var myLocation: CLLocation! = LocationManager.theLocationManager.getLocation()
+    let storageRef = Storage.storage().reference()
     
     func setHomeVCMapRegion(){
         
@@ -96,7 +98,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         var listingToPresent: Listing!
         
         //NOT THE BEST WAY TO PRESENT THE LISTING
-        for listing in DummyData.theDummyData.homesForSale {
+        for listing in FirebaseData.sharedInstance.homesForSale {
             if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
                 listingToPresent = listing
             }
@@ -124,7 +126,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         var listingToPresent: HomeSale!
         
         //NOT THE BEST WAY TO FIND THE LISTING
-        for listing in DummyData.theDummyData.homesForSale {
+        for listing in FirebaseData.sharedInstance.homesForSale {
             if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
                 listingToPresent = listing
             }
@@ -135,7 +137,8 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         view.layer.cornerRadius = 6
         
         let imageView =  UIImageView(frame: CGRect(x: 2, y: 2, width: view.frame.size.width/3, height: view.frame.size.height))
-        imageView.image = listingToPresent.photos[0]
+        //imageView.sd_setImage(with: storageRef.child(listingToPresent.photoRefs[0]), placeholderImage: nil)
+        //imageView.image = listingToPresent.photos[0]
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true

@@ -20,11 +20,16 @@ class Listing: GMSMarker, MKAnnotation  {
     
     var UID: String!
     var name: String!
-    var poster: User!
+    var posterUID: String!
     var listingDescription: String!
     var photos: [UIImage]!
+    var photoRefs: [String]!
     var size: Int!
     var location: CLLocation!
     var address: String!
+    var city: String!
+    var province: String!
+    var country: String!
+    var zipcode: String!
     
 }

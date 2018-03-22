@@ -10,35 +10,75 @@ import UIKit
 
 class User: NSObject {
 
+    var UID:String!
     var firstName: String
     var lastName: String
     var email: String
     var phoneNumber: Int
     var listings: [Listing]
     var rating: Int
-    var UID: String
+    var listingsRefs: [String]!
     
-    init(firstName:String,
+    init(uid:String,
+         firstName:String,
          lastName:String,
          email:String,
          phoneNumber:Int,
          rating: Int,
-         listings: [Listing],
-         UID:String?) {
-        
+         listings: [Listing]) {
+    
+        self.UID = uid
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.phoneNumber = phoneNumber
         self.listings = listings
         self.rating = rating
+        self.listingsRefs = []
         
-        if (UID == nil){
-            self.UID = UUID().uuidString
+    }
+    
+    convenience init?(with inpDict:[String:Any]) {
+        guard
+            let inpUID: String = inpDict["UID"] as? String,
+            let inpFirstName: String = inpDict["firstName"] as? String,
+            let inpLastName: String = inpDict["lastName"] as? String,
+            let inpEmail: String = inpDict["email"] as? String,
+            let inpPhoneNumber: Int = inpDict["phoneNumber"] as! Int,
+            let inpRating: Int = inpDict["rating"] as! Int,
+            
+            //let inpProfileImage: String = inpDict["profileImage"] as? String ?? "",
+            var inpListings:[Listing] = inpDict["listings"] as? [Listing] else
+        {
+            print("Error: Dictionary is not in the correct format")
+            return nil
         }
-        else {
-            self.UID = UID!
-        }
+        
+//        var index = 0
+//        for i in listings{
+//
+//            if(i == ""){
+//                inpListings.remove(at: index)
+//            }
+//            else {
+//                index = index+1
+//            }
+//        }
+        
+        self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings)
+    }
+    
+    
+    func toDictionary() -> [String:Any] {
+        let userDict:[String:Any] = [ "UID":self.UID,
+                                      "email":self.email,
+                                      "phoneNumber": self.phoneNumber,
+                                      "firstName":self.firstName,
+                                      "lastName": self.lastName,
+                                      "rating":self.rating,
+                                      //"profileImage":self.profileImage,
+                                      "listings":self.listingsRefs ]
+        return userDict
     }
 
     

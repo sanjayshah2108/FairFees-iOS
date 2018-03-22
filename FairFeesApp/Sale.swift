@@ -10,8 +10,8 @@ import UIKit
 
 class Sale: Listing {
 
-    var owner: User!
+    var ownerUID: String!
     var price: Int! = 0
-    var availabilityDate: Date!
+    var availabilityDate: NSNumber!
     
 }

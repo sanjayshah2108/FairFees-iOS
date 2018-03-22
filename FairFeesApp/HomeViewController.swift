@@ -11,10 +11,13 @@ import CoreLocation
 import MapKit
 import GoogleMaps
 import GooglePlaces
-
+import FirebaseStorage
+import Firebase
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, GMSAutocompleteResultsViewControllerDelegate {
-
+    
+    let myDownloadCompleteNotificationKey = "myDownloadCompleteNotificationKey"
+    
     var locationManager: CLLocationManager!
     
     //var homeMapView: MKMapView!
@@ -24,6 +27,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var topRightButton: UIBarButtonItem!
     var topLeftButton: UIBarButtonItem!
     var filterButton: UIBarButtonItem!
+    var profileButton: UIBarButtonItem!
     var searchBar: UISearchBar!
     var filterView: UIView!
     var filterViewIsInFront: Bool!
@@ -50,18 +54,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        guestUser = true
         locationManager = LocationManager.theLocationManager
-        
+    
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         searchBarHeight = 0
         filterViewHeight = 160
         
-        setupDummyData()
-
-        
         setupMapListSegmentTitle()
-        setupTopRightButton()
+        setupTopRightButtons()
         setupTopLeftButtons()
         
         setupHomeMapView()
@@ -70,6 +71,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupFilterView()
         
         setupConstraints()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadMapAndTable), name: NSNotification.Name(rawValue: "myDownloadCompleteNotificationKey"), object: nil)
+        
+        //setupDummyData()
+        ReadFirebaseData.readUsers()
+        ReadFirebaseData.readHomesForSale()
         
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
@@ -97,6 +104,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DummyData.theDummyData.createListings()
     }
     
+    @objc func reloadMapAndTable(){
+        for listing in FirebaseData.sharedInstance.homesForSale{
+                        let marker = GMSMarker()
+                        marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+                        marker.map = homeMapView
+                    }
+        
+        homeTableView.reloadData()
+    }
     
     func setupHomeMapView(){
         
@@ -109,11 +125,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeMapView.settings.compassButton = true
         homeMapView.settings.indoorPicker = true
         
-        for listing in DummyData.theDummyData.homesForSale{
-            let marker = GMSMarker()
-            marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-            marker.map = homeMapView
-        }
+        
+        
+//        for listing in DummyData.theDummyData.homesForSale{
+//            let marker = GMSMarker()
+//            marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+//            marker.map = homeMapView
+//        }
         
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
@@ -154,9 +172,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.titleView = mapListSegmentedControl
     }
     
-    func setupTopRightButton(){
+    func setupTopRightButtons(){
         topRightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newPostAction))
-        self.navigationItem.rightBarButtonItem = topRightButton
+        profileButton =  UIBarButtonItem(title: "Prof", style: .plain, target: self, action: #selector(profileViewControllerSegue))
+        
+        self.navigationItem.rightBarButtonItems = [profileButton, topRightButton]
     }
     
     func setupTopLeftButtons(){
@@ -183,10 +203,45 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    @objc func newPostAction(){
-        let postViewController = PostViewController()
-        self.navigationController?.pushViewController(postViewController, animated: true)
+    @objc func profileViewControllerSegue(){
+        
+        if(guestUser == true){
+            signInAlert(title: "You need to sign in to see your profile")
+        }
+        else {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
     }
+    
+    @objc func newPostAction(){
+        
+        if(guestUser == true){
+            signInAlert(title: "You need to sign in to make a post")
+        }
+        else {
+            let postViewController = PostViewController()
+            self.navigationController?.pushViewController(postViewController, animated: true)
+        }
+    }
+    
+    func signInAlert(title: String){
+        let signInAlert = UIAlertController(title: "Sorry", message: title, preferredStyle: .alert)
+        let createAccountAction = UIAlertAction(title: "Log in", style: .default, handler: { (alert: UIAlertAction!) in
+            
+            let loginViewController = LoginViewController()
+            self.present(loginViewController, animated: true, completion: nil)
+            
+            loggedInBool = false
+        })
+        let cancelAction = UIAlertAction(title: "Just browse", style: .cancel, handler: nil)
+        
+        signInAlert.addAction(createAccountAction)
+        signInAlert.addAction(cancelAction)
+        
+        self.present(signInAlert, animated: true, completion: nil)
+    }
+
     
     @objc func showSearchBar(){
         resultsViewController = GMSAutocompleteResultsViewController()
@@ -386,16 +441,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //tableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DummyData.theDummyData.homesForSale.count
+        return FirebaseData.sharedInstance.homesForSale.count
+        //return DummyData.theDummyData.homesForSale.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let storageRef = Storage.storage().reference()
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
         
-        let listing = DummyData.theDummyData.homesForSale[indexPath.row]
+        //let listing = DummyData.theDummyData.homesForSale[indexPath.row]
+        let listing = FirebaseData.sharedInstance.homesForSale[indexPath.row]
         
-        cell.leftImageView.image = listing.photos[0]
+        //cell.leftImageView.image = listing.photos[0]
+        //cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
         cell.leftImageView.contentMode = .scaleToFill
         cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"
@@ -409,7 +467,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let listingViewController = ListingDetailViewController()
-        listingViewController.currentListing = DummyData.theDummyData.homesForSale[indexPath.row]
+        
+        //listingViewController.currentListing = DummyData.theDummyData.homesForSale[indexPath.row]
+        listingViewController.currentListing = FirebaseData.sharedInstance.homesForSale[indexPath.row]
         
         self.navigationController?.pushViewController(listingViewController, animated: true)
         
