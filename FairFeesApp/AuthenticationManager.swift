@@ -84,6 +84,7 @@ class AuthenticationManager: NSObject {
                 let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
                
                 //read this user's data
+                
                 FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(userUID!)
                     .observeSingleEvent(of: .value, with: { (snapshot) in
                         let data = snapshot.value as? NSDictionary
@@ -94,8 +95,8 @@ class AuthenticationManager: NSObject {
                         
                         let userData: [String:Any] = data as! [String : Any]
                         
-                        //set the current user with all the online data
-                        FirebaseData.sharedInstance.currentUser = User(with: userData)
+                        ReadFirebaseData.readUser(userData: userData)
+        
                     })
             
                 guestUser = false

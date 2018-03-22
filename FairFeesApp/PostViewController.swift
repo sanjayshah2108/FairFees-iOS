@@ -357,6 +357,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         photoCollectionView.dataSource = self
         photoCollectionView.backgroundColor = UIColor.white
         
+        photoCollectionView.register(UINib(nibName: "PostPhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "photoCollectionViewCell")
+        
         photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
     }
@@ -700,8 +702,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        photoCollectionView.register(UINib(nibName: "PostPhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "photoCollectionViewCell")
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
         

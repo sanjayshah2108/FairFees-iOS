@@ -15,8 +15,6 @@ import FirebaseStorage
 import Firebase
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, GMSAutocompleteResultsViewControllerDelegate {
-
-    
     
     let myDownloadCompleteNotificationKey = "myDownloadCompleteNotificationKey"
     
@@ -29,6 +27,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var topRightButton: UIBarButtonItem!
     var topLeftButton: UIBarButtonItem!
     var filterButton: UIBarButtonItem!
+    var profileButton: UIBarButtonItem!
     var searchBar: UISearchBar!
     var filterView: UIView!
     var filterViewIsInFront: Bool!
@@ -63,7 +62,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterViewHeight = 160
         
         setupMapListSegmentTitle()
-        setupTopRightButton()
+        setupTopRightButtons()
         setupTopLeftButtons()
         
         setupHomeMapView()
@@ -173,9 +172,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.titleView = mapListSegmentedControl
     }
     
-    func setupTopRightButton(){
+    func setupTopRightButtons(){
         topRightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newPostAction))
-        self.navigationItem.rightBarButtonItem = topRightButton
+        profileButton =  UIBarButtonItem(title: "Prof", style: .plain, target: self, action: #selector(profileViewControllerSegue))
+        
+        self.navigationItem.rightBarButtonItems = [profileButton, topRightButton]
     }
     
     func setupTopLeftButtons(){
@@ -202,31 +203,45 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    @objc func profileViewControllerSegue(){
+        
+        if(guestUser == true){
+            signInAlert(title: "You need to sign in to see your profile")
+        }
+        else {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+    }
+    
     @objc func newPostAction(){
         
         if(guestUser == true){
-            
-            let postAsGuestAlert = UIAlertController(title: "Sorry", message: "You need an account to make a post", preferredStyle: .alert)
-            let createAccountAction = UIAlertAction(title: "Log in", style: .default, handler: { (alert: UIAlertAction!) in
-                
-                let loginViewController = LoginViewController()
-                self.present(loginViewController, animated: true, completion: nil)
-                
-                loggedInBool = false
-            })
-            let cancelAction = UIAlertAction(title: "Just browse", style: .cancel, handler: nil)
-            
-            postAsGuestAlert.addAction(createAccountAction)
-            postAsGuestAlert.addAction(cancelAction)
-            
-            self.present(postAsGuestAlert, animated: true, completion: nil)
+            signInAlert(title: "You need to sign in to make a post")
         }
-            
         else {
             let postViewController = PostViewController()
             self.navigationController?.pushViewController(postViewController, animated: true)
         }
     }
+    
+    func signInAlert(title: String){
+        let signInAlert = UIAlertController(title: "Sorry", message: title, preferredStyle: .alert)
+        let createAccountAction = UIAlertAction(title: "Log in", style: .default, handler: { (alert: UIAlertAction!) in
+            
+            let loginViewController = LoginViewController()
+            self.present(loginViewController, animated: true, completion: nil)
+            
+            loggedInBool = false
+        })
+        let cancelAction = UIAlertAction(title: "Just browse", style: .cancel, handler: nil)
+        
+        signInAlert.addAction(createAccountAction)
+        signInAlert.addAction(cancelAction)
+        
+        self.present(signInAlert, animated: true, completion: nil)
+    }
+
     
     @objc func showSearchBar(){
         resultsViewController = GMSAutocompleteResultsViewController()

@@ -124,7 +124,11 @@ class ReadFirebaseData: NSObject {
                         for thirdCharInEmail in secondCharDict {
                             let thirdCharDict = thirdCharInEmail.value as! [String:Any]
                             
-                            self.readUser(data: thirdCharDict)
+                            for user in thirdCharDict{
+                                let userData = user.value as! [String: Any]
+                                self.readUser(userData: userData)
+                            }
+                            
                         }
                     }
                 }
@@ -132,29 +136,31 @@ class ReadFirebaseData: NSObject {
     }
     
     //read an individual user
-    class func readUser(data: [String: Any]){
-        for any in data {
-            
-            let user: [String:Any] = any.value as! [String:Any]
-            let UID: String = user["UID"] as! String
-            let firstName: String = user["firstName"] as! String
-            let lastName: String = user["lastName"] as! String
-            let email: String = user["email"] as! String
-            let phoneNumber: Int = user["phoneNumber"] as! Int
-            let rating: Int = user["rating"] as! Int
+    class func readUser(userData: [String: Any]){
+     
+            let UID: String = userData["UID"] as! String
+            let firstName: String = userData["firstName"] as! String
+            let lastName: String = userData["lastName"] as! String
+            let email: String = userData["email"] as! String
+            let phoneNumber: Int = userData["phoneNumber"] as! Int
+            let rating: Int = userData["rating"] as! Int
             
             
             //user["listingRefs"] may have disappeared in the Firebase DB if the user deleted his only listing, so we have to check first.
-            var listingRefs: [String]
+            var listingRefs: [String] = []
             
-            if (user.keys.contains("listings")){
-                listingRefs = (user["listings"] as? [String])!
+            if (userData.keys.contains("listings")){
+                listingRefs = (userData["listings"] as? [String])!
             }
             else {
                 listingRefs = [] as [String]
             }
             
             //since the user data on Firebase only contains the references to the listings, we have to append them  manually to the user's local data.
+        
+            //first, clear the specificUserListings array.
+            FirebaseData.sharedInstance.specificUserListings.removeAll()
+        
             var listings: [Listing] = []
             var index = 0
             for listingRef in listingRefs{
@@ -164,8 +170,6 @@ class ReadFirebaseData: NSObject {
                     listingRefs.remove(at: index)
                 }
                 else {
-                    //first, clear the specificUserListings array.
-                    FirebaseData.sharedInstance.specificUserListings.removeAll()
                     
                     let ref = FirebaseData.sharedInstance.homesForSaleNode.child(listingRef)
                     ref.observe(DataEventType.value, with: { (snapshot) in
@@ -180,25 +184,31 @@ class ReadFirebaseData: NSObject {
                         let data = value as? [String:Any]
                         readHomeForSale(data: data!, specificUser: true)
                         
-                        listings = FirebaseData.sharedInstance.specificUserListings
+                        //if this homeSale is the last one in the listingRefs
+                        if (index == listingRefs.count){
+                            
+                            listings = FirebaseData.sharedInstance.specificUserListings
+                            
+                            //create the user with all the listings
+                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings)
+                            
+                            FirebaseData.sharedInstance.users.append(readUser)
+                            
+                            //set the current user
+                            if (UID == Auth.auth().currentUser?.uid){
+                                FirebaseData.sharedInstance.currentUser = readUser
+                            }
+                        }
+                        
                     })
                     index = index+1
                 }
             }
-            
-            //create the user with all the listings
-            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings)
-            
-            FirebaseData.sharedInstance.users.append(readUser)
-       
-            //set the current user
-            if (UID == Auth.auth().currentUser?.uid){
-                FirebaseData.sharedInstance.currentUser = readUser
-            }
-            
-        }
-        let myUsersDownloadNotificationKey = "myUsersDownloadNotificationKey"
-        NotificationCenter.default.post(name: Notification.Name(rawValue: myUsersDownloadNotificationKey), object: nil)
+        
+        
+        
+//        let myUsersDownloadNotificationKey = "myUsersDownloadNotificationKey"
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: myUsersDownloadNotificationKey), object: nil)
     }
     
     

@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import FirebaseStorage
 
 class EditPostViewController: PostViewController {
+    
+    weak var listingToEdit: Listing!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,39 +19,144 @@ class EditPostViewController: PostViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func setupCollectionView(){
+    override func setupTextFields() {
         
-        photosArray = []
+        nameTextField = UITextField()
+        nameTextField.delegate = self
+        nameTextField.frame = CGRect.zero
+        nameTextField.layer.borderWidth = 1
+        nameTextField.layer.borderColor = UIColor.gray.cgColor
+        nameTextField.layer.cornerRadius = 3
+        nameTextField.text = listingToEdit.name
+        nameTextField.textAlignment = .center
+        nameTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nameTextField)
         
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize.init(width: 150, height: 150)
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 5.0
-        photoCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        view.addSubview(photoCollectionView)
+        priceTextField = UITextField()
+        priceTextField.delegate = self
+        priceTextField.frame = CGRect.zero
+        priceTextField.keyboardType = .numberPad
+        priceTextField.layer.borderWidth = 1
+        priceTextField.layer.borderColor = UIColor.gray.cgColor
+        priceTextField.layer.cornerRadius = 3
+        priceTextField.placeholder = "Price"
+        priceTextField.textAlignment = .center
+        priceTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        priceTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(priceTextField)
         
-        photoCollectionView.delegate = self
-        photoCollectionView.dataSource = self
-        photoCollectionView.backgroundColor = UIColor.white
+        sizeTextField = UITextField()
+        sizeTextField.delegate = self
+        sizeTextField.frame = CGRect.zero
+        sizeTextField.keyboardType = .numberPad
+        sizeTextField.layer.borderWidth = 1
+        sizeTextField.layer.borderColor = UIColor.gray.cgColor
+        sizeTextField.layer.cornerRadius = 3
+        sizeTextField.placeholder = "Size (SF)"
+        sizeTextField.textAlignment = .center
+        sizeTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        sizeTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sizeTextField)
+    
         
-        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionTextField = UITextView()
+        descriptionTextField.delegate = self
+        descriptionTextField.frame = CGRect.zero
+        descriptionTextField.layer.borderWidth = 1
+        descriptionTextField.layer.borderColor = UIColor.gray.cgColor
+        descriptionTextField.layer.cornerRadius = 3
+        descriptionTextField.text = "Description"
+        descriptionTextField.textColor = UIColor.lightGray
+        descriptionTextField.textAlignment = .center
+        descriptionTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(descriptionTextField)
         
+        cityTextField = UITextField()
+        cityTextField.delegate = self
+        cityTextField.frame = CGRect.zero
+        cityTextField.layer.borderWidth = 1
+        cityTextField.layer.borderColor = UIColor.gray.cgColor
+        cityTextField.layer.cornerRadius = 3
+        cityTextField.placeholder = "City"
+        cityTextField.textAlignment = .center
+        cityTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        cityTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cityTextField)
+        
+        countryTextField = UITextField()
+        countryTextField.delegate = self
+        countryTextField.frame = CGRect.zero
+        countryTextField.layer.borderWidth = 1
+        countryTextField.layer.borderColor = UIColor.gray.cgColor
+        countryTextField.layer.cornerRadius = 3
+        countryTextField.placeholder = "Country"
+        countryTextField.textAlignment = .center
+        countryTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        countryTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(countryTextField)
+        
+        provinceTextField = UITextField()
+        provinceTextField.delegate = self
+        provinceTextField.frame = CGRect.zero
+        provinceTextField.layer.borderWidth = 1
+        provinceTextField.layer.borderColor = UIColor.gray.cgColor
+        provinceTextField.layer.cornerRadius = 3
+        provinceTextField.placeholder = "Province"
+        provinceTextField.textAlignment = .center
+        provinceTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        provinceTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(provinceTextField)
+        
+        addressTextField = UITextField()
+        addressTextField.delegate = self
+        addressTextField.frame = CGRect.zero
+        addressTextField.layer.borderWidth = 1
+        addressTextField.layer.borderColor = UIColor.gray.cgColor
+        addressTextField.layer.cornerRadius = 3
+        addressTextField.placeholder = "Address"
+        addressTextField.textAlignment = .center
+        addressTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        addressTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addressTextField)
+        
+        zipcodeTextField = UITextField()
+        zipcodeTextField.delegate = self
+        zipcodeTextField.frame = CGRect.zero
+        zipcodeTextField.layer.borderWidth = 1
+        zipcodeTextField.layer.borderColor = UIColor.gray.cgColor
+        zipcodeTextField.layer.cornerRadius = 3
+        zipcodeTextField.placeholder = "Zipcode"
+        zipcodeTextField.textAlignment = .center
+        zipcodeTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        zipcodeTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(zipcodeTextField)
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let storageRef = Storage.storage().reference()
+        
+        //photoCollectionView.register(UINib(nibName: "PostPhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "photoCollectionViewCell")
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
+        
+        //cell.cellImageView.sd_setImage(with: storageRef.child(listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+        
+        return cell
+        
     }
-    */
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return listingToEdit.photoRefs.count
+    }
+
 
 }
