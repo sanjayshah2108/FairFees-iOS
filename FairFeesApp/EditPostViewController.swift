@@ -110,7 +110,7 @@ class EditPostViewController: PostViewController {
         provinceTextField.layer.borderWidth = 1
         provinceTextField.layer.borderColor = UIColor.gray.cgColor
         provinceTextField.layer.cornerRadius = 3
-        provinceTextField.text - homeSaleToEdit.province
+        provinceTextField.text = homeSaleToEdit.province
         provinceTextField.textAlignment = .center
         provinceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         provinceTextField.translatesAutoresizingMaskIntoConstraints = false
