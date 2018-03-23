@@ -90,6 +90,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         cell.listingNameLabel.text = FirebaseData.sharedInstance.currentUser?.listings[indexPath.row].name
         cell.listingImageView.sd_setImage(with: Storage.storage().reference().child((FirebaseData.sharedInstance.currentUser?.listings[indexPath.row].photoRefs[0])!))
+        cell.listingImageView.contentMode = .scaleAspectFill
+        cell.listingImageView.clipsToBounds = true
         
         return cell
     }
@@ -99,5 +101,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         editPostViewController.listingToEdit = FirebaseData.sharedInstance.currentUser?.listings[indexPath.row]
         
         self.navigationController?.pushViewController(editPostViewController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }
