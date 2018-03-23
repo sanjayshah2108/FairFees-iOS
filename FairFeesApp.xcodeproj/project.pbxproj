@@ -124,6 +124,7 @@
 		CE6EFD4920642983009AFF6A /* ProfileListingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD4520642983009AFF6A /* ProfileListingsTableViewCell.xib */; };
 		CE6EFD4A20642983009AFF6A /* ProfileListingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD4520642983009AFF6A /* ProfileListingsTableViewCell.xib */; };
 		CE6EFD4B20642983009AFF6A /* ProfileListingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6EFD4520642983009AFF6A /* ProfileListingsTableViewCell.xib */; };
+		CE6EFD4E2064793A009AFF6A /* HomeRental.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EFD4D2064793A009AFF6A /* HomeRental.swift */; };
 		CE7F7DF2204DD32D00548D5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */; };
 		CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */; };
 		CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7F7DF7204DD32D00548D5F /* Main.storyboard */; };
@@ -250,6 +251,7 @@
 		CE6EFD402064261F009AFF6A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CE6EFD4420642983009AFF6A /* ProfileListingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileListingsTableViewCell.swift; sourceTree = "<group>"; };
 		CE6EFD4520642983009AFF6A /* ProfileListingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileListingsTableViewCell.xib; sourceTree = "<group>"; };
+		CE6EFD4D2064793A009AFF6A /* HomeRental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRental.swift; sourceTree = "<group>"; };
 		CE7F7DEE204DD32D00548D5F /* FairFeesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FairFeesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 				CE6EFD3C20634D8B009AFF6A /* EditPostViewController.swift */,
 				CE51484D204F778F0021DB67 /* Sale.swift */,
 				CE514851204F7A580021DB67 /* HomeSale.swift */,
+				CE6EFD4D2064793A009AFF6A /* HomeRental.swift */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
 				CE51485320505FAE0021DB67 /* UIProperties.swift */,
 				CE51484B204F74540021DB67 /* DummyData.swift */,
@@ -826,37 +829,17 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -906,6 +889,7 @@
 				CE7F7E28204DE78500548D5F /* Listing.swift in Sources */,
 				CE51485C2051B7000021DB67 /* PostViewController.swift in Sources */,
 				CE7F7E2C204DE8C100548D5F /* Rental.swift in Sources */,
+				CE6EFD4E2064793A009AFF6A /* HomeRental.swift in Sources */,
 				CE5148632054C0560021DB67 /* PostPhotoCollectionViewCell.swift in Sources */,
 				CE51485620506A350021DB67 /* ListingDetailViewController.swift in Sources */,
 				CE514850204F77C20021DB67 /* User.swift in Sources */,

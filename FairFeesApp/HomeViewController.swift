@@ -77,6 +77,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         //setupDummyData()
         ReadFirebaseData.readUsers()
         ReadFirebaseData.readHomesForSale()
+        ReadFirebaseData.readHomesForRent()
         
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
@@ -453,7 +454,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let listing = FirebaseData.sharedInstance.homesForSale[indexPath.row]
         
         //cell.leftImageView.image = listing.photos[0]
-        //cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
+        cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
         cell.leftImageView.contentMode = .scaleToFill
         cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"

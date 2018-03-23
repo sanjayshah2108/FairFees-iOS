@@ -9,11 +9,13 @@
 import UIKit
 import MapKit
 import GoogleMaps
+import FirebaseStorageUI
 
 class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     var navigationBarHeight: CGFloat!
     
+    var storageRef: StorageReference!
     weak var currentListing: HomeSale!
 
     var imageViewCarousel: UIImageView!
@@ -45,6 +47,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
         
+        Storage.storage().reference()
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -69,11 +73,13 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     
     func setupImageView(){
-        
+        let storageRef = Storage.storage().reference()
         imageViewCarousel = UIImageView()
         imageViewCarousel.isUserInteractionEnabled = true
         photoIndex = 0
         //imageViewCarousel.image = currentListing.photos[photoIndex]
+        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+        
         imageViewCarousel.contentMode = .scaleAspectFill
         
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -116,7 +122,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         imageViewPageControl = UIPageControl()
         imageViewPageControl.currentPage = 0
-        imageViewPageControl.numberOfPages = currentListing.photos.count
+        imageViewPageControl.numberOfPages = currentListing.photoRefs.count
         imageViewPageControl.pageIndicatorTintColor = UIColor.gray
         imageViewPageControl.currentPageIndicatorTintColor = UIColor.white
         imageViewPageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -290,7 +296,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     }
     
     @objc func nextImage(){
-        if (photoIndex == currentListing.photos.count-1){
+        if (photoIndex == currentListing.photoRefs.count-1){
             photoIndex = 0
             imageViewPageControl.currentPage = 0
         }
@@ -299,19 +305,22 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             imageViewPageControl.currentPage += 1
         }
         
+        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
         //imageViewCarousel.image = currentListing.photos[photoIndex]
+        
     }
     
     @objc func previousImage(){
         if (photoIndex == 0){
-            photoIndex = currentListing.photos.count-1
-            imageViewPageControl.currentPage = currentListing.photos.count-1
+            photoIndex = currentListing.photoRefs.count-1
+            imageViewPageControl.currentPage = currentListing.photoRefs.count-1
         }
         else {
             photoIndex = photoIndex - 1
             imageViewPageControl.currentPage -= 1
         }
     
+       imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
         //imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
@@ -363,6 +372,11 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     //fullcreen image methods
     @objc func fullscreenImage() {
         
+      
+        
+        let tempImageView = UIImageView()
+        tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+        
         let newImageView = ImageScrollView()
         newImageView.translatesAutoresizingMaskIntoConstraints = true
         newImageView.frame = UIScreen.main.bounds
@@ -370,7 +384,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         newImageView.presentingVC = self
         
-        newImageView.display(image: currentListing.photos[photoIndex])
+        newImageView.display(image: tempImageView.image!)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
 

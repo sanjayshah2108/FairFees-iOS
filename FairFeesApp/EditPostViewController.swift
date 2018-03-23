@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorageUI
 import FirebaseStorage
 
 class EditPostViewController: PostViewController {

@@ -12,6 +12,7 @@ import Firebase
 class ReadFirebaseData: NSObject {
 
     static var homesForSaleHandle: UInt? = nil
+    static var homesForRentHandle: UInt? = nil
     
     //read all homesForSale
     class func readHomesForSale() {
@@ -82,6 +83,84 @@ class ReadFirebaseData: NSObject {
                                     }
                                     else {
                                         print("The homeForSale is nil")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    class func readHomesForRent() {
+        //?? Do we need this
+        if ( Auth.auth().currentUser == nil)
+        {
+            return
+        }
+        
+        let ref = FirebaseData.sharedInstance.homesForRentNode
+        
+        let tempHandle = ref.observe(DataEventType.value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary;
+            
+            //first, clear all
+            FirebaseData.sharedInstance.homesForRent.removeAll()
+            
+            if ( value == nil) {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "noHomesForRentKey"), object: nil)
+                return
+            }
+            
+            let data = value as? [String:Any]
+            
+            //get individual homesForRent data and append to local data
+            readHomeForRent(data: data!, specificUser: false)
+            
+            let rentalHomesDownloadCompleteNotificationKey = "rentalHomesDownloadCompleteNotificationKey"
+            NotificationCenter.default.post(name: Notification.Name(rawValue: rentalHomesDownloadCompleteNotificationKey), object: nil)
+        })
+        
+        if homesForRentHandle != nil {
+            ref.removeObserver(withHandle: homesForRentHandle!)
+        }
+        homesForRentHandle = tempHandle
+        
+    }
+    
+    fileprivate class func readHomeForRent(data:[String:Any], specificUser: Bool) {
+        
+        //appending a specific user's homesForSale to that user's local data.
+        if (specificUser){
+            let readHomeForRent = HomeRental(with: data)
+            FirebaseData.sharedInstance.specificUserListings.append(readHomeForRent!)
+        }
+            
+            //appending all homesForRent to local data
+        else {
+            
+            //refer to Firebase Data structure to understand these for loops
+            for country in data {
+                let provinceDict = country.value as! [String:Any]
+                for province in provinceDict {
+                    let cityDict = province.value as! [String:Any]
+                    for city in cityDict {
+                        let zipcodeDict = city.value as! [String:Any]
+                        for zipcode in zipcodeDict {
+                            let usersDict = zipcode.value as! [String:Any]
+                            for users in usersDict {
+                                let userListingsDict = users.value as! [String: Any]
+                                for userListing in userListingsDict {
+                                    let homeForRent = userListing.value as! [String: Any]
+                                    
+                                    let readHomeForRent = HomeRental(with: homeForRent)
+                                    
+                                    if readHomeForRent != nil {
+                                        FirebaseData.sharedInstance.homesForRent.append(readHomeForRent!)
+                                    }
+                                    else {
+                                        print("The homeForRent is nil")
                                     }
                                 }
                             }

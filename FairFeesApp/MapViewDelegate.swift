@@ -137,7 +137,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         view.layer.cornerRadius = 6
         
         let imageView =  UIImageView(frame: CGRect(x: 2, y: 2, width: view.frame.size.width/3, height: view.frame.size.height))
-        //imageView.sd_setImage(with: storageRef.child(listingToPresent.photoRefs[0]), placeholderImage: nil)
+        imageView.sd_setImage(with: storageRef.child(listingToPresent.photoRefs[0]), placeholderImage: nil)
         //imageView.image = listingToPresent.photos[0]
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 6

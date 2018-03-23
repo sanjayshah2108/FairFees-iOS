@@ -557,7 +557,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             
         
-        let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: DummyData.theDummyData.users[0].email, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: Int(bathroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: DummyData.theDummyData.users[0].email, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+            let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: DummyData.theDummyData.users[0].email, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: Int(bathroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: DummyData.theDummyData.users[0].email, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
             
 
             
