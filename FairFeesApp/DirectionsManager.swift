@@ -47,7 +47,7 @@ class DirectionsManager: NSObject {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         
-        let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(sourceCoordinate.latitude),\(sourceCoordinate.longitude)&destination=\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)&sensor=true&mode=driving&key=AIzaSyDlYdqvfcUyu_fE9nMcqO_m4dEuleihz34")!
+        let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(sourceCoordinate.latitude),\(sourceCoordinate.longitude)&destination=\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)&sensor=true&mode=driving&key=AIzaSyDT14Cef5MjsDIc70mQPh4ToyJnltmEGPA")!
         
         let task = session.dataTask(with: url, completionHandler: {
             (data, response, error) in

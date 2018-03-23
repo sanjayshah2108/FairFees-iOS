@@ -27,7 +27,7 @@ class WriteFirebaseData: NSObject {
         
         let user = FirebaseData.sharedInstance.currentUser!
         
-        let listingPath = "/\(homeForSale.country!)/\(homeForSale.province!)/\(homeForSale.city!)/\(homeForSale.zipcode!)/\(user.UID!)/\(homeForSale.UID!)"
+        let listingPath = "/forSale/homesForSale/\(homeForSale.country!)/\(homeForSale.province!)/\(homeForSale.city!)/\(homeForSale.zipcode!)/\(user.UID!)/\(homeForSale.UID!)"
       
         
         //            if sharedInstance.currentUser!.listings.first == "" {
@@ -35,7 +35,7 @@ class WriteFirebaseData: NSObject {
         //            }
         
         FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
-        FirebaseData.sharedInstance.homesForSaleNode.child(listingPath).setValue(homeForSale.toDictionary())
+        FirebaseData.sharedInstance.forSaleNode.child(listingPath).setValue(homeForSale.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
         //FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).setValue(FirebaseData.sharedInstance.currentUser?.toDictionary())
@@ -45,7 +45,7 @@ class WriteFirebaseData: NSObject {
         
         let user = FirebaseData.sharedInstance.currentUser!
         
-        let listingPath = "/\(homeForRent.country!)/\(homeForRent.province!)/\(homeForRent.city!)/\(homeForRent.zipcode!)/\(user.UID!)/\(homeForRent.UID!)"
+        let listingPath = "/forRent/homesForRent/\(homeForRent.country!)/\(homeForRent.province!)/\(homeForRent.city!)/\(homeForRent.zipcode!)/\(user.UID!)/\(homeForRent.UID!)"
         
         
         //            if sharedInstance.currentUser!.listings.first == "" {
@@ -53,7 +53,7 @@ class WriteFirebaseData: NSObject {
         //            }
         
         FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
-        FirebaseData.sharedInstance.homesForRentNode.child(listingPath).setValue(homeForRent.toDictionary())
+        FirebaseData.sharedInstance.forRentNode.child(listingPath).setValue(homeForRent.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
     }

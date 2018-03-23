@@ -15,16 +15,31 @@ class EditPostViewController: PostViewController {
     
     weak var listingToEdit: Listing!
     weak var homeSaleToEdit: HomeSale!
+    weak var homeRentalToEdit: HomeRental!
 
     override func viewDidLoad() {
         
+        if(listingToEdit.isKind(of: HomeRental.self)){
+            homeRentalToEdit = listingToEdit as! HomeRental
+            listingToEdit = homeRentalToEdit
+        }
+        else if (listingToEdit.isKind(of: HomeSale.self)){
+            homeSaleToEdit = listingToEdit as! HomeSale
+            listingToEdit = homeSaleToEdit
+        }
         
-        homeSaleToEdit = listingToEdit as! HomeSale
         super.viewDidLoad()
         self.title = homeSaleToEdit.name
-       
+        
+        if(listingToEdit.isKind(of: HomeRental.self)){
+            sellOrLeaseSegmentedControl.selectedSegmentIndex = 1
+        }
+        else if (listingToEdit.isKind(of: HomeSale.self)){
+            sellOrLeaseSegmentedControl.selectedSegmentIndex = 0
+        }
 
-        // Do any additional setup after loading the view.
+        
+        sellOrLeaseSegmentedControl.isEnabled = false
     }
     
     override func setupTextFields() {
@@ -48,7 +63,12 @@ class EditPostViewController: PostViewController {
         priceTextField.layer.borderWidth = 1
         priceTextField.layer.borderColor = UIColor.gray.cgColor
         priceTextField.layer.cornerRadius = 3
-        priceTextField.text = String((homeSaleToEdit.price)!)
+        if(listingToEdit.isKind(of: HomeRental.self)){
+            priceTextField.text = String((homeRentalToEdit.monthlyRent)!)
+        }
+        else if (listingToEdit.isKind(of: HomeSale.self)){
+            priceTextField.text = String((homeSaleToEdit.price)!)
+        }
         priceTextField.textAlignment = .center
         priceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         priceTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +94,7 @@ class EditPostViewController: PostViewController {
         descriptionTextField.layer.borderWidth = 1
         descriptionTextField.layer.borderColor = UIColor.gray.cgColor
         descriptionTextField.layer.cornerRadius = 3
-        descriptionTextField.text = homeSaleToEdit.listingDescription
+        descriptionTextField.text = listingToEdit.listingDescription
         descriptionTextField.textColor = UIColor.lightGray
         descriptionTextField.textAlignment = .center
         descriptionTextField.font = UIFont(name: "Avenir-Light", size: 15)
@@ -87,7 +107,7 @@ class EditPostViewController: PostViewController {
         cityTextField.layer.borderWidth = 1
         cityTextField.layer.borderColor = UIColor.gray.cgColor
         cityTextField.layer.cornerRadius = 3
-        cityTextField.text = homeSaleToEdit.city
+        cityTextField.text = listingToEdit.city
         cityTextField.textAlignment = .center
         cityTextField.font = UIFont(name: "Avenir-Light", size: 15)
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -99,7 +119,7 @@ class EditPostViewController: PostViewController {
         countryTextField.layer.borderWidth = 1
         countryTextField.layer.borderColor = UIColor.gray.cgColor
         countryTextField.layer.cornerRadius = 3
-        countryTextField.text = homeSaleToEdit.country
+        countryTextField.text = listingToEdit.country
         countryTextField.textAlignment = .center
         countryTextField.font = UIFont(name: "Avenir-Light", size: 15)
         countryTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +131,7 @@ class EditPostViewController: PostViewController {
         provinceTextField.layer.borderWidth = 1
         provinceTextField.layer.borderColor = UIColor.gray.cgColor
         provinceTextField.layer.cornerRadius = 3
-        provinceTextField.text = homeSaleToEdit.province
+        provinceTextField.text = listingToEdit.province
         provinceTextField.textAlignment = .center
         provinceTextField.font = UIFont(name: "Avenir-Light", size: 15)
         provinceTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -123,7 +143,7 @@ class EditPostViewController: PostViewController {
         addressTextField.layer.borderWidth = 1
         addressTextField.layer.borderColor = UIColor.gray.cgColor
         addressTextField.layer.cornerRadius = 3
-        addressTextField.text = homeSaleToEdit.address
+        addressTextField.text = listingToEdit.address
         addressTextField.textAlignment = .center
         addressTextField.font = UIFont(name: "Avenir-Light", size: 15)
         addressTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -135,15 +155,23 @@ class EditPostViewController: PostViewController {
         zipcodeTextField.layer.borderWidth = 1
         zipcodeTextField.layer.borderColor = UIColor.gray.cgColor
         zipcodeTextField.layer.cornerRadius = 3
-        zipcodeTextField.text = homeSaleToEdit.zipcode
+        zipcodeTextField.text = listingToEdit.zipcode
         zipcodeTextField.textAlignment = .center
         zipcodeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         zipcodeTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(zipcodeTextField)
         
-        bedroomNumberLabel.text = String((homeSaleToEdit.bedroomNumber)!)
+        if(listingToEdit.isKind(of: HomeRental.self)){
+            bedroomNumberLabel.text = String((homeRentalToEdit.bedroomNumber)!)
+            bathroomNumberLabel.text = String((homeRentalToEdit.bathroomNumber)!)
+        }
+        else if (listingToEdit.isKind(of: HomeSale.self)){
+            bedroomNumberLabel.text = String((homeSaleToEdit.bedroomNumber)!)
+            bathroomNumberLabel.text = String((homeSaleToEdit.bathroomNumber)!)
+        }
+        
         bedroomNumberLabel.textColor = UIColor.black
-        bathroomNumberLabel.text = String((homeSaleToEdit.bathroomNumber)!)
+        
         bathroomNumberLabel.textColor = UIColor.black
     }
     

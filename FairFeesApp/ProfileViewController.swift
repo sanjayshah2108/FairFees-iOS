@@ -101,6 +101,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         editPostViewController.listingToEdit = FirebaseData.sharedInstance.currentUser?.listings[indexPath.row]
         
         self.navigationController?.pushViewController(editPostViewController, animated: true)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

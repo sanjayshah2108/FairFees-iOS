@@ -16,7 +16,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     var navigationBarHeight: CGFloat!
     
     var storageRef: StorageReference!
-    weak var currentListing: HomeSale!
+    weak var currentListing: Listing!
 
     var imageViewCarousel: UIImageView!
     var imageViewPageControl: UIPageControl!
@@ -47,7 +47,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
         
-        Storage.storage().reference()
+        storageRef = Storage.storage().reference()
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -58,6 +58,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         self.title = currentListing.name
         
+
         setupImageView()
         setupLabels()
         setupMapView()
@@ -150,6 +151,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     func setupFeatureLabels(){
         
+        
         featuresView = UIView()
         featuresView.backgroundColor = UIColor.white
         featuresView.layer.borderWidth = 1
@@ -172,10 +174,22 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         featuresView.addSubview(bedroomLabel)
         featuresView.addSubview(bathroomLabel)
         
-        priceLabel.text = "$\(currentListing.price!)"
-        sizeLabel.text = "\(currentListing.size!) SF"
-        bedroomLabel.text = "\(currentListing.bedroomNumber!) Bed"
-        bathroomLabel.text = "\(currentListing.bathroomNumber!) Bath"
+        if(currentListing.isKind(of: HomeRental.self)){
+            let currentHomeRental = currentListing as! HomeRental
+            
+            priceLabel.text = "$\(currentHomeRental.monthlyRent!)/month"
+            sizeLabel.text = "\(currentHomeRental.size!) SF"
+            bedroomLabel.text = "\(currentHomeRental.bedroomNumber!) Bed"
+            bathroomLabel.text = "\(currentHomeRental.bathroomNumber!) Bath"
+        }
+        else if (currentListing.isKind(of: HomeSale.self)){
+            let currentHomeSale = currentListing as! HomeSale
+            
+            priceLabel.text = "$\(currentHomeSale.price!)"
+            sizeLabel.text = "\(currentHomeSale.size!) SF"
+            bedroomLabel.text = "\(currentHomeSale.bedroomNumber!) Bed"
+            bathroomLabel.text = "\(currentHomeSale.bathroomNumber!) Bath"
+        }
     }
 
     func setupMapView(){
@@ -305,7 +319,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             imageViewPageControl.currentPage += 1
         }
         
-        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs![photoIndex!]), placeholderImage: nil)
         //imageViewCarousel.image = currentListing.photos[photoIndex]
         
     }

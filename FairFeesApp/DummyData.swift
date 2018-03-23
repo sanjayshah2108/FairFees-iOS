@@ -29,7 +29,11 @@ class DummyData: NSObject {
                          email: "sanjays_94@hotmail.com",
                          phoneNumber: 7788816399,
                          rating: 5,
-                         listings: [])
+                         listings: [],
+                         typeOfUser: ["buyer": true,
+                                      "seller": true,
+                                      "landlord": true,
+                                      "tenant": true,])
         
         let user2 = User(uid: "notRealUID",
                          firstName: "Amir",
@@ -37,7 +41,11 @@ class DummyData: NSObject {
                          email: "amir.jahan@gmail.com",
                          phoneNumber: 6044413431,
                          rating: 5,
-                         listings: [])
+                         listings: [],
+                         typeOfUser: ["buyer": true,
+                                      "seller": true,
+                                      "landlord": true,
+                                      "tenant": true,])
         
         user1.listingsRefs = []
         user2.listingsRefs = []
@@ -229,7 +237,7 @@ class DummyData: NSObject {
         let homeForRent1 = HomeRental(
             name: "Fairview House",
             description: "Test Description",
-            location: CLLocation.init(latitude: 49.3200, longitude: -123.0724),
+            location: CLLocation.init(latitude: 49.3100, longitude: -123.0726),
             address:"1234 North Van",
             city:"Vancouver",
             province:"BC",

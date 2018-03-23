@@ -223,6 +223,7 @@ class ReadFirebaseData: NSObject {
             let email: String = userData["email"] as! String
             let phoneNumber: Int = userData["phoneNumber"] as! Int
             let rating: Int = userData["rating"] as! Int
+            let typeOfUser: [String: Bool] = userData["typeOfUser"] as! [String: Bool]
             
             
             //user["listingRefs"] may have disappeared in the Firebase DB if the user deleted his only listing, so we have to check first.
@@ -250,18 +251,31 @@ class ReadFirebaseData: NSObject {
                 }
                 else {
                     
-                    let ref = FirebaseData.sharedInstance.homesForSaleNode.child(listingRef)
+                    let ref = FirebaseData.sharedInstance.listingsNode.child(listingRef)
                     ref.observe(DataEventType.value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary;
                         
                         if ( value == nil) {
-                            print("This homeForSale doesn't exist")
+                            print("This listing doesn't exist")
                             return
                         }
                         
-                        //append this homeForSale to specificUserListings
+                        //find out if its a sale or rental
+                        let startIndex = listingRef.index(listingRef.startIndex, offsetBy: 17)
+                        let endIndex = listingRef.index(listingRef.startIndex, offsetBy: 21)
+                        let range = startIndex..<endIndex
+                        
+                        let typeOfListing = listingRef[range]
+                        
+                        //append this listing to specificUserListings
                         let data = value as? [String:Any]
-                        readHomeForSale(data: data!, specificUser: true)
+                        
+                        if typeOfListing == "Sale" {
+                            readHomeForSale(data: data!, specificUser: true)
+                        }
+                        if typeOfListing == "Rent" {
+                            readHomeForRent(data: data!, specificUser: true)
+                        }
                         
                         //if this homeSale is the last one in the listingRefs
                         if (index == listingRefs.count){
@@ -269,7 +283,7 @@ class ReadFirebaseData: NSObject {
                             listings = FirebaseData.sharedInstance.specificUserListings
                             
                             //create the user with all the listings
-                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings)
+                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser)
                             
                             FirebaseData.sharedInstance.users.append(readUser)
                             

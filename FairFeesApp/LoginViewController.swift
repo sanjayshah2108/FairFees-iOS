@@ -92,6 +92,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         firstNameTextfield = UITextField()
         firstNameTextfield.delegate = self
         firstNameTextfield.placeholder = "First Name"
+        firstNameTextfield.textAlignment = .center
         firstNameTextfield.layer.borderColor = UIColor.lightGray.cgColor
         firstNameTextfield.layer.borderWidth = 1
         firstNameTextfield.layer.cornerRadius = 2
@@ -101,6 +102,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         lastNameTextfield = UITextField()
         lastNameTextfield.delegate = self
         lastNameTextfield.placeholder = "Last Name"
+        lastNameTextfield.textAlignment = .center
         lastNameTextfield.layer.borderColor = UIColor.lightGray.cgColor
         lastNameTextfield.layer.borderWidth = 1
         lastNameTextfield.layer.cornerRadius = 2
@@ -110,6 +112,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordTextfield = UITextField()
         passwordTextfield.delegate = self
         passwordTextfield.placeholder = "Password"
+        passwordTextfield.textAlignment = .center
         passwordTextfield.layer.borderColor = UIColor.lightGray.cgColor
         passwordTextfield.layer.borderWidth = 1
         passwordTextfield.layer.cornerRadius = 2
@@ -124,6 +127,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             emailTextfield.text = Auth.auth().currentUser?.email
         }
         else { emailTextfield.placeholder = "Email Address"}
+        emailTextfield.textAlignment = .center
         emailTextfield.layer.borderColor = UIColor.lightGray.cgColor
         emailTextfield.layer.borderWidth = 1
         emailTextfield.layer.cornerRadius = 2
@@ -133,6 +137,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         confirmPasswordTextfield = UITextField()
         confirmPasswordTextfield.delegate = self
         confirmPasswordTextfield.placeholder = "Re-type password"
+        confirmPasswordTextfield.textAlignment = .center
         confirmPasswordTextfield.layer.borderColor = UIColor.lightGray.cgColor
         confirmPasswordTextfield.layer.borderWidth = 1
         confirmPasswordTextfield.layer.cornerRadius = 2

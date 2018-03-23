@@ -22,6 +22,8 @@ class FirebaseData: NSObject {
     public var specificUserListings: [Listing] = []
     
     public var listingsNode: DatabaseReference
+    public var forSaleNode: DatabaseReference
+    public var forRentNode: DatabaseReference
     public var homesForSaleNode: DatabaseReference
     public var homesForRentNode: DatabaseReference
     public var usersNode: DatabaseReference
@@ -30,6 +32,8 @@ class FirebaseData: NSObject {
     public override init() {
         usersNode = Database.database().reference().child("users")
         listingsNode = Database.database().reference().child("listings")
+        forRentNode = Database.database().reference().child("listings").child("forRent")
+        forSaleNode = Database.database().reference().child("listings").child("forSale")
         homesForSaleNode = Database.database().reference().child("listings").child("forSale").child("homesForSale")
         homesForRentNode = Database.database().reference().child("listings").child("forRent").child("homesForRent")
         

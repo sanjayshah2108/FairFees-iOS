@@ -95,17 +95,26 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
     /* handles Info Window tap */
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         
-        var listingToPresent: Listing!
+        //var listingToPresent: Listing!
+        var homeSaleToPresent: HomeSale!
+        var homeRentalToPresent: HomeRental!
         
-        //NOT THE BEST WAY TO PRESENT THE LISTING
+        let listingViewController = ListingDetailViewController()
+        
+        //NOT THE BEST WAY TO FIND THE LISTING
         for listing in FirebaseData.sharedInstance.homesForSale {
             if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
-                listingToPresent = listing
+                homeSaleToPresent = listing
+                listingViewController.currentListing = homeSaleToPresent
             }
         }
         
-        let listingViewController = ListingDetailViewController()
-        listingViewController.currentListing = listingToPresent as! HomeSale
+        for listing in FirebaseData.sharedInstance.homesForRent {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeRentalToPresent = listing
+                listingViewController.currentListing = homeRentalToPresent
+            }
+        }
         
         topController().navigationController?.pushViewController(listingViewController, animated: true)
     }
@@ -123,14 +132,33 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
     /* set a custom Info Window */
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
         
-        var listingToPresent: HomeSale!
+        var listingToPresent: Listing!
+        var homeSaleToPresent: HomeSale!
+        var homeRentalToPresent: HomeRental!
+        
         
         //NOT THE BEST WAY TO FIND THE LISTING
         for listing in FirebaseData.sharedInstance.homesForSale {
             if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
-                listingToPresent = listing
+                homeSaleToPresent = listing
+                listingToPresent = homeSaleToPresent
+                
             }
         }
+        
+        for listing in FirebaseData.sharedInstance.homesForRent {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeRentalToPresent = listing
+                listingToPresent = homeRentalToPresent
+            }
+        }
+        
+//        //NOT THE BEST WAY TO FIND THE LISTING
+//        for listing in FirebaseData.sharedInstance.homesForSale {
+//            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+//                listingToPresent = listing
+//            }
+//        }
         
         let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 250, height: 60))
         view.backgroundColor = UIColor.white
