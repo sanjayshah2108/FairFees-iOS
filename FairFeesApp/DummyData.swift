@@ -15,6 +15,7 @@ class DummyData: NSObject {
     
     var users: [User]!
     var homesForSale: [HomeSale]!
+    var homesForRent: [HomeRental]!
     
     let date = Date()
     
@@ -28,7 +29,11 @@ class DummyData: NSObject {
                          email: "sanjays_94@hotmail.com",
                          phoneNumber: 7788816399,
                          rating: 5,
-                         listings: [])
+                         listings: [],
+                         typeOfUser: ["buyer": true,
+                                      "seller": true,
+                                      "landlord": true,
+                                      "tenant": true,])
         
         let user2 = User(uid: "notRealUID",
                          firstName: "Amir",
@@ -36,7 +41,11 @@ class DummyData: NSObject {
                          email: "amir.jahan@gmail.com",
                          phoneNumber: 6044413431,
                          rating: 5,
-                         listings: [])
+                         listings: [],
+                         typeOfUser: ["buyer": true,
+                                      "seller": true,
+                                      "landlord": true,
+                                      "tenant": true,])
         
         user1.listingsRefs = []
         user2.listingsRefs = []
@@ -84,14 +93,15 @@ class DummyData: NSObject {
             UID: homeSale1UID,
             price: 300000,
             ownerUID: users[0].UID,
-            availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+            availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)),
+            active: true)
         
 
         
         homeSale1.photos = []
         
         let homeSale2UID = UUID().uuidString
-       let homeSale2 = HomeSale(name: "West Van Apt",
+        let homeSale2 = HomeSale(name: "West Van Apt",
                                  description: "Test Description",
                                  location: CLLocation.init(latitude: 49.3223441, longitude: -123.1117724),
                                  address:"1234 West Van",
@@ -115,7 +125,8 @@ class DummyData: NSObject {
                                  UID: homeSale2UID,
                                  price: 300000,
                                  ownerUID: users[0].UID,
-                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)),
+                                 active: true)
         
         homeSale2.photos = []
 
@@ -144,7 +155,8 @@ class DummyData: NSObject {
                                  UID: homeSale3UID,
                                  price: 300000,
                                  ownerUID: users[0].UID,
-                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)),
+                                 active: true)
         
         homeSale3.photos = []
 
@@ -171,7 +183,8 @@ class DummyData: NSObject {
                                  UID: homeSale4UID,
                                  price: 300000,
                                  ownerUID: users[0].UID,
-                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)),
+                                active: true)
         
         homeSale4.photos = []
 
@@ -194,7 +207,8 @@ class DummyData: NSObject {
                                  UID: homeSale5UID,
                                  price: 300000,
                                  ownerUID: users[0].UID,
-                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
+                                 availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)),
+                                 active: true)
         
         homeSale5.photos = []
         
@@ -213,6 +227,45 @@ class DummyData: NSObject {
         
         homesForSale.append(homeSale5)
         WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
+        
+        
+        
+        
+        homesForRent = []
+        
+        let homeForRent1UID = UUID().uuidString
+        let homeForRent1 = HomeRental(
+            name: "Fairview House",
+            description: "Test Description",
+            location: CLLocation.init(latitude: 49.3100, longitude: -123.0726),
+            address:"1234 North Van",
+            city:"Vancouver",
+            province:"BC",
+            country:"Canada",
+            zipcode:"VH60A9",
+            posterUID: users[0].UID,
+            photoRefs: [ImageManager.uploadImage(image: UIImage(named: "00G0G_iZpKq2kJbr8_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00G0G_iZpKq2kJbr8_1200x900.jpg"),
+                        ImageManager.uploadImage(image: UIImage(named: "00w0w_7Xm4T55PkAP_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00w0w_7Xm4T55PkAP_1200x900.jpg"),
+                        ImageManager.uploadImage(image: UIImage(named: "00w0w_e8JqNq4nDgI_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00w0w_e8JqNq4nDgI_1200x900.jpg"),
+                        ImageManager.uploadImage(image: UIImage(named: "00404_8OmXsbv4SED_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "00404_8OmXsbv4SED_1200x900.jpg"),
+                        ImageManager.uploadImage(image: UIImage(named: "01010_bQE4g1cNSyD_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "01010_bQE4g1cNSyD_1200x900.jpg"),
+                        ImageManager.uploadImage(image: UIImage(named: "01111_9LMDIdNYAfP_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "01111_9LMDIdNYAfP_1200x900.jpg"),
+                        ImageManager.uploadImage(image: UIImage(named: "01212_1l9PZ8SjGYJ_1200x900.jpg")!, userUID: users[0].email, listingUID: homeSale1UID, filename: "01212_1l9PZ8SjGYJ_1200x900.jpg")],
+            
+            size: 30,
+            bedroomNumber: 2,
+            bathroomNumber: 2,
+            UID: homeForRent1UID,
+            monthlyRent: 1000,
+            rentalTerm: 24,
+            landlordUID: users[0].UID,
+            availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)),
+            active: true)
+    
+        homeForRent1.photos = []
+        
+        homesForRent.append(homeForRent1)
+        WriteFirebaseData.writeHomesForRent(homeForRent: homeForRent1)
     }
 
     

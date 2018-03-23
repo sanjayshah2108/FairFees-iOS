@@ -31,5 +31,6 @@ class Listing: GMSMarker, MKAnnotation  {
     var province: String!
     var country: String!
     var zipcode: String!
+    var active: Bool!
     
 }

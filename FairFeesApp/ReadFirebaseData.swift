@@ -12,6 +12,7 @@ import Firebase
 class ReadFirebaseData: NSObject {
 
     static var homesForSaleHandle: UInt? = nil
+    static var homesForRentHandle: UInt? = nil
     
     //read all homesForSale
     class func readHomesForSale() {
@@ -92,6 +93,84 @@ class ReadFirebaseData: NSObject {
         }
     }
     
+    class func readHomesForRent() {
+        //?? Do we need this
+        if ( Auth.auth().currentUser == nil)
+        {
+            return
+        }
+        
+        let ref = FirebaseData.sharedInstance.homesForRentNode
+        
+        let tempHandle = ref.observe(DataEventType.value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary;
+            
+            //first, clear all
+            FirebaseData.sharedInstance.homesForRent.removeAll()
+            
+            if ( value == nil) {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "noHomesForRentKey"), object: nil)
+                return
+            }
+            
+            let data = value as? [String:Any]
+            
+            //get individual homesForRent data and append to local data
+            readHomeForRent(data: data!, specificUser: false)
+            
+            let rentalHomesDownloadCompleteNotificationKey = "rentalHomesDownloadCompleteNotificationKey"
+            NotificationCenter.default.post(name: Notification.Name(rawValue: rentalHomesDownloadCompleteNotificationKey), object: nil)
+        })
+        
+        if homesForRentHandle != nil {
+            ref.removeObserver(withHandle: homesForRentHandle!)
+        }
+        homesForRentHandle = tempHandle
+        
+    }
+    
+    fileprivate class func readHomeForRent(data:[String:Any], specificUser: Bool) {
+        
+        //appending a specific user's homesForSale to that user's local data.
+        if (specificUser){
+            let readHomeForRent = HomeRental(with: data)
+            FirebaseData.sharedInstance.specificUserListings.append(readHomeForRent!)
+        }
+            
+            //appending all homesForRent to local data
+        else {
+            
+            //refer to Firebase Data structure to understand these for loops
+            for country in data {
+                let provinceDict = country.value as! [String:Any]
+                for province in provinceDict {
+                    let cityDict = province.value as! [String:Any]
+                    for city in cityDict {
+                        let zipcodeDict = city.value as! [String:Any]
+                        for zipcode in zipcodeDict {
+                            let usersDict = zipcode.value as! [String:Any]
+                            for users in usersDict {
+                                let userListingsDict = users.value as! [String: Any]
+                                for userListing in userListingsDict {
+                                    let homeForRent = userListing.value as! [String: Any]
+                                    
+                                    let readHomeForRent = HomeRental(with: homeForRent)
+                                    
+                                    if readHomeForRent != nil {
+                                        FirebaseData.sharedInstance.homesForRent.append(readHomeForRent!)
+                                    }
+                                    else {
+                                        print("The homeForRent is nil")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     
     //read all users
     class func readUsers() {
@@ -144,6 +223,7 @@ class ReadFirebaseData: NSObject {
             let email: String = userData["email"] as! String
             let phoneNumber: Int = userData["phoneNumber"] as! Int
             let rating: Int = userData["rating"] as! Int
+            let typeOfUser: [String: Bool] = userData["typeOfUser"] as! [String: Bool]
             
             
             //user["listingRefs"] may have disappeared in the Firebase DB if the user deleted his only listing, so we have to check first.
@@ -171,18 +251,31 @@ class ReadFirebaseData: NSObject {
                 }
                 else {
                     
-                    let ref = FirebaseData.sharedInstance.homesForSaleNode.child(listingRef)
+                    let ref = FirebaseData.sharedInstance.listingsNode.child(listingRef)
                     ref.observe(DataEventType.value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary;
                         
                         if ( value == nil) {
-                            print("This homeForSale doesn't exist")
+                            print("This listing doesn't exist")
                             return
                         }
                         
-                        //append this homeForSale to specificUserListings
+                        //find out if its a sale or rental
+                        let startIndex = listingRef.index(listingRef.startIndex, offsetBy: 17)
+                        let endIndex = listingRef.index(listingRef.startIndex, offsetBy: 21)
+                        let range = startIndex..<endIndex
+                        
+                        let typeOfListing = listingRef[range]
+                        
+                        //append this listing to specificUserListings
                         let data = value as? [String:Any]
-                        readHomeForSale(data: data!, specificUser: true)
+                        
+                        if typeOfListing == "Sale" {
+                            readHomeForSale(data: data!, specificUser: true)
+                        }
+                        if typeOfListing == "Rent" {
+                            readHomeForRent(data: data!, specificUser: true)
+                        }
                         
                         //if this homeSale is the last one in the listingRefs
                         if (index == listingRefs.count){
@@ -190,7 +283,7 @@ class ReadFirebaseData: NSObject {
                             listings = FirebaseData.sharedInstance.specificUserListings
                             
                             //create the user with all the listings
-                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings)
+                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser)
                             
                             FirebaseData.sharedInstance.users.append(readUser)
                             

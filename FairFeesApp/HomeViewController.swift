@@ -33,6 +33,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var filterViewIsInFront: Bool!
     var filterViewHeight: CGFloat!
     
+    var buyRentSegmentedControl: UISegmentedControl!
     var priceFilterSlider: UISlider!
     var noOfBedroomsLabel: UILabel!
     var noOfBedroomsSegmentedControl: UISegmentedControl!
@@ -50,6 +51,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var searchController: UISearchController?
     var resultView: UITextView?
 
+    var listingsToPresent: [Listing]!
     
     
     override func viewDidLoad() {
@@ -59,11 +61,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         searchBarHeight = 0
-        filterViewHeight = 160
+        filterViewHeight = 190
         
         setupMapListSegmentTitle()
         setupTopRightButtons()
         setupTopLeftButtons()
+        
+        listingsToPresent = []
         
         setupHomeMapView()
         setupHomeTableView()
@@ -72,11 +76,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         setupConstraints()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadMapAndTable), name: NSNotification.Name(rawValue: "myDownloadCompleteNotificationKey"), object: nil)
+        //right now we are only being notifide when rentals are downloaded, because they are being dowloaded last
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadMapAndTable), name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
         
         //setupDummyData()
         ReadFirebaseData.readUsers()
         ReadFirebaseData.readHomesForSale()
+        ReadFirebaseData.readHomesForRent()
         
         view.bringSubview(toFront: homeMapView)
         view.bringSubview(toFront: searchBar)
@@ -104,8 +110,26 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DummyData.theDummyData.createListings()
     }
     
+    func setListingsToPresent(){
+        
+        if (buyRentSegmentedControl.selectedSegmentIndex == 0){
+            listingsToPresent = FirebaseData.sharedInstance.homesForSale
+        }
+        else if (buyRentSegmentedControl.selectedSegmentIndex == 1){
+            listingsToPresent = FirebaseData.sharedInstance.homesForRent
+        }
+        else {
+        //homesForSale will be default
+        listingsToPresent = FirebaseData.sharedInstance.homesForSale
+        }
+    }
+    
     @objc func reloadMapAndTable(){
-        for listing in FirebaseData.sharedInstance.homesForSale{
+        
+        homeMapView.clear()
+        setListingsToPresent()
+        
+        for listing in listingsToPresent{
                         let marker = GMSMarker()
                         marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
                         marker.map = homeMapView
@@ -284,6 +308,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterView)
         
+        buyRentSegmentedControl = UISegmentedControl()
+        buyRentSegmentedControl.insertSegment(withTitle: "Buy", at: 0, animated: false)
+        buyRentSegmentedControl.insertSegment(withTitle: "Rent", at: 1, animated: false)
+        buyRentSegmentedControl.selectedSegmentIndex = 0
+        buyRentSegmentedControl.addTarget(self, action: #selector(reloadMapAndTable), for: .valueChanged)
+        buyRentSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(buyRentSegmentedControl)
+        
         priceFilterSlider = UISlider()
         priceFilterSlider.maximumValue = 10000000
         priceFilterSlider.minimumValue = 100000
@@ -334,6 +366,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterView.addSubview(applyFilterButton)
         
         filterViewIsInFront = false
+    }
+    
+    @objc func showListingsForSaleOrForRent(sender: UISegmentedControl){
+        if sender.selectedSegmentIndex == 0 {
+            listingsToPresent = FirebaseData.sharedInstance.homesForSale
+        }
+        
+        else if sender.selectedSegmentIndex == 1 {
+            listingsToPresent = FirebaseData.sharedInstance.homesForRent
+        }
+        homeMapView.clear()
+        homeTableView.reloadData()
+    
     }
     
     @objc func showHideFilterView(){
@@ -397,8 +442,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: filterView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: filterView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         
+        //buyRentSegmentedControl
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        
+        
         //priceFilterSlider
-        NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: filterView, attribute: .top , multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: buyRentSegmentedControl, attribute: .bottom , multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -15).isActive = true
@@ -441,7 +493,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //tableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FirebaseData.sharedInstance.homesForSale.count
+        return listingsToPresent.count
         //return DummyData.theDummyData.homesForSale.count
     }
     
@@ -449,18 +501,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let storageRef = Storage.storage().reference()
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
         
-        //let listing = DummyData.theDummyData.homesForSale[indexPath.row]
-        let listing = FirebaseData.sharedInstance.homesForSale[indexPath.row]
+        let listing =  listingsToPresent[indexPath.row]
         
-        //cell.leftImageView.image = listing.photos[0]
-        //cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
+        if (buyRentSegmentedControl.selectedSegmentIndex == 0){
+            let homeSale = listing as! HomeSale
+            
+            cell.bedroomsLabel.text = "\(homeSale.bedroomNumber!) br"
+            cell.bathroomsLabel.text = "\(homeSale.bathroomNumber!) ba"
+            cell.priceLabel.text = "$\(homeSale.price!)"
+        }
+        else if (buyRentSegmentedControl.selectedSegmentIndex == 1){
+            let homeRental = listingsToPresent[indexPath.row] as! HomeRental
+            
+            cell.bedroomsLabel.text = "\(homeRental.bedroomNumber!) br"
+            cell.bathroomsLabel.text = "\(homeRental.bathroomNumber!) ba"
+            cell.priceLabel.text = "$\(homeRental.monthlyRent!)/month"
+            
+        }
+        
+        cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
         cell.leftImageView.contentMode = .scaleToFill
         cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"
-        cell.priceLabel.text = "$\(listing.price!)"
         cell.addressLabel.text = listing.address
-        cell.bedroomsLabel.text = "\(listing.bedroomNumber!) br"
-        cell.bathroomsLabel.text = "\(listing.bathroomNumber!) ba"
         
         return cell
     }
@@ -469,7 +532,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let listingViewController = ListingDetailViewController()
         
         //listingViewController.currentListing = DummyData.theDummyData.homesForSale[indexPath.row]
-        listingViewController.currentListing = FirebaseData.sharedInstance.homesForSale[indexPath.row]
+        
+        if (buyRentSegmentedControl.selectedSegmentIndex == 0){
+             listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeSale
+        }
+        else if (buyRentSegmentedControl.selectedSegmentIndex == 1){
+            listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeRental
+        }
+        
+        
         
         self.navigationController?.pushViewController(listingViewController, animated: true)
         

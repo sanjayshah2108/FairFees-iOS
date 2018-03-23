@@ -10,12 +10,15 @@ import UIKit
 import CoreLocation
 import GooglePlaces
 import GooglePlacePicker
+import Firebase
 
 class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, GMSPlacePickerViewControllerDelegate {
     
     
     var navigationBarHeight: CGFloat!
 
+    var sellOrLeaseSegmentedControl: UISegmentedControl!
+    
     var nameTextField: UITextField!
     var priceTextField: UITextField!
     var sizeTextField: UITextField!
@@ -62,18 +65,39 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.rightBarButtonItem = submitButton
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         
-        setupTextFields()
         setupSteppers()
+        setupTextFields()
         setupLabels()
         setupLocationButton()
         setupPhotosButton()
         setupCollectionView()
+        setupSegmentedControls()
         setupConstraints()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupSegmentedControls(){
+        sellOrLeaseSegmentedControl = UISegmentedControl()
+        sellOrLeaseSegmentedControl.insertSegment(withTitle: "Sell", at: 0, animated: false)
+        sellOrLeaseSegmentedControl.insertSegment(withTitle: "Rent", at: 1, animated: false)
+        sellOrLeaseSegmentedControl.addTarget(self, action: #selector(changedSellOrLeaseSegment), for: .valueChanged)
+        sellOrLeaseSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sellOrLeaseSegmentedControl)
+    }
+    
+    @objc func changedSellOrLeaseSegment(sender: UISegmentedControl){
+    
+        if (sender.selectedSegmentIndex == 0){
+            priceTextField.placeholder = "Price"
+        }
+        else if (sender.selectedSegmentIndex == 1){
+            priceTextField.placeholder = "Monthly Rent"
+        }
+        
     }
 
     func setupTextFields(){
@@ -115,28 +139,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sizeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         sizeTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sizeTextField)
-        
-//        bedroomNumberTextField = UITextField()
-//        bedroomNumberTextField.delegate = self
-//        bedroomNumberTextField.frame = CGRect.zero
-//        bedroomNumberTextField.layer.borderWidth = 1
-//        bedroomNumberTextField.layer.borderColor = UIColor.gray.cgColor
-//        bedroomNumberTextField.layer.cornerRadius = 3
-//        bedroomNumberTextField.placeholder = "No. of Bedrooms"
-//        bedroomNumberTextField.textAlignment = .center
-//        bedroomNumberTextField.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(bedroomNumberTextField)
-//
-//        bathroomNumberTextField = UITextField()
-//        bathroomNumberTextField.delegate = self
-//        bathroomNumberTextField.frame = CGRect.zero
-//        bathroomNumberTextField.layer.borderWidth = 1
-//        bathroomNumberTextField.layer.borderColor = UIColor.gray.cgColor
-//        bathroomNumberTextField.layer.cornerRadius = 3
-//        bathroomNumberTextField.placeholder = "No. of Bathrooms"
-//        bathroomNumberTextField.textAlignment = .center
-//        bathroomNumberTextField.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(bathroomNumberTextField)
         
         descriptionTextField = UITextView()
         descriptionTextField.delegate = self
@@ -365,8 +367,14 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func setupConstraints(){
         
+        //sellOrRentSegmentControl
+        NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: (navigationBarHeight + 10)).isActive = true
+        NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
         //nameTextField
-        NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: (navigationBarHeight + 10)).isActive = true
+        NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: sellOrLeaseSegmentedControl, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
@@ -554,25 +562,43 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc func submitPost(){
         if (validateFields()){
-            
-            
         
-        let post = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: DummyData.theDummyData.users[0].email, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: Int(bathroomNumberTextField.text!)!, bathroomNumber: Int(bathroomNumberTextField.text!)!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: DummyData.theDummyData.users[0].email, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)))
-            
-
-            
             var photoRefs: [String] = []
-            for index in 0..<photosArray.count {
-                let storagePath = "\(post.UID!)/\(index)"
-                
-                let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
-                                                           userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: post.UID,
-                                                           filename: storagePath)
-                photoRefs.append(photoRefStr)
-              
-            }
+            
+            if sellOrLeaseSegmentedControl.selectedSegmentIndex == 0 {
         
-        DummyData.theDummyData.addListing(listing: post)
+                 let homeSalePost = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                
+                for index in 0..<photosArray.count {
+                    let storagePath = "\(homeSalePost.UID!)/\(index)"
+                    
+                    let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
+                                                               filename: storagePath)
+                    photoRefs.append(photoRefStr)
+                    
+                }
+                
+                WriteFirebaseData.writeHomesForSale(homeForSale: homeSalePost)
+                
+            }
+            else if sellOrLeaseSegmentedControl.selectedSegmentIndex == 1 {
+                
+                 let homeRentalPost = HomeRental(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: nil, monthlyRent: Int(priceTextField.text!)!, rentalTerm: 12, landlordUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                
+                
+                for index in 0..<photosArray.count {
+                    let storagePath = "\(homeRentalPost.UID!)/\(index)"
+                    
+                    let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
+                                                               filename: storagePath)
+                    photoRefs.append(photoRefStr)
+                    
+                }
+                
+                WriteFirebaseData.writeHomesForRent(homeForRent: homeRentalPost)
+            }
         
         self.navigationController?.popViewController(animated: true)
         }
@@ -719,7 +745,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
 
         let viewAction = UIAlertAction(title: "View Photo", style: UIAlertActionStyle.default, handler:{ (action) in
-            
+                    
             let imageScrollView = ImageScrollView()
             imageScrollView.display(image: self.photosArray[indexPath.item])
                 

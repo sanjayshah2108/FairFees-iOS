@@ -10,6 +10,9 @@ import UIKit
 
 class Rental: Listing {
     
-    
+    var landlordUID: String!
+    var monthlyRent: Int! = 0
+    var rentalTerm: Int!
+    var availabilityDate: NSNumber!
 
 }

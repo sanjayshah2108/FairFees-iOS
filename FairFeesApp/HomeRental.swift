@@ -1,20 +1,19 @@
 //
-//  HomeSale.swift
+//  HomeRental.swift
 //  FairFeesApp
 //
-//  Created by Sanjay Shah on 2018-03-06.
+//  Created by Sanjay Shah on 2018-03-22.
 //  Copyright © 2018 Fair Fees. All rights reserved.
 //
 
 import UIKit
 import CoreLocation
-import MapKit
 
-class HomeSale: Sale {
-    
+class HomeRental: Rental {
+
     var bedroomNumber: Int!
     var bathroomNumber: Int!
- 
+    
     init(name:String,
          description:String,
          location:CLLocation,
@@ -29,8 +28,9 @@ class HomeSale: Sale {
          bedroomNumber: Int,
          bathroomNumber: Int,
          UID:String?,
-         price: Int,
-         ownerUID: String,
+         monthlyRent: Int,
+         rentalTerm: Int,
+         landlordUID: String,
          availabilityDate: NSNumber,
          active: Bool) {
         
@@ -48,9 +48,10 @@ class HomeSale: Sale {
         super.size = size
         //super.photos = photos
         super.photoRefs = photoRefs
-        super.ownerUID = ownerUID
-        super.price = price
+        super.landlordUID = landlordUID
+        super.monthlyRent = monthlyRent
         super.availabilityDate = availabilityDate
+        super.rentalTerm = rentalTerm
         super.active = active
         
         self.bedroomNumber = bathroomNumber
@@ -82,13 +83,14 @@ class HomeSale: Sale {
             let inpBedroomNumber: Int =  inpDict["bedroomNumber"] as? Int,
             let inpLocationDict: [String:Double] = inpDict["location"] as? [String:Double],
             let inpBathroomNumber: Int = inpDict["bathroomNumber"] as? Int,
-            let inpPrice: Int = inpDict["price"] as? Int,
+            let inpMonthlyRent: Int = inpDict["monthlyRent"] as? Int,
             let inpAvailabilityDate: NSNumber = inpDict["availabilityDate"] as? NSNumber,
+            let inpRentalTerm: Int = inpDict["rentalTerm"] as? Int,
             let inpPhotoRefs: [String] = inpDict["photoRefs"] as? [String],
             let inpActiveString: String = inpDict["isActive"] as? String,
             //let inpPhotos: [String] = inpDict["photos"] as? [String],
             
-            let inpOwnerUID: String = inpDict["ownerUID"] as? String else
+            let inpLandlordUID: String = inpDict["landlordUID"] as? String else
         {
             print("Error: Dictionary is not in the correct format")
             return nil
@@ -114,7 +116,7 @@ class HomeSale: Sale {
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
         
         
-        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpOwnerUID, availabilityDate: inpAvailabilityDate, active: inpActiveBool)
+        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, monthlyRent: inpMonthlyRent, rentalTerm: inpRentalTerm, landlordUID: inpLandlordUID, availabilityDate: inpAvailabilityDate, active: inpActiveBool)
         
     }
     
@@ -135,10 +137,11 @@ class HomeSale: Sale {
             "posterUID":super.posterUID,
             "photoRefs":self.photoRefs,
             "size" : super.size,
-            "price": super.price,
+            "monthlyRent": super.monthlyRent,
+            "rentalTerm" : super.rentalTerm,
             "bedroomNumber": self.bedroomNumber,
             "bathroomNumber": self.bathroomNumber,
-            "ownerUID": super.ownerUID,
+            "landlordUID": super.landlordUID,
             "availabilityDate" :super.availabilityDate,
             "isActive" : String(super.active)
             
@@ -146,5 +149,4 @@ class HomeSale: Sale {
         
         return itemDict
     }
-    
 }

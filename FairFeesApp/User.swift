@@ -18,6 +18,7 @@ class User: NSObject {
     var listings: [Listing]
     var rating: Int
     var listingsRefs: [String]!
+    var typeOfUser: [String : Bool]!
     
     init(uid:String,
          firstName:String,
@@ -25,7 +26,8 @@ class User: NSObject {
          email:String,
          phoneNumber:Int,
          rating: Int,
-         listings: [Listing]) {
+         listings: [Listing],
+         typeOfUser: [String: Bool]) {
     
         self.UID = uid
         self.firstName = firstName
@@ -35,6 +37,7 @@ class User: NSObject {
         self.listings = listings
         self.rating = rating
         self.listingsRefs = []
+        self.typeOfUser = typeOfUser
         
     }
     
@@ -46,6 +49,7 @@ class User: NSObject {
             let inpEmail: String = inpDict["email"] as? String,
             let inpPhoneNumber: Int = inpDict["phoneNumber"] as! Int,
             let inpRating: Int = inpDict["rating"] as! Int,
+            let inpTypeOfUser: [String: Bool] = inpDict["typeOfUser"] as! [String: Bool],
             
             //let inpProfileImage: String = inpDict["profileImage"] as? String ?? "",
             var inpListings:[Listing] = inpDict["listings"] as? [Listing] else
@@ -53,6 +57,7 @@ class User: NSObject {
             print("Error: Dictionary is not in the correct format")
             return nil
         }
+        
         
 //        var index = 0
 //        for i in listings{
@@ -65,7 +70,7 @@ class User: NSObject {
 //            }
 //        }
         
-        self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings)
+        self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings, typeOfUser: inpTypeOfUser)
     }
     
     
@@ -77,7 +82,8 @@ class User: NSObject {
                                       "lastName": self.lastName,
                                       "rating":self.rating,
                                       //"profileImage":self.profileImage,
-                                      "listings":self.listingsRefs ]
+                                      "listings":self.listingsRefs,
+                                      "typeOfUser": self.typeOfUser]
         return userDict
     }
 
