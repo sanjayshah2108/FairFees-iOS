@@ -21,7 +21,7 @@ class EditPostViewController: PostViewController {
         
         homeSaleToEdit = listingToEdit as! HomeSale
         super.viewDidLoad()
-        
+        self.title = homeSaleToEdit.name
        
 
         // Do any additional setup after loading the view.
@@ -140,6 +140,11 @@ class EditPostViewController: PostViewController {
         zipcodeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         zipcodeTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(zipcodeTextField)
+        
+        bedroomNumberLabel.text = String((homeSaleToEdit.bedroomNumber)!)
+        bedroomNumberLabel.textColor = UIColor.black
+        bathroomNumberLabel.text = String((homeSaleToEdit.bathroomNumber)!)
+        bathroomNumberLabel.textColor = UIColor.black
     }
     
 
@@ -156,6 +161,7 @@ class EditPostViewController: PostViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
         
         cell.cellImageView.sd_setImage(with: storageRef.child(listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+        cell.cellImageView.contentMode = .scaleAspectFill
         
         return cell
         
@@ -164,6 +170,35 @@ class EditPostViewController: PostViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return listingToEdit.photoRefs.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let changePhotoAlert = UIAlertController(title: "View or Delete Photo?", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        
+        let viewAction = UIAlertAction(title: "View Photo", style: UIAlertActionStyle.default, handler:{ (action) in
+            
+            let tempImageView = UIImageView()
+            tempImageView.sd_setImage(with: Storage.storage().reference().child(self.listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+            
+            let imageScrollView = ImageScrollView()
+            imageScrollView.display(image: tempImageView.image!)
+            
+        })
+        
+        let changeAction = UIAlertAction(title: "Delete Photo", style: UIAlertActionStyle.destructive, handler:{ (action) in
+            self.photosArray.remove(at: indexPath.item)
+            self.photoCollectionView.reloadData()
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        changePhotoAlert.addAction(viewAction)
+        changePhotoAlert.addAction(changeAction)
+        changePhotoAlert.addAction(cancelAction)
+        
+        self.present(changePhotoAlert, animated: true, completion: nil)
     }
 
 

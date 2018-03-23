@@ -20,7 +20,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let minPasswordLength = 8
     let signupTitleString = "Create Account"
     let loginTitleString = "Log In"
-    let signupButtonString = "Let's do this!"
+    let signupButtonString = "Sign in"
     let loginButtonString = "Go!"
     let signupSwitchString = "Already have an account?"
     let loginSwitchString = "Don't have an account yet?"
@@ -92,18 +92,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         firstNameTextfield = UITextField()
         firstNameTextfield.delegate = self
         firstNameTextfield.placeholder = "First Name"
+        firstNameTextfield.layer.borderColor = UIColor.lightGray.cgColor
+        firstNameTextfield.layer.borderWidth = 1
+        firstNameTextfield.layer.cornerRadius = 2
         firstNameTextfield.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(firstNameTextfield)
         
         lastNameTextfield = UITextField()
         lastNameTextfield.delegate = self
         lastNameTextfield.placeholder = "Last Name"
+        lastNameTextfield.layer.borderColor = UIColor.lightGray.cgColor
+        lastNameTextfield.layer.borderWidth = 1
+        lastNameTextfield.layer.cornerRadius = 2
         lastNameTextfield.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(lastNameTextfield)
         
         passwordTextfield = UITextField()
         passwordTextfield.delegate = self
         passwordTextfield.placeholder = "Password"
+        passwordTextfield.layer.borderColor = UIColor.lightGray.cgColor
+        passwordTextfield.layer.borderWidth = 1
+        passwordTextfield.layer.cornerRadius = 2
         passwordTextfield.clearsOnBeginEditing = true
         passwordTextfield.isSecureTextEntry = true
         passwordTextfield.translatesAutoresizingMaskIntoConstraints = false
@@ -111,13 +120,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         emailTextfield = UITextField()
         emailTextfield.delegate = self
-        emailTextfield.placeholder = "Email Address"
+        if(UserDefaults.standard.bool(forKey: rememberMeKey) == true){
+            emailTextfield.text = Auth.auth().currentUser?.email
+        }
+        else { emailTextfield.placeholder = "Email Address"}
+        emailTextfield.layer.borderColor = UIColor.lightGray.cgColor
+        emailTextfield.layer.borderWidth = 1
+        emailTextfield.layer.cornerRadius = 2
         emailTextfield.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailTextfield)
         
         confirmPasswordTextfield = UITextField()
         confirmPasswordTextfield.delegate = self
         confirmPasswordTextfield.placeholder = "Re-type password"
+        confirmPasswordTextfield.layer.borderColor = UIColor.lightGray.cgColor
+        confirmPasswordTextfield.layer.borderWidth = 1
+        confirmPasswordTextfield.layer.cornerRadius = 2
         confirmPasswordTextfield.clearsOnBeginEditing = true
         confirmPasswordTextfield.isSecureTextEntry = true
         confirmPasswordTextfield.translatesAutoresizingMaskIntoConstraints = false
@@ -171,31 +189,36 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //titleLabel
         NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 30).isActive = true
         NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
         
         //firstNameTextField
         NSLayoutConstraint(item: firstNameTextfield, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: firstNameTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: firstNameTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //LastNameTextField
         NSLayoutConstraint(item: lastNameTextfield, attribute: .top, relatedBy: .equal, toItem: firstNameTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: lastNameTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: lastNameTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //emailTextfield
         NSLayoutConstraint(item: emailTextfield, attribute: .top, relatedBy: .equal, toItem: lastNameTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: emailTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: emailTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //passwordTextField
         NSLayoutConstraint(item: passwordTextfield, attribute: .top, relatedBy: .equal, toItem: emailTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: passwordTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: passwordTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //confirmPasswordTextField
         NSLayoutConstraint(item: confirmPasswordTextfield, attribute: .top, relatedBy: .equal, toItem: passwordTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: confirmPasswordTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: confirmPasswordTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //rememberMeLabel
-        NSLayoutConstraint(item: rememberMeLabel, attribute: .top, relatedBy: .equal, toItem: confirmPasswordTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: rememberMeLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: rememberMeLabel, attribute: .top, relatedBy: .equal, toItem: confirmPasswordTextfield, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: rememberMeLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 20).isActive = true
         
         //rememberMeSwitch
         NSLayoutConstraint(item: rememberMeSwitch, attribute: .top, relatedBy: .equal, toItem: confirmPasswordTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
@@ -206,20 +229,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint(item: goButton, attribute: .top, relatedBy: .equal, toItem: rememberMeLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: goButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: goButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+         NSLayoutConstraint(item: goButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
         
         //toggleLabel
-        NSLayoutConstraint(item: toggleLabel, attribute: .top, relatedBy: .equal, toItem: goButton, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: toggleLabel, attribute: .top, relatedBy: .equal, toItem: goButton, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
         NSLayoutConstraint(item: toggleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
         //toggleButton
         NSLayoutConstraint(item: toggleButton, attribute: .top, relatedBy: .equal, toItem: toggleLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: toggleButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: toggleButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: toggleButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
         
         //guestLoginButton
-        NSLayoutConstraint(item: guestLoginButton, attribute: .top, relatedBy: .equal, toItem: toggleButton, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: guestLoginButton, attribute: .top, relatedBy: .equal, toItem: toggleButton, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
         NSLayoutConstraint(item: guestLoginButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: guestLoginButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: guestLoginButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
     }
     
     @objc func toggleScreen(sender: UIButton) {

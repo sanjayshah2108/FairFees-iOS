@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -64,7 +65,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupConstraints(){
         //nameLabel
-        NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 50).isActive = true
+        NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 100).isActive = true
         NSLayoutConstraint(item: nameLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
         //emailLabel
@@ -88,6 +89,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "profileListingTableViewCell") as! ProfileListingsTableViewCell
         
         cell.listingNameLabel.text = FirebaseData.sharedInstance.currentUser?.listings[indexPath.row].name
+        cell.listingImageView.sd_setImage(with: Storage.storage().reference().child((FirebaseData.sharedInstance.currentUser?.listings[indexPath.row].photoRefs[0])!))
         
         return cell
     }

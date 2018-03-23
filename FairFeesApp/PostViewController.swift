@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import GooglePlaces
 import GooglePlacePicker
+import Firebase
 
 class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, GMSPlacePickerViewControllerDelegate {
     
@@ -62,8 +63,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.rightBarButtonItem = submitButton
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         
-        setupTextFields()
         setupSteppers()
+        setupTextFields()
         setupLabels()
         setupLocationButton()
         setupPhotosButton()
@@ -719,7 +720,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
 
         let viewAction = UIAlertAction(title: "View Photo", style: UIAlertActionStyle.default, handler:{ (action) in
-            
+                    
             let imageScrollView = ImageScrollView()
             imageScrollView.display(image: self.photosArray[indexPath.item])
                 
