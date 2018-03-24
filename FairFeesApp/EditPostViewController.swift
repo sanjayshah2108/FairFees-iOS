@@ -22,14 +22,17 @@ class EditPostViewController: PostViewController {
         if(listingToEdit.isKind(of: HomeRental.self)){
             homeRentalToEdit = listingToEdit as! HomeRental
             listingToEdit = homeRentalToEdit
+            
         }
         else if (listingToEdit.isKind(of: HomeSale.self)){
             homeSaleToEdit = listingToEdit as! HomeSale
             listingToEdit = homeSaleToEdit
+            
         }
         
         super.viewDidLoad()
-        self.title = homeSaleToEdit.name
+        self.title = listingToEdit.name
+        location = listingToEdit.location
         
         if(listingToEdit.isKind(of: HomeRental.self)){
             sellOrLeaseSegmentedControl.selectedSegmentIndex = 1
@@ -81,7 +84,13 @@ class EditPostViewController: PostViewController {
         sizeTextField.layer.borderWidth = 1
         sizeTextField.layer.borderColor = UIColor.gray.cgColor
         sizeTextField.layer.cornerRadius = 3
-        sizeTextField.text = String((homeSaleToEdit.size)!)
+        if(listingToEdit.isKind(of: HomeRental.self)){
+            sizeTextField.text = String((homeRentalToEdit.size)!)
+        }
+        else if (listingToEdit.isKind(of: HomeSale.self)){
+            sizeTextField.text = String((homeSaleToEdit.size)!)
+        }
+        
         sizeTextField.textAlignment = .center
         sizeTextField.font = UIFont(name: "Avenir-Light", size: 15)
         sizeTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -94,8 +103,14 @@ class EditPostViewController: PostViewController {
         descriptionTextField.layer.borderWidth = 1
         descriptionTextField.layer.borderColor = UIColor.gray.cgColor
         descriptionTextField.layer.cornerRadius = 3
+        if (listingToEdit.listingDescription == ""){
+            descriptionTextField.text = "Description"
+            descriptionTextField.textColor = UIColor.lightGray
+        }
+        else {
         descriptionTextField.text = listingToEdit.listingDescription
-        descriptionTextField.textColor = UIColor.lightGray
+        descriptionTextField.textColor = UIColor.black
+        }
         descriptionTextField.textAlignment = .center
         descriptionTextField.font = UIFont(name: "Avenir-Light", size: 15)
         descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -163,15 +178,18 @@ class EditPostViewController: PostViewController {
         
         if(listingToEdit.isKind(of: HomeRental.self)){
             bedroomNumberLabel.text = String((homeRentalToEdit.bedroomNumber)!)
+            bedroomNumber = homeRentalToEdit.bedroomNumber
             bathroomNumberLabel.text = String((homeRentalToEdit.bathroomNumber)!)
+            bathroomNumber = homeRentalToEdit.bathroomNumber
         }
         else if (listingToEdit.isKind(of: HomeSale.self)){
             bedroomNumberLabel.text = String((homeSaleToEdit.bedroomNumber)!)
+            bedroomNumber = homeSaleToEdit.bedroomNumber
             bathroomNumberLabel.text = String((homeSaleToEdit.bathroomNumber)!)
+            bathroomNumber = homeSaleToEdit.bathroomNumber
         }
         
         bedroomNumberLabel.textColor = UIColor.black
-        
         bathroomNumberLabel.textColor = UIColor.black
     }
     
@@ -181,6 +199,54 @@ class EditPostViewController: PostViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @objc override func submitPost(){
+        if (validateFields()){
+            
+            var photoRefs: [String] = []
+            
+            if sellOrLeaseSegmentedControl.selectedSegmentIndex == 0 {
+                
+                let homeSalePost = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: homeSaleToEdit.UID, price: Int(priceTextField.text!)!, ownerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                
+                for index in 0..<photosArray.count {
+                    let storagePath = "\(homeSalePost.UID!)/\(index)"
+                    
+                    let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
+                                                               filename: storagePath)
+                    photoRefs.append(photoRefStr)
+                    
+                }
+                homeSaleToEdit.photoRefs.append(contentsOf: photoRefs)
+                homeSalePost.photoRefs = homeSaleToEdit.photoRefs
+                
+                WriteFirebaseData.writeHomesForSale(homeForSale: homeSalePost)
+                
+            }
+            else if sellOrLeaseSegmentedControl.selectedSegmentIndex == 1 {
+                
+                let homeRentalPost = HomeRental(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: homeRentalToEdit.UID, monthlyRent: Int(priceTextField.text!)!, rentalTerm: 12, landlordUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                
+                
+                for index in 0..<photosArray.count {
+                    let storagePath = "\(homeRentalPost.UID!)/\(index)"
+                    
+                    let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
+                                                               filename: storagePath)
+                    photoRefs.append(photoRefStr)
+                    
+                }
+                homeRentalToEdit.photoRefs.append(contentsOf: photoRefs)
+                homeRentalPost.photoRefs = homeRentalToEdit.photoRefs
+                
+                WriteFirebaseData.writeHomesForRent(homeForRent: homeRentalPost)
+            }
+            
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let storageRef = Storage.storage().reference()
         
@@ -188,7 +254,11 @@ class EditPostViewController: PostViewController {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
         
-        cell.cellImageView.sd_setImage(with: storageRef.child(listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+        if(indexPath.item < self.listingToEdit.photoRefs.count){
+            cell.cellImageView.sd_setImage(with: storageRef.child(listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+        }
+        else { cell.cellImageView.image = self.photosArray[indexPath.item - self.listingToEdit.photoRefs.count]}
+        
         cell.cellImageView.contentMode = .scaleAspectFill
         
         return cell
@@ -197,7 +267,7 @@ class EditPostViewController: PostViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return listingToEdit.photoRefs.count
+        return listingToEdit.photoRefs.count + super.photosArray.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -208,7 +278,11 @@ class EditPostViewController: PostViewController {
         let viewAction = UIAlertAction(title: "View Photo", style: UIAlertActionStyle.default, handler:{ (action) in
             
             let tempImageView = UIImageView()
-            tempImageView.sd_setImage(with: Storage.storage().reference().child(self.listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+            if(indexPath.item < self.listingToEdit.photoRefs.count){
+                tempImageView.sd_setImage(with: Storage.storage().reference().child(self.listingToEdit.photoRefs[indexPath.item]), placeholderImage: nil)
+                
+            }
+            else { tempImageView.image = self.photosArray[indexPath.item - self.listingToEdit.photoRefs.count]}
             
             let imageScrollView = ImageScrollView()
             imageScrollView.display(image: tempImageView.image!)
@@ -216,7 +290,11 @@ class EditPostViewController: PostViewController {
         })
         
         let changeAction = UIAlertAction(title: "Delete Photo", style: UIAlertActionStyle.destructive, handler:{ (action) in
-            self.photosArray.remove(at: indexPath.item)
+            
+            if(indexPath.item < self.listingToEdit.photoRefs.count){
+                self.listingToEdit.photoRefs.remove(at: indexPath.item)
+            }
+            else { self.photosArray.remove(at: indexPath.item - self.listingToEdit.photoRefs.count)}
             self.photoCollectionView.reloadData()
         })
         

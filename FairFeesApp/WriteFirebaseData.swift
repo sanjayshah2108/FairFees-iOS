@@ -35,7 +35,7 @@ class WriteFirebaseData: NSObject {
         //            }
         
         FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
-        FirebaseData.sharedInstance.forSaleNode.child(listingPath).setValue(homeForSale.toDictionary())
+        FirebaseData.sharedInstance.listingsNode.child(listingPath).setValue(homeForSale.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
         //FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).setValue(FirebaseData.sharedInstance.currentUser?.toDictionary())
@@ -53,7 +53,7 @@ class WriteFirebaseData: NSObject {
         //            }
         
         FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
-        FirebaseData.sharedInstance.forRentNode.child(listingPath).setValue(homeForRent.toDictionary())
+        FirebaseData.sharedInstance.listingsNode.child(listingPath).setValue(homeForRent.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
     }

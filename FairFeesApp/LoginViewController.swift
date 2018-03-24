@@ -350,6 +350,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 AuthenticationManager.login(withEmail: emailTextfield.text!, password: passwordTextfield.text!, completionHandler: { (success) -> Void in
                     if success == true {
                         loggedInBool = true
+        
+                        
                         self.loginSuccess()
                         self.setUserDefaults()
                         
@@ -420,6 +422,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     
     func loginSuccess() {
+        //ReadFirebaseData.readUsers()
         self.dismiss(animated: true, completion: nil)
     }
     

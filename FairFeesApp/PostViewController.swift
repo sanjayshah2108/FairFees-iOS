@@ -578,6 +578,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     photoRefs.append(photoRefStr)
                     
                 }
+                homeSalePost.photoRefs = photoRefs
                 
                 WriteFirebaseData.writeHomesForSale(homeForSale: homeSalePost)
                 
@@ -596,6 +597,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     photoRefs.append(photoRefStr)
                     
                 }
+                homeRentalPost.photoRefs = photoRefs
                 
                 WriteFirebaseData.writeHomesForRent(homeForRent: homeRentalPost)
             }
