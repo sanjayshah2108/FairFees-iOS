@@ -34,7 +34,11 @@ class WriteFirebaseData: NSObject {
         //                sharedInstance.currentUser!.listings.remove(at: 0)
         //            }
         
-        FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
+        //if we are editing a post, we dont want to add another listingRef to the user
+        if !(FirebaseData.sharedInstance.currentUser!.listingsRefs.contains(listingPath)){
+            FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
+        }
+        
         FirebaseData.sharedInstance.listingsNode.child(listingPath).setValue(homeForSale.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
@@ -52,7 +56,11 @@ class WriteFirebaseData: NSObject {
         //                sharedInstance.currentUser!.listings.remove(at: 0)
         //            }
         
-        FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
+        //if we are editing a post, we dont want to add another listingRef to the user
+        if !(FirebaseData.sharedInstance.currentUser!.listingsRefs.contains(listingPath)){
+            FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
+        }
+        
         FirebaseData.sharedInstance.listingsNode.child(listingPath).setValue(homeForRent.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
