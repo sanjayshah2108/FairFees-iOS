@@ -134,7 +134,9 @@ class ReadFirebaseData: NSObject {
         //appending a specific user's homesForSale to that user's local data.
         if (specificUser){
             let readHomeForRent = HomeRental(with: data)
-            FirebaseData.sharedInstance.specificUserListings.append(readHomeForRent!)
+            if (readHomeForRent != nil) {
+                FirebaseData.sharedInstance.specificUserListings.append(readHomeForRent!)
+            }
         }
             
             //appending all homesForRent to local data
@@ -174,12 +176,7 @@ class ReadFirebaseData: NSObject {
     
     //read all users
     class func readUsers() {
-        
-        //do we need this??
-        if ( Auth.auth().currentUser == nil) {
-            return
-        }
-        
+    
         //first, clear all.
         FirebaseData.sharedInstance.users.removeAll()
         
@@ -234,6 +231,18 @@ class ReadFirebaseData: NSObject {
             }
             else {
                 listingRefs = [] as [String]
+                
+                //create the user with no listings
+                let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser)
+                
+                FirebaseData.sharedInstance.users.append(readUser)
+                
+                //if someone is signed in, set the current users details
+                if (Auth.auth().currentUser != nil) {
+                    if (UID == Auth.auth().currentUser?.uid){
+                        FirebaseData.sharedInstance.currentUser = readUser
+                    }
+                }
             }
             
             //since the user data on Firebase only contains the references to the listings, we have to append them  manually to the user's local data.
@@ -279,29 +288,71 @@ class ReadFirebaseData: NSObject {
                         
                         //if this homeSale is the last one in the listingRefs
                         if (index == listingRefs.count){
-                            
+
                             listings = FirebaseData.sharedInstance.specificUserListings
-                            
+
                             //create the user with all the listings
                             let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser)
                             
+                            readUser.listingsRefs = listingRefs
+
                             FirebaseData.sharedInstance.users.append(readUser)
-                            
-                            //set the current user
-                            if (UID == Auth.auth().currentUser?.uid){
-                                FirebaseData.sharedInstance.currentUser = readUser
+
+                            //if someone is signed in, set the current users details
+                            if (Auth.auth().currentUser != nil) {
+                                if (UID == Auth.auth().currentUser?.uid){
+                                    FirebaseData.sharedInstance.currentUser = readUser
+                                }
                             }
                         }
-                        
                     })
                     index = index+1
                 }
             }
         
+//        listings = FirebaseData.sharedInstance.specificUserListings
+//
+//        //create the user with all the listings
+//        let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser)
+//
+//        FirebaseData.sharedInstance.users.append(readUser)
+//
+//        //if someone is signed in, or the user is cached, to Auth.auth(), set the current users details
+//        if (Auth.auth().currentUser != nil) {
+//            if (UID == Auth.auth().currentUser?.uid){
+//                FirebaseData.sharedInstance.currentUser = readUser
+//            }
+//        }
+        
         
         
 //        let myUsersDownloadNotificationKey = "myUsersDownloadNotificationKey"
 //        NotificationCenter.default.post(name: Notification.Name(rawValue: myUsersDownloadNotificationKey), object: nil)
+    }
+    
+    
+    class func readCurrentUser(user: User){
+        
+        let userEmail = user.email
+    
+        let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
+        let secondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
+        let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
+        
+        
+        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(user.UID)
+            .observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                let value = snapshot.value as? NSDictionary
+                
+                if ( value == nil) {
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "user not found"), object: nil)
+                    return
+                }
+                
+                let userData = value as! [String: Any]
+                self.readUser(userData: userData)
+            })
     }
     
     

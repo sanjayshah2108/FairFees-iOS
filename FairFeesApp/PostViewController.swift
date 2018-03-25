@@ -578,6 +578,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     photoRefs.append(photoRefStr)
                     
                 }
+                homeSalePost.photoRefs = photoRefs
                 
                 WriteFirebaseData.writeHomesForSale(homeForSale: homeSalePost)
                 
@@ -596,6 +597,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     photoRefs.append(photoRefStr)
                     
                 }
+                homeRentalPost.photoRefs = photoRefs
                 
                 WriteFirebaseData.writeHomesForRent(homeForRent: homeRentalPost)
             }
@@ -670,6 +672,12 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         guard (countryTextField.text != "") else {
             let alert = UIAlertController(title: "Whoops", message: "You must add a country", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        guard (photosArray.count > 0) else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a photo", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             present(alert, animated: true, completion: nil)
             return false
