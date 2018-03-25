@@ -23,12 +23,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         self.title = "Profile"
         view.backgroundColor = UIColor.white
+        
+        //ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
+        
         setupProfileLabels()
         
         setupListingsTableView()
         
         setupConstraints()
        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+         ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
     }
 
     override func didReceiveMemoryWarning() {

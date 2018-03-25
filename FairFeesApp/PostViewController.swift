@@ -676,6 +676,12 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             present(alert, animated: true, completion: nil)
             return false
         }
+        guard (photosArray.count > 0) else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a photo", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
         
         return true
         

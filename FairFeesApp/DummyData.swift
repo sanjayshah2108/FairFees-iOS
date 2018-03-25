@@ -213,19 +213,19 @@ class DummyData: NSObject {
         homeSale5.photos = []
         
 
-        homesForSale.append(homeSale1)
+        //homesForSale.append(homeSale1)
         WriteFirebaseData.writeHomesForSale(homeForSale: homeSale1)
         
-        homesForSale.append(homeSale2)
+        //homesForSale.append(homeSale2)
         WriteFirebaseData.writeHomesForSale(homeForSale: homeSale2)
         
-        homesForSale.append(homeSale3)
+        //homesForSale.append(homeSale3)
         WriteFirebaseData.writeHomesForSale(homeForSale: homeSale3)
         
-        homesForSale.append(homeSale4)
+        //homesForSale.append(homeSale4)
         WriteFirebaseData.writeHomesForSale(homeForSale: homeSale4)
         
-        homesForSale.append(homeSale5)
+        //homesForSale.append(homeSale5)
         WriteFirebaseData.writeHomesForSale(homeForSale: homeSale5)
         
         
@@ -264,7 +264,7 @@ class DummyData: NSObject {
     
         homeForRent1.photos = []
         
-        homesForRent.append(homeForRent1)
+       // homesForRent.append(homeForRent1)
         WriteFirebaseData.writeHomesForRent(homeForRent: homeForRent1)
     }
 

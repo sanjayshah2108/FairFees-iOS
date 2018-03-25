@@ -85,10 +85,11 @@ class HomeSale: Sale {
             let inpPrice: Int = inpDict["price"] as? Int,
             let inpAvailabilityDate: NSNumber = inpDict["availabilityDate"] as? NSNumber,
             let inpPhotoRefs: [String] = inpDict["photoRefs"] as? [String],
-            let inpActiveString: String = inpDict["isActive"] as? String,
+            let inpIsActive: Bool = inpDict["isActive"] as? Bool else
+            //let inpActiveString: String = inpDict["isActive"] as? String,
             //let inpPhotos: [String] = inpDict["photos"] as? [String],
-            
-            let inpOwnerUID: String = inpDict["ownerUID"] as? String else
+            //CHANGE THIS TO OWNERUID
+           // let inpOwnerUID: String = inpDict["posterUID"] as? String
         {
             print("Error: Dictionary is not in the correct format")
             return nil
@@ -103,18 +104,18 @@ class HomeSale: Sale {
         }
         
         
-        var inpActiveBool: Bool = true
-        
-        if (inpActiveString == "true") {
-            inpActiveBool = true
-        }
-        else if (inpActiveString == "false"){
-            inpActiveBool = false
-        }
+//        var inpActiveBool: Bool = true
+//
+//        if (inpActiveString == "true") {
+//            inpActiveBool = true
+//        }
+//        else if (inpActiveString == "false"){
+//            inpActiveBool = false
+//        }
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
         
         
-        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpOwnerUID, availabilityDate: inpAvailabilityDate, active: inpActiveBool)
+        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpPosterUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
         
     }
     
@@ -140,7 +141,7 @@ class HomeSale: Sale {
             "bathroomNumber": self.bathroomNumber,
             "ownerUID": super.ownerUID,
             "availabilityDate" :super.availabilityDate,
-            "isActive" : String(super.active)
+            "isActive" : super.active
             
         ]
         
