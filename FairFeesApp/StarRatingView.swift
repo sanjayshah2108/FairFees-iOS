@@ -21,6 +21,8 @@ class StarRatingView: UIView {
     var star4: UIImageView!
     var star5: UIImageView!
     
+    var rating: Int!
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,35 +65,49 @@ class StarRatingView: UIView {
         
         if (location.x > 50){
             star1.image = #imageLiteral(resourceName: "filledStar")
+            rating = 1
         }
         if (location.x > 100){
             star2.image = #imageLiteral(resourceName: "filledStar")
+            rating = 2
         }
         if (location.x > 150){
             star3.image = #imageLiteral(resourceName: "filledStar")
+            rating = 3
         }
         if (location.x > 200){
             star4.image = #imageLiteral(resourceName: "filledStar")
+            rating = 4
         }
         if (location.x > 250){
             star5.image = #imageLiteral(resourceName: "filledStar")
+            rating = 5
         }
         
-        if (location.x < 50){
-            star1.image = #imageLiteral(resourceName: "unfilledStar")
-        }
-        if (location.x < 100){
-            star2.image = #imageLiteral(resourceName: "unfilledStar")
-        }
-        if (location.x < 150){
-            star3.image = #imageLiteral(resourceName: "unfilledStar")
+        if (location.x < 250){
+            star5.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 4
         }
         if (location.x < 200){
             star4.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 3
         }
-        if (location.x < 250){
-            star5.image = #imageLiteral(resourceName: "unfilledStar")
+        if (location.x < 150){
+            star3.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 2
         }
+        if (location.x < 100){
+            star2.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 1
+        }
+        if (location.x < 50){
+            star1.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 0
+        }
+
+
+  
+      
     }
     
     @objc func panAcrossStars(sender: UIPanGestureRecognizer){
@@ -100,34 +116,44 @@ class StarRatingView: UIView {
         
         if (location.x > 50){
             star1.image = #imageLiteral(resourceName: "filledStar")
+            rating = 1
         }
         if (location.x > 100){
             star2.image = #imageLiteral(resourceName: "filledStar")
+            rating = 2
         }
         if (location.x > 150){
             star3.image = #imageLiteral(resourceName: "filledStar")
+            rating = 3
         }
         if (location.x > 200){
             star4.image = #imageLiteral(resourceName: "filledStar")
+            rating = 4
         }
         if (location.x > 250){
             star5.image = #imageLiteral(resourceName: "filledStar")
+            rating = 5
         }
         
-        if (location.x < 50){
-            star1.image = #imageLiteral(resourceName: "unfilledStar")
-        }
-        if (location.x < 100){
-            star2.image = #imageLiteral(resourceName: "unfilledStar")
-        }
-        if (location.x < 150){
-            star3.image = #imageLiteral(resourceName: "unfilledStar")
+        if (location.x < 250){
+            star5.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 4
         }
         if (location.x < 200){
             star4.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 3
         }
-        if (location.x < 250){
-            star5.image = #imageLiteral(resourceName: "unfilledStar")
+        if (location.x < 150){
+            star3.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 2
+        }
+        if (location.x < 100){
+            star2.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 1
+        }
+        if (location.x < 50){
+            star1.image = #imageLiteral(resourceName: "unfilledStar")
+            rating = 0
         }
     }
     
