@@ -136,7 +136,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         imageViewPageControl.currentPageIndicatorTintColor = UIColor.white
         imageViewPageControl.translatesAutoresizingMaskIntoConstraints = false
         imageViewCarousel.addSubview(imageViewPageControl)
-        
     }
     
     func setupButtons(){
@@ -356,10 +355,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             photoIndex = photoIndex + 1
             imageViewPageControl.currentPage += 1
         }
-        
         imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs![photoIndex!]), placeholderImage: nil)
-        //imageViewCarousel.image = currentListing.photos[photoIndex]
-        
     }
     
     @objc func previousImage(){
@@ -371,9 +367,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             photoIndex = photoIndex - 1
             imageViewPageControl.currentPage -= 1
         }
-    
        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
-        //imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){
@@ -400,7 +394,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     @objc func segueToLandlordUser(sender: UIButton){
         
         let userDetailViewController = UserDetailViewController()
-        userDetailViewController.currentUser = posterUser
+        userDetailViewController.currentUser = landlordUser
         
         self.navigationController?.pushViewController(userDetailViewController, animated: true)
     }
@@ -427,7 +421,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             let update = GMSCameraUpdate.setTarget(currentListing.coordinate, zoom: 15.0)
             self.mapView.animate(with: update)
         }
-        
     }
     
     @objc func pinchImageToFullscreen(sender: UIPinchGestureRecognizer){
@@ -438,10 +431,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     }
     
     
-    //fullcreen image methods
+    //fullcreen image methods -  NOT Being used now
     @objc func fullscreenImage() {
-        
-      
         
         let tempImageView = UIImageView()
         tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
@@ -460,8 +451,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         newImageView.addGestureRecognizer(tap)
         
  //       let collapsePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        
-        
         
         self.view.addSubview(newImageView)
         self.navigationController?.isNavigationBarHidden = true

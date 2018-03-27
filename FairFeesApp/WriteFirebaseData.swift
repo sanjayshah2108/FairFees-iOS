@@ -20,7 +20,6 @@ class WriteFirebaseData: NSObject {
         let SecondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
         let ThirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
         FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).child(user.UID).setValue(user.toDictionary())
-        
     }
     
     class func writeHomesForSale(homeForSale:HomeSale) {
@@ -29,7 +28,6 @@ class WriteFirebaseData: NSObject {
         
         let listingPath = "/forSale/homesForSale/\(homeForSale.country!)/\(homeForSale.province!)/\(homeForSale.city!)/\(homeForSale.zipcode!)/\(user.UID!)/\(homeForSale.UID!)"
       
-        
         //            if sharedInstance.currentUser!.listings.first == "" {
         //                sharedInstance.currentUser!.listings.remove(at: 0)
         //            }
@@ -42,7 +40,6 @@ class WriteFirebaseData: NSObject {
         FirebaseData.sharedInstance.listingsNode.child(listingPath).setValue(homeForSale.toDictionary())
         
         write(user: FirebaseData.sharedInstance.currentUser!)
-        //FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).setValue(FirebaseData.sharedInstance.currentUser?.toDictionary())
     }
     
     class func writeHomesForRent(homeForRent: HomeRental){

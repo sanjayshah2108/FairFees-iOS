@@ -14,7 +14,6 @@ import Firebase
 
 class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, GMSPlacePickerViewControllerDelegate {
     
-    
     var navigationBarHeight: CGFloat!
 
     var sellOrLeaseSegmentedControl: UISegmentedControl!
@@ -87,17 +86,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sellOrLeaseSegmentedControl.addTarget(self, action: #selector(changedSellOrLeaseSegment), for: .valueChanged)
         sellOrLeaseSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sellOrLeaseSegmentedControl)
-    }
-    
-    @objc func changedSellOrLeaseSegment(sender: UISegmentedControl){
-    
-        if (sender.selectedSegmentIndex == 0){
-            priceTextField.placeholder = "Price"
-        }
-        else if (sender.selectedSegmentIndex == 1){
-            priceTextField.placeholder = "Monthly Rent"
-        }
-        
     }
 
     func setupTextFields(){
@@ -500,14 +488,22 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
     
+    @objc func changedSellOrLeaseSegment(sender: UISegmentedControl){
+        
+        if (sender.selectedSegmentIndex == 0){
+            priceTextField.placeholder = "Price"
+        }
+        else if (sender.selectedSegmentIndex == 1){
+            priceTextField.placeholder = "Monthly Rent"
+        }
+    }
+    
     @objc func addCount(sender: UIButton){
         if (sender.superview == customBedroomStepper){
             bedroomNumber = bedroomNumber + 1
             bedroomNumberLabel.text = String(bedroomNumber)
             bedroomNumberLabel.textColor = UIColor.black
             bedroomMinusButton.isEnabled = true
-            
-            
         }
         else if (sender.superview == customBathroomStepper){
             bathroomNumber = bathroomNumber + 1
@@ -683,9 +679,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return false
         }
         
-        return true
-        
-        
+        return true        
     }
     
     //imagePicker delegate methods
@@ -750,8 +744,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let changePhotoAlert = UIAlertController(title: "View or Delete Photo?", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-
+    
         let viewAction = UIAlertAction(title: "View Photo", style: UIAlertActionStyle.default, handler:{ (action) in
                     
             let imageScrollView = ImageScrollView()
@@ -773,7 +766,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.present(changePhotoAlert, animated: true, completion: nil)
     }
     
-    
+    //placePicker methods
     @objc func pickPlace(sender: UIButton) {
         let config = GMSPlacePickerConfig(viewport: nil)
         let placePicker = GMSPlacePickerViewController(config: config)
@@ -782,38 +775,14 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         present(placePicker, animated: true, completion: nil)
     }
     
-    // To receive the results from the place picker 'self' will need to conform to
-    // GMSPlacePickerViewControllerDelegate and implement this code.
+    
     func placePicker(_ viewController: GMSPlacePickerViewController, didPick place: GMSPlace) {
         // Dismiss the place picker, as it cannot dismiss itself.
         viewController.dismiss(animated: true, completion: nil)
         
         location = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
-        
-        if (place.addressComponents != nil){
-        
-            for component in place.addressComponents! {
-                if(component.type == "route"){
-                    addressTextField.text = component.name
-                }
-                if (component.type == "locality") {
-                    cityTextField.text = component.name
-                }
-                if (component.type == "country") {
-                    countryTextField.text = component.name
-                }
-                if (component.type == "postal_code"){
-                    zipcodeTextField.text = component.name
-                }
-                if (component.type == "administrative_area_level_1"){
-                    provinceTextField.text = component.name
-                }
-            }
-        }
-        
-        else {
-            reverseGeocode(location: location)
-        }
+        reverseGeocode(location: location)
+    
     }
     
     func placePickerDidCancel(_ viewController: GMSPlacePickerViewController) {
@@ -864,8 +833,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
     
-    
-        
     
     //textView methods
     func textFieldDidBeginEditing(_ textField: UITextField) {

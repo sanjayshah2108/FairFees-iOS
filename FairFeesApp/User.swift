@@ -47,12 +47,12 @@ class User: NSObject {
             let inpFirstName: String = inpDict["firstName"] as? String,
             let inpLastName: String = inpDict["lastName"] as? String,
             let inpEmail: String = inpDict["email"] as? String,
-            let inpPhoneNumber: Int = inpDict["phoneNumber"] as! Int,
-            let inpRating: Int = inpDict["rating"] as! Int,
-            let inpTypeOfUser: [String: Bool] = inpDict["typeOfUser"] as! [String: Bool],
+            let inpPhoneNumber: Int = inpDict["phoneNumber"] as? Int,
+            let inpRating: Int = inpDict["rating"] as? Int,
+            let inpTypeOfUser: [String: Bool] = inpDict["typeOfUser"] as? [String: Bool],
             
             //let inpProfileImage: String = inpDict["profileImage"] as? String ?? "",
-            var inpListings:[Listing] = inpDict["listings"] as? [Listing] else
+            let inpListings:[Listing] = inpDict["listings"] as? [Listing] else
         {
             print("Error: Dictionary is not in the correct format")
             return nil

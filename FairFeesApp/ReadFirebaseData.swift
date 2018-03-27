@@ -48,7 +48,6 @@ class ReadFirebaseData: NSObject {
             ref.removeObserver(withHandle: homesForSaleHandle!)
         }
         homesForSaleHandle = tempHandle
-        
     }
     
     fileprivate class func readHomeForSale(data:[String:Any], specificUser: Bool) {
@@ -318,25 +317,6 @@ class ReadFirebaseData: NSObject {
                     index = index+1
                 }
             }
-        
-//        listings = FirebaseData.sharedInstance.specificUserListings
-//
-//        //create the user with all the listings
-//        let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser)
-//
-//        FirebaseData.sharedInstance.users.append(readUser)
-//
-//        //if someone is signed in, or the user is cached, to Auth.auth(), set the current users details
-//        if (Auth.auth().currentUser != nil) {
-//            if (UID == Auth.auth().currentUser?.uid){
-//                FirebaseData.sharedInstance.currentUser = readUser
-//            }
-//        }
-        
-        
-        
-//        let myUsersDownloadNotificationKey = "myUsersDownloadNotificationKey"
-//        NotificationCenter.default.post(name: Notification.Name(rawValue: myUsersDownloadNotificationKey), object: nil)
     }
     
     

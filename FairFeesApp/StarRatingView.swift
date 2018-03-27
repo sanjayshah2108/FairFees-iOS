@@ -63,95 +63,92 @@ class StarRatingView: UIView {
     @objc func tapAStar(sender: UITapGestureRecognizer){
         let location = sender.location(in: backgroundView)
         
-        if (location.x > 50){
+        if (location.x > 30){
             star1.image = #imageLiteral(resourceName: "filledStar")
             rating = 1
         }
-        if (location.x > 100){
+        if (location.x > 60){
             star2.image = #imageLiteral(resourceName: "filledStar")
             rating = 2
         }
-        if (location.x > 150){
+        if (location.x > 90){
             star3.image = #imageLiteral(resourceName: "filledStar")
             rating = 3
         }
-        if (location.x > 200){
+        if (location.x > 120){
             star4.image = #imageLiteral(resourceName: "filledStar")
             rating = 4
         }
-        if (location.x > 250){
+        if (location.x > 150){
             star5.image = #imageLiteral(resourceName: "filledStar")
             rating = 5
         }
         
-        if (location.x < 250){
+        if (location.x < 150){
             star5.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 4
         }
-        if (location.x < 200){
+        if (location.x < 120){
             star4.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 3
         }
-        if (location.x < 150){
+        if (location.x < 90){
             star3.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 2
         }
-        if (location.x < 100){
+        if (location.x < 60){
             star2.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 1
         }
-        if (location.x < 50){
+        if (location.x < 30){
             star1.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 0
         }
 
-
-  
-      
     }
     
     @objc func panAcrossStars(sender: UIPanGestureRecognizer){
         
         let location = sender.location(in: backgroundView)
         
-        if (location.x > 50){
+        if (location.x > 30){
             star1.image = #imageLiteral(resourceName: "filledStar")
             rating = 1
         }
-        if (location.x > 100){
+        if (location.x > 60){
             star2.image = #imageLiteral(resourceName: "filledStar")
             rating = 2
         }
-        if (location.x > 150){
+        if (location.x > 90){
             star3.image = #imageLiteral(resourceName: "filledStar")
             rating = 3
         }
-        if (location.x > 200){
+        if (location.x > 120){
             star4.image = #imageLiteral(resourceName: "filledStar")
             rating = 4
         }
-        if (location.x > 250){
+        if (location.x > 150){
             star5.image = #imageLiteral(resourceName: "filledStar")
             rating = 5
         }
         
-        if (location.x < 250){
+        if (location.x < 150){
             star5.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 4
         }
-        if (location.x < 200){
+        if (location.x < 120){
             star4.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 3
         }
-        if (location.x < 150){
+        if (location.x < 90){
             star3.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 2
         }
-        if (location.x < 100){
+        if (location.x < 60){
             star2.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 1
         }
-        if (location.x < 50){
+        if (location.x < 30){
             star1.image = #imageLiteral(resourceName: "unfilledStar")
             rating = 0
         }
@@ -162,9 +159,11 @@ class StarRatingView: UIView {
             
             NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: self.superview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: self.superview, attribute: .top, multiplier: 1, constant: 0).isActive = true
-            NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.superview, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+            //NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.superview, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+            NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: self.superview, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+            NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: self.superview, attribute: .width, multiplier: 1, constant: 0).isActive = true
             //NSLayoutConstraint(item: backgroundView, attribute: .trailing, relatedBy: .equal, toItem: superview, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-            NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.superview, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+            //NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.superview, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
             
             NSLayoutConstraint(item: backgroundView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: backgroundView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0).isActive = true
@@ -180,7 +179,7 @@ class StarRatingView: UIView {
             
 
             NSLayoutConstraint(item: star1, attribute: .top, relatedBy: .equal, toItem: backgroundView, attribute: .top, multiplier: 1, constant: 0).isActive = true
-            NSLayoutConstraint(item: star1, attribute: .leading, relatedBy: .equal, toItem: backgroundView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+            //NSLayoutConstraint(item: star1, attribute: .leading, relatedBy: .equal, toItem: backgroundView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: star1, attribute: .height, relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: star1, attribute: .width, relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0).isActive = true
             
@@ -193,7 +192,8 @@ class StarRatingView: UIView {
             NSLayoutConstraint(item: star3, attribute: .leading, relatedBy: .equal, toItem: star2, attribute: .trailing, multiplier: 1, constant: 5).isActive = true
             NSLayoutConstraint(item: star3, attribute: .height, relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: star3, attribute: .width, relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0).isActive = true
-            
+            NSLayoutConstraint(item: star3, attribute: .centerX, relatedBy: .equal, toItem: backgroundView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+
             NSLayoutConstraint(item: star4, attribute: .top, relatedBy: .equal, toItem: backgroundView, attribute: .top, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: star4, attribute: .leading, relatedBy: .equal, toItem: star3, attribute: .trailing, multiplier: 1, constant: 5).isActive = true
             NSLayoutConstraint(item: star4, attribute: .height, relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0).isActive = true
@@ -212,14 +212,4 @@ class StarRatingView: UIView {
         super.updateConstraints()
     }
     
-    
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }

@@ -26,15 +26,8 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         setupRatingsView()
         setupTableView()
         setupConstraints()
-
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func setupLabels(){
         nameLabel = UILabel()
         nameLabel.backgroundColor = UIColor.white
@@ -51,7 +44,6 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         ratingView.clipsToBounds = true
         ratingView.translatesAutoresizingMaskIntoConstraints = false
         
-       
         ratingsContainerView.addSubview(ratingView)
         view.addSubview(ratingsContainerView)
     }
@@ -80,11 +72,9 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         
         //ratingsView
         NSLayoutConstraint(item: ratingView, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
-        NSLayoutConstraint(item: ratingView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: ratingView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: ratingView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
-        
-        
+        NSLayoutConstraint(item: ratingView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 50).isActive = true
+        NSLayoutConstraint(item: ratingView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -50).isActive = true
+        NSLayoutConstraint(item: ratingView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
         
         //tableViewController
@@ -106,4 +96,11 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         
         return cell
     }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
 }

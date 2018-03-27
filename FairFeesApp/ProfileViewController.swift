@@ -11,8 +11,6 @@ import Firebase
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    
-
     var nameLabel: UILabel!
     var emailLabel: UILabel!
 
@@ -24,15 +22,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "Profile"
         view.backgroundColor = UIColor.white
         
-        //ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
-        
         setupProfileLabels()
-        
         setupListingsTableView()
-        
         setupConstraints()
-       
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
          ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
@@ -65,9 +59,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         listingsTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(listingsTableView)
         
-        
         listingsTableView.register(UINib(nibName: "ProfileListingsTableViewCell", bundle: nil), forCellReuseIdentifier: "profileListingTableViewCell")
-    
     }
     
     func setupConstraints(){
@@ -84,7 +76,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         NSLayoutConstraint(item: listingsTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: listingsTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: listingsTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

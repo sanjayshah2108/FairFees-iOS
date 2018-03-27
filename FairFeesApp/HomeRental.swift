@@ -87,13 +87,8 @@ class HomeRental: Rental {
             let inpAvailabilityDate: NSNumber = inpDict["availabilityDate"] as? NSNumber,
             let inpRentalTerm: Int = inpDict["rentalTerm"] as? Int,
             let inpPhotoRefs: [String] = inpDict["photoRefs"] as? [String],
-            //CHANGE THIS TO LANDLORDUID
-            //let inpLandlordUID: String = inpDict["posterUID"] as? String,
+            let inpLandlordUID: String = inpDict["landlordUID"] as? String,
             let inpIsActive: Bool = inpDict["isActive"] as? Bool else
-            //let inpActiveString: String = inpDict["isActive"] as? String,
-            //let inpPhotos: [String] = inpDict["photos"] as? [String],
-            
-            
         {
             print("Error: HomeRental Dictionary is not in the correct format")
             return nil
@@ -119,7 +114,7 @@ class HomeRental: Rental {
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
         
         
-        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, monthlyRent: inpMonthlyRent, rentalTerm: inpRentalTerm, landlordUID: inpPosterUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
+        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, monthlyRent: inpMonthlyRent, rentalTerm: inpRentalTerm, landlordUID: inpLandlordUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
         
     }
     
