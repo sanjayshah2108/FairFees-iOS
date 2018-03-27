@@ -15,7 +15,6 @@ class Listing: GMSMarker, MKAnnotation  {
     
     var coordinate: CLLocationCoordinate2D {
         get { return self.location.coordinate }
-        //set { self.listingLocation.coordinate = newValue }
     }
     
     var UID: String!

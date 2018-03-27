@@ -178,11 +178,28 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
 
-        let addressLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
-        addressLabel.text = listingToPresent.address
-        addressLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        addressLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addressLabel)
+//        let addressLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
+//        addressLabel.text = listingToPresent.address
+//        addressLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
+//        addressLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(addressLabel)
+        
+
+        
+        let priceLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
+        //priceLabel.text = listingToPresent.address
+        priceLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(priceLabel)
+        
+        if(listingToPresent.isKind(of: HomeRental.self)){
+            let currentHomeRental = listingToPresent as! HomeRental
+           priceLabel.text = "$\((currentHomeRental.monthlyRent)!)/month"
+        }
+        else if (listingToPresent.isKind(of: HomeSale.self)){
+            let currentHomeSale = listingToPresent as! HomeSale
+            priceLabel.text = "$\((currentHomeSale.price)!)"
+        }
         
 //        let bedroomsLabel = UILabel(frame: CGRect(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 14, width: view.frame.size.width - 16, height: 15))
 //        bedroomsLabel.text = String(listingToPresent.bedroomNumber!) + "br"
@@ -214,11 +231,17 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         NSLayoutConstraint(item: nameLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: nameLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
         
-        //addressLabel
-        NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
-        //NSLayoutConstraint(item: addressLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -8).isActive = true
-        NSLayoutConstraint(item: addressLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: addressLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+        //priceLabel
+        NSLayoutConstraint(item: priceLabel, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
+        NSLayoutConstraint(item: priceLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -8).isActive = true
+        NSLayoutConstraint(item: priceLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: priceLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
+        
+//        //addressLabel
+//        NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true
+//        //NSLayoutConstraint(item: addressLabel, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -8).isActive = true
+//        NSLayoutConstraint(item: addressLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+//        NSLayoutConstraint(item: addressLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -7).isActive = true
         
 //        //bedroomsLabel
 //        NSLayoutConstraint(item: bedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 8).isActive = true

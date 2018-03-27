@@ -42,6 +42,10 @@
 		292305122054D844000ECFCF /* 00W0W_bqm9ca1gKws_1200x900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 292304D62054D81F000ECFCF /* 00W0W_bqm9ca1gKws_1200x900.jpg */; };
 		292305132054D844000ECFCF /* 00Y0Y_1RmFaEtv0nr_1200x900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 292304D92054D820000ECFCF /* 00Y0Y_1RmFaEtv0nr_1200x900.jpg */; };
 		292305142054D844000ECFCF /* 00707_a4xJkZU2wIn_1200x900.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 292304D22054D81F000ECFCF /* 00707_a4xJkZU2wIn_1200x900.jpg */; };
+		CE2D6E582069767800104EB6 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E572069767800104EB6 /* UserDetailViewController.swift */; };
+		CE2D6E5B20697A4600104EB6 /* UserDetailListingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5920697A4600104EB6 /* UserDetailListingsTableViewCell.swift */; };
+		CE2D6E5C20697A4600104EB6 /* UserDetailListingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2D6E5A20697A4600104EB6 /* UserDetailListingsTableViewCell.xib */; };
+		CE2D6E5E20697CBA00104EB6 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */; };
 		CE51484A204F70170021DB67 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514849204F70170021DB67 /* LocationManager.swift */; };
 		CE51484C204F74540021DB67 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484B204F74540021DB67 /* DummyData.swift */; };
 		CE51484E204F778F0021DB67 /* Sale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484D204F778F0021DB67 /* Sale.swift */; };
@@ -200,6 +204,10 @@
 		960C162E6E4F2CBCE53EB28D /* Pods-FairFeesAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesAppUITests/Pods-FairFeesAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		AAC4FB017996BA05F30FFF74 /* Pods-FairFeesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesApp/Pods-FairFeesApp.release.xcconfig"; sourceTree = "<group>"; };
 		BA655933DA70A492664E8083 /* Pods-FairFeesAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FairFeesAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FairFeesAppUITests/Pods-FairFeesAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		CE2D6E572069767800104EB6 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		CE2D6E5920697A4600104EB6 /* UserDetailListingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailListingsTableViewCell.swift; sourceTree = "<group>"; };
+		CE2D6E5A20697A4600104EB6 /* UserDetailListingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserDetailListingsTableViewCell.xib; sourceTree = "<group>"; };
+		CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
 		CE514849204F70170021DB67 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		CE51484B204F74540021DB67 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		CE51484D204F778F0021DB67 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
@@ -444,43 +452,47 @@
 				CE5148962058829F0021DB67 /* GooglePlacePicker.framework */,
 				292304A42054D5F1000ECFCF /* listing images */,
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
+				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
+				CE514849204F70170021DB67 /* LocationManager.swift */,
+				CE59DAEE205AF38D006FD39D /* DirectionsManager.swift */,
+				CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */,
+				CE6EFD182060845D009AFF6A /* ImageManager.swift */,
 				CE6EFD1620606DFF009AFF6A /* FirebaseData.swift */,
 				CE6EFD2A2061994A009AFF6A /* ReadFirebaseData.swift */,
 				CE6EFD2220619293009AFF6A /* WriteFirebaseData.swift */,
 				CE5148612054C0560021DB67 /* PostPhotoCollectionViewCell.swift */,
 				CE5148622054C0560021DB67 /* PostPhotoCollectionViewCell.xib */,
-				CE514892205860570021DB67 /* ImageScrollView.swift */,
-				CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */,
-				CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */,
+				CE2D6E5920697A4600104EB6 /* UserDetailListingsTableViewCell.swift */,
+				CE2D6E5A20697A4600104EB6 /* UserDetailListingsTableViewCell.xib */,
 				CE6EFD4420642983009AFF6A /* ProfileListingsTableViewCell.swift */,
 				CE6EFD4520642983009AFF6A /* ProfileListingsTableViewCell.xib */,
-				CE6EFD402064261F009AFF6A /* ProfileViewController.swift */,
+				CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */,
 				CE5148582050C1A50021DB67 /* HomeTableViewCell.xib */,
-				CE514849204F70170021DB67 /* LocationManager.swift */,
-				CE7F7E27204DE78500548D5F /* Listing.swift */,
-				CE7F7E29204DE7B700548D5F /* Building.swift */,
-				CE7F7E2B204DE8C100548D5F /* Rental.swift */,
-				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
-				CE59DAEE205AF38D006FD39D /* DirectionsManager.swift */,
+				CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */,
+				CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */,
 				CE51485B2051B7000021DB67 /* PostViewController.swift */,
+				CE6EFD3C20634D8B009AFF6A /* EditPostViewController.swift */,
+				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
+				CE6EFD402064261F009AFF6A /* ProfileViewController.swift */,
+				CE2D6E572069767800104EB6 /* UserDetailViewController.swift */,
 				CE51485D205200880021DB67 /* PostMapViewController.swift */,
 				CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */,
-				CE6EFD3C20634D8B009AFF6A /* EditPostViewController.swift */,
+				CE51484F204F77C20021DB67 /* User.swift */,
+				CE7F7E27204DE78500548D5F /* Listing.swift */,
 				CE51484D204F778F0021DB67 /* Sale.swift */,
 				CE514851204F7A580021DB67 /* HomeSale.swift */,
+				CE7F7E2B204DE8C100548D5F /* Rental.swift */,
 				CE6EFD4D2064793A009AFF6A /* HomeRental.swift */,
-				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
+				CE7F7E29204DE7B700548D5F /* Building.swift */,
+				CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */,
+				CE514892205860570021DB67 /* ImageScrollView.swift */,
 				CE51485320505FAE0021DB67 /* UIProperties.swift */,
 				CE51484B204F74540021DB67 /* DummyData.swift */,
-				CE6EFD182060845D009AFF6A /* ImageManager.swift */,
-				CE6EFD2E2061A38B009AFF6A /* AuthenticationManager.swift */,
-				CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */,
-				CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */,
-				CE51484F204F77C20021DB67 /* User.swift */,
 				CE7F7DF7204DD32D00548D5F /* Main.storyboard */,
 				CE7F7DFA204DD32D00548D5F /* Assets.xcassets */,
 				CE7F7DFC204DD32D00548D5F /* LaunchScreen.storyboard */,
 				CE7F7DFF204DD32E00548D5F /* Info.plist */,
+				CE6EFD2620619805009AFF6A /* GoogleService-Info.plist */,
 			);
 			path = FairFeesApp;
 			sourceTree = "<group>";
@@ -663,6 +675,7 @@
 				2923050F2054D844000ECFCF /* 00L0L_i9sDtSXuHjz_1200x900.jpg in Resources */,
 				292304F82054D844000ECFCF /* 00101_iWfj9gmPMjJ_1200x900.jpg in Resources */,
 				CE514872205716F80021DB67 /* GoogleMaps.bundle in Resources */,
+				CE2D6E5C20697A4600104EB6 /* UserDetailListingsTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -880,11 +893,14 @@
 				CE6EFD1720606E00009AFF6A /* FirebaseData.swift in Sources */,
 				CE6EFD2F2061A38B009AFF6A /* AuthenticationManager.swift in Sources */,
 				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
+				CE2D6E582069767800104EB6 /* UserDetailViewController.swift in Sources */,
 				CE6EFD2320619293009AFF6A /* WriteFirebaseData.swift in Sources */,
 				CE6EFD2B2061994A009AFF6A /* ReadFirebaseData.swift in Sources */,
 				CE6EFD192060845D009AFF6A /* ImageManager.swift in Sources */,
 				CE6EFD412064261F009AFF6A /* ProfileViewController.swift in Sources */,
+				CE2D6E5B20697A4600104EB6 /* UserDetailListingsTableViewCell.swift in Sources */,
 				CE6EFD0D205C5B20009AFF6A /* FilterView.swift in Sources */,
+				CE2D6E5E20697CBA00104EB6 /* StarRatingView.swift in Sources */,
 				CE5148592050C1A50021DB67 /* HomeTableViewCell.swift in Sources */,
 				CE7F7E28204DE78500548D5F /* Listing.swift in Sources */,
 				CE51485C2051B7000021DB67 /* PostViewController.swift in Sources */,

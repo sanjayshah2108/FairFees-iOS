@@ -19,30 +19,21 @@ class EditPostViewController: PostViewController {
 
     override func viewDidLoad() {
         
+        //set the type of listing
         if(listingToEdit.isKind(of: HomeRental.self)){
             homeRentalToEdit = listingToEdit as! HomeRental
             listingToEdit = homeRentalToEdit
-            
         }
         else if (listingToEdit.isKind(of: HomeSale.self)){
             homeSaleToEdit = listingToEdit as! HomeSale
             listingToEdit = homeSaleToEdit
-            
         }
         
         super.viewDidLoad()
         self.title = listingToEdit.name
         location = listingToEdit.location
         
-        if(listingToEdit.isKind(of: HomeRental.self)){
-            sellOrLeaseSegmentedControl.selectedSegmentIndex = 1
-        }
-        else if (listingToEdit.isKind(of: HomeSale.self)){
-            sellOrLeaseSegmentedControl.selectedSegmentIndex = 0
-        }
-
-        
-        sellOrLeaseSegmentedControl.isEnabled = false
+        setupSellOrLeaseSegmentControl()
     }
     
     override func setupTextFields() {
@@ -193,6 +184,16 @@ class EditPostViewController: PostViewController {
         bathroomNumberLabel.textColor = UIColor.black
     }
     
+    func setupSellOrLeaseSegmentControl(){
+        if(listingToEdit.isKind(of: HomeRental.self)){
+            sellOrLeaseSegmentedControl.selectedSegmentIndex = 1
+        }
+        else if (listingToEdit.isKind(of: HomeSale.self)){
+            sellOrLeaseSegmentedControl.selectedSegmentIndex = 0
+        }
+        sellOrLeaseSegmentedControl.isEnabled = false
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -277,8 +278,6 @@ class EditPostViewController: PostViewController {
         }
         
         return true
-        
-        
     }
     
     @objc override func submitPost(){
@@ -331,9 +330,7 @@ class EditPostViewController: PostViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let storageRef = Storage.storage().reference()
-        
-        //photoCollectionView.register(UINib(nibName: "PostPhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "photoCollectionViewCell")
-        
+  
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
         
         if(indexPath.item < self.listingToEdit.photoRefs.count){
@@ -344,7 +341,6 @@ class EditPostViewController: PostViewController {
         cell.cellImageView.contentMode = .scaleAspectFill
         
         return cell
-        
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -388,6 +384,4 @@ class EditPostViewController: PostViewController {
         
         self.present(changePhotoAlert, animated: true, completion: nil)
     }
-
-
 }

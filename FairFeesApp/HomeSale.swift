@@ -64,8 +64,6 @@ class HomeSale: Sale {
         }
     }
     
-    
-    
     convenience init?(with inpDict:[String:Any]) {
         
         guard
@@ -85,11 +83,8 @@ class HomeSale: Sale {
             let inpPrice: Int = inpDict["price"] as? Int,
             let inpAvailabilityDate: NSNumber = inpDict["availabilityDate"] as? NSNumber,
             let inpPhotoRefs: [String] = inpDict["photoRefs"] as? [String],
-            let inpIsActive: Bool = inpDict["isActive"] as? Bool else
-            //let inpActiveString: String = inpDict["isActive"] as? String,
-            //let inpPhotos: [String] = inpDict["photos"] as? [String],
-            //CHANGE THIS TO OWNERUID
-           // let inpOwnerUID: String = inpDict["posterUID"] as? String
+            let inpIsActive: Bool = inpDict["isActive"] as? Bool,
+            let inpOwnerUID: String = inpDict["ownerUID"] as? String else
         {
             print("Error: Dictionary is not in the correct format")
             return nil
@@ -115,7 +110,7 @@ class HomeSale: Sale {
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
         
         
-        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpPosterUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
+        self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpOwnerUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
         
     }
     

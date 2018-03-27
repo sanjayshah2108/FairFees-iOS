@@ -52,7 +52,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var resultView: UITextView?
 
     var listingsToPresent: [Listing]!
-    
+    var homeSalesToPresent: [HomeSale]!
+    var homeRentalsToPresent: [HomeRental]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,6 +69,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupTopLeftButtons()
         
         listingsToPresent = []
+        homeSalesToPresent = []
+        homeRentalsToPresent = []
         
         setupHomeMapView()
         setupHomeTableView()
@@ -76,8 +79,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         setupConstraints()
         
-        //right now we are only being notifide when rentals are downloaded, because they are being dowloaded last
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadMapAndTable), name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
+        //right now we are only being notified when rentals are downloaded, because they are being dowloaded last
+        NotificationCenter.default.addObserver(self, selector: #selector(setInitialListingsToPresent), name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
         
         //setupDummyData()
         ReadFirebaseData.readUsers()
@@ -90,12 +93,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
         self.navigationController?.navigationBar.tintColor = UIColor(red: 0.0, green: 122/255, blue: 1.0, alpha: 1)
-        //self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        //self.navigationController?.navigationBar.shadowImage = nil
-        
-        //self.navigationController?.navigationBar.isTranslucent = false
         homeTableView.reloadData()
     }
     
@@ -110,37 +108,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         DummyData.theDummyData.createListings()
     }
     
-    func setListingsToPresent(){
-        
-        if (buyRentSegmentedControl.selectedSegmentIndex == 0){
-            listingsToPresent = FirebaseData.sharedInstance.homesForSale
-        }
-        else if (buyRentSegmentedControl.selectedSegmentIndex == 1){
-            listingsToPresent = FirebaseData.sharedInstance.homesForRent
-        }
-        else {
-        //homesForSale will be default
-        listingsToPresent = FirebaseData.sharedInstance.homesForSale
-        }
-    }
-    
-    @objc func reloadMapAndTable(){
-        
-        homeMapView.clear()
-        setListingsToPresent()
-        
-        for listing in listingsToPresent{
-                        let marker = GMSMarker()
-                        marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-                        marker.map = homeMapView
-                    }
-        
-        homeTableView.reloadData()
-    }
-    
     func setupHomeMapView(){
         
-        let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 10.0)
+        let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 12.0)
         homeMapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
         MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
@@ -148,14 +118,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeMapView.isMyLocationEnabled = true
         homeMapView.settings.compassButton = true
         homeMapView.settings.indoorPicker = true
-        
-        
-        
-//        for listing in DummyData.theDummyData.homesForSale{
-//            let marker = GMSMarker()
-//            marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-//            marker.map = homeMapView
-//        }
         
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
@@ -190,7 +152,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setupMapListSegmentTitle(){
         mapListSegmentedControl = UISegmentedControl()
         mapListSegmentedControl.insertSegment(withTitle: "Map", at: 0, animated: false)
-        mapListSegmentedControl.insertSegment(withTitle: "List", at: 2, animated: false)
+        mapListSegmentedControl.insertSegment(withTitle: "List", at: 1, animated: false)
+        mapListSegmentedControl.insertSegment(withTitle: "Gallery", at: 2, animated: false)
         mapListSegmentedControl.selectedSegmentIndex = 0
         mapListSegmentedControl.addTarget(self, action: #selector(bringMapOrListToFront), for: .valueChanged)
         self.navigationItem.titleView = mapListSegmentedControl
@@ -205,8 +168,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupTopLeftButtons(){
         topLeftButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-        //self.navigationItem.leftBarButtonItem = topLeftButton
-        
         filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showHideFilterView))
         
         self.navigationItem.leftBarButtonItems = [topLeftButton, filterButton]
@@ -218,6 +179,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             view.bringSubview(toFront: homeMapView)
         case 1:
             view.bringSubview(toFront: homeTableView)
+        case 2:
+            print("Gallery to be implemented")
         default:
             print("SHOULDNT RUN")
         }
@@ -227,50 +190,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    @objc func profileViewControllerSegue(){
-        
-        if(guestUser == true){
-            signInAlert(title: "You need to sign in to see your profile")
-        }
-        else {
-            let profileViewController = ProfileViewController()
-            self.navigationController?.pushViewController(profileViewController, animated: true)
-        }
-    }
-    
-    @objc func newPostAction(){
-        
-        if(guestUser == true){
-            signInAlert(title: "You need to sign in to make a post")
-        }
-        else {
-            let postViewController = PostViewController()
-            self.navigationController?.pushViewController(postViewController, animated: true)
-        }
-    }
-    
-    func signInAlert(title: String){
-        let signInAlert = UIAlertController(title: "Sorry", message: title, preferredStyle: .alert)
-        let createAccountAction = UIAlertAction(title: "Log in", style: .default, handler: { (alert: UIAlertAction!) in
-            
-            let loginViewController = LoginViewController()
-            self.present(loginViewController, animated: true, completion: nil)
-            
-            loggedInBool = false
-        })
-        let cancelAction = UIAlertAction(title: "Just browse", style: .cancel, handler: nil)
-        
-        signInAlert.addAction(createAccountAction)
-        signInAlert.addAction(cancelAction)
-        
-        self.present(signInAlert, animated: true, completion: nil)
-    }
-
     
     @objc func showSearchBar(){
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
-        
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
@@ -312,7 +235,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         buyRentSegmentedControl.insertSegment(withTitle: "Buy", at: 0, animated: false)
         buyRentSegmentedControl.insertSegment(withTitle: "Rent", at: 1, animated: false)
         buyRentSegmentedControl.selectedSegmentIndex = 0
-        buyRentSegmentedControl.addTarget(self, action: #selector(reloadMapAndTable), for: .valueChanged)
+        buyRentSegmentedControl.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
         buyRentSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(buyRentSegmentedControl)
         
@@ -335,6 +258,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         noOfBedroomsSegmentedControl.insertSegment(withTitle: "2+", at: 1, animated: false)
         noOfBedroomsSegmentedControl.insertSegment(withTitle: "3+", at: 2, animated: false)
         noOfBedroomsSegmentedControl.insertSegment(withTitle: "4+", at: 3, animated: false)
+        noOfBedroomsSegmentedControl.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
         noOfBedroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(noOfBedroomsSegmentedControl)
         
@@ -350,6 +274,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         noOfBathroomsSegmentedControl.insertSegment(withTitle: "2+", at: 1, animated: false)
         noOfBathroomsSegmentedControl.insertSegment(withTitle: "3+", at: 2, animated: false)
         noOfBathroomsSegmentedControl.insertSegment(withTitle: "4+", at: 3, animated: false)
+        noOfBathroomsSegmentedControl.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
         noOfBathroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(noOfBathroomsSegmentedControl)
         
@@ -368,18 +293,92 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         filterViewIsInFront = false
     }
     
-    @objc func showListingsForSaleOrForRent(sender: UISegmentedControl){
-        if sender.selectedSegmentIndex == 0 {
+    @objc func setInitialListingsToPresent(){
+        
+        if (buyRentSegmentedControl.selectedSegmentIndex == 0){
+            listingsToPresent = FirebaseData.sharedInstance.homesForSale
+        }
+        else if (buyRentSegmentedControl.selectedSegmentIndex == 1){
+            listingsToPresent = FirebaseData.sharedInstance.homesForRent
+        }
+        else {
+            //homesForSale will be default
             listingsToPresent = FirebaseData.sharedInstance.homesForSale
         }
         
-        else if sender.selectedSegmentIndex == 1 {
-            listingsToPresent = FirebaseData.sharedInstance.homesForRent
-        }
-        homeMapView.clear()
-        homeTableView.reloadData()
-    
+        reloadMapAndTable()
+        
     }
+    
+    @objc func reloadMapAndTable(){
+        
+        homeMapView.clear()
+
+        for listing in listingsToPresent{
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            marker.map = homeMapView
+        }
+        
+        homeTableView.reloadData()
+    }
+    
+    
+    @objc func applyFilters(){
+
+        switch noOfBedroomsSegmentedControl.selectedSegmentIndex {
+        case 0:
+            homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent.filter { $0.bedroomNumber > 0 }
+            homeSalesToPresent = FirebaseData.sharedInstance.homesForSale.filter { $0.bedroomNumber > 0 }
+        case 1:
+            homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent.filter { $0.bedroomNumber > 1 }
+            homeSalesToPresent = FirebaseData.sharedInstance.homesForSale.filter { $0.bedroomNumber > 1 }
+        case 2:
+            homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent.filter { $0.bedroomNumber > 2 }
+            homeSalesToPresent = FirebaseData.sharedInstance.homesForSale.filter { $0.bedroomNumber > 2 }
+        case 3:
+            homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent.filter { $0.bedroomNumber > 3 }
+            homeSalesToPresent = FirebaseData.sharedInstance.homesForSale.filter { $0.bedroomNumber > 3 }
+            
+        default:
+            homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent
+            homeSalesToPresent = FirebaseData.sharedInstance.homesForSale
+        }
+        
+        switch noOfBathroomsSegmentedControl.selectedSegmentIndex {
+        case 0:
+            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 0 }
+            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 0 }
+        case 1:
+            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 1 }
+            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 1 }
+        case 2:
+            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 2 }
+            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 2 }
+        case 3:
+            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 3 }
+            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 3 }
+            
+        default:
+            print("no need to change anything?")
+            //homeRentalsToPresent = homeRentalsToPresent
+            //homeSalesToPresent = homeSalesToPresent
+        }
+        
+        switch buyRentSegmentedControl.selectedSegmentIndex {
+        case 0:
+            listingsToPresent = homeSalesToPresent
+        case 1:
+            listingsToPresent = homeRentalsToPresent
+        default:
+            print("SHOULDN'T RUN")
+        }
+        
+        
+        reloadMapAndTable()
+        print("apply filters")
+    }
+    
     
     @objc func showHideFilterView(){
         
@@ -404,7 +403,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         else if (filterViewIsInFront){
             UIView.animate(withDuration: 0, animations: {
-                
                 
             }, completion: { (finished: Bool) in
                 self.filterView.frame.size.height = 0
@@ -486,10 +484,48 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: filterView, attribute: .bottom , multiplier: 1, constant: -10).isActive = true
         
     }
-    @objc func applyFilters(){
-        print("apply filters")
+    
+    //segues
+    @objc func profileViewControllerSegue(){
+        
+        if(guestUser == true){
+            signInAlert(title: "You need to sign in to see your profile")
+        }
+        else {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
     }
     
+    @objc func newPostAction(){
+        
+        if(guestUser == true){
+            signInAlert(title: "You need to sign in to make a post")
+        }
+        else {
+            let postViewController = PostViewController()
+            self.navigationController?.pushViewController(postViewController, animated: true)
+        }
+    }
+    
+    func signInAlert(title: String){
+        let signInAlert = UIAlertController(title: "Sorry", message: title, preferredStyle: .alert)
+        let createAccountAction = UIAlertAction(title: "Log in", style: .default, handler: { (alert: UIAlertAction!) in
+            
+            let loginViewController = LoginViewController()
+            self.present(loginViewController, animated: true, completion: nil)
+            
+            loggedInBool = false
+        })
+        let cancelAction = UIAlertAction(title: "Just browse", style: .cancel, handler: nil)
+        
+        signInAlert.addAction(createAccountAction)
+        signInAlert.addAction(cancelAction)
+        
+        self.present(signInAlert, animated: true, completion: nil)
+    }
+
+ 
     
     //tableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -516,7 +552,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.bedroomsLabel.text = "\(homeRental.bedroomNumber!) br"
             cell.bathroomsLabel.text = "\(homeRental.bathroomNumber!) ba"
             cell.priceLabel.text = "$\(homeRental.monthlyRent!)/month"
-            
         }
         
         cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
@@ -531,8 +566,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let listingViewController = ListingDetailViewController()
         
-        //listingViewController.currentListing = DummyData.theDummyData.homesForSale[indexPath.row]
-        
         if (buyRentSegmentedControl.selectedSegmentIndex == 0){
              listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeSale
         }
@@ -540,10 +573,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeRental
         }
         
-        
-        
         self.navigationController?.pushViewController(listingViewController, animated: true)
-        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -596,17 +626,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-        
+    //GMSPlaceSearch Methods
     // Handle the user's selection in place search.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        
         dismiss(animated: true, completion: nil)
     }
         
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
-            
     }
 
     // User canceled the operation.
@@ -614,7 +642,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         dismiss(animated: true, completion: nil)
     }
     
-    
+    //GMSPLace Results handlers
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false

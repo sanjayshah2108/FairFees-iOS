@@ -17,6 +17,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     var storageRef: StorageReference!
     weak var currentListing: Listing!
+    weak var currentHomeSale: HomeSale!
+    weak var currentHomeRental: HomeRental!
+    weak var posterUser: User!
+    weak var landlordUser: User!
 
     var imageViewCarousel: UIImageView!
     var imageViewPageControl: UIPageControl!
@@ -27,6 +31,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     //var mapView: MKMapView!
     var mapView: GMSMapView!
     var directionsButton: UIButton!
+    var landlordButton: UIButton!
+    var posterButton: UIButton!
     
     var featuresView: UIView!
     var priceLabel: UILabel!
@@ -43,6 +49,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.clipsToBounds = true
         view.backgroundColor = UIColor.white
         navigationBarHeight = self.navigationController?.navigationBar.frame.height
@@ -58,8 +65,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         self.title = currentListing.name
         
-
+        posterUser = FirebaseData.sharedInstance.users.first(where: { $0.UID == currentListing.posterUID })
+        
         setupImageView()
+        setupButtons()
         setupLabels()
         setupMapView()
         
@@ -104,7 +113,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         imageViewCarousel.addGestureRecognizer(imageViewCarouselExpandPinchGesture)
         
-        
         nextImageButton = UIButton(type: .custom)
         nextImageButton.setTitle("Next", for: .normal)
         nextImageButton.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
@@ -128,7 +136,30 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         imageViewPageControl.currentPageIndicatorTintColor = UIColor.white
         imageViewPageControl.translatesAutoresizingMaskIntoConstraints = false
         imageViewCarousel.addSubview(imageViewPageControl)
+    }
+    
+    func setupButtons(){
+        posterButton = UIButton()
+        posterButton.setTitle("Poster: \(posterUser.firstName)", for: .normal)
+        posterButton.setTitleColor(UIColor.blue, for: .normal)
+        posterButton.translatesAutoresizingMaskIntoConstraints = false
+        posterButton.addTarget(self, action: #selector(segueToPosterUser), for: .touchUpInside)
+        view.addSubview(posterButton)
         
+        landlordButton = UIButton()
+        landlordButton.setTitleColor(UIColor.blue, for: .normal)
+        landlordButton.translatesAutoresizingMaskIntoConstraints = false
+        landlordButton.addTarget(self, action: #selector(segueToLandlordUser), for: .touchUpInside)
+       // view.addSubview(landlordButton)
+        
+        if(currentListing.isKind(of: HomeRental.self)){
+            let currentHomeRental = currentListing as! HomeRental
+            landlordButton.setTitle("Poster: \(currentHomeRental.landlordUID)", for: .normal)
+        }
+        else if (currentListing.isKind(of: HomeSale.self)){
+            let currentHomeSale = currentListing as! HomeSale
+            landlordButton.setTitle("Poster: \(currentHomeSale.ownerUID)", for: .normal)
+        }
     }
     
     func setupLabels(){
@@ -289,8 +320,14 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: bathroomLabel, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: bathroomLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
         
+        //posterButton
+        NSLayoutConstraint(item: posterButton, attribute: .top, relatedBy: .equal, toItem: featuresView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: posterButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: posterButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: posterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        
         //descriptionLabel
-        NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: posterButton, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
@@ -318,10 +355,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             photoIndex = photoIndex + 1
             imageViewPageControl.currentPage += 1
         }
-        
         imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs![photoIndex!]), placeholderImage: nil)
-        //imageViewCarousel.image = currentListing.photos[photoIndex]
-        
     }
     
     @objc func previousImage(){
@@ -333,9 +367,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             photoIndex = photoIndex - 1
             imageViewPageControl.currentPage -= 1
         }
-    
        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
-        //imageViewCarousel.image = currentListing.photos[photoIndex]
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){
@@ -350,6 +382,23 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             print("swiped right")
         }
     }
+    
+    @objc func segueToPosterUser(sender: UIButton){
+        
+        let userDetailViewController = UserDetailViewController()
+        userDetailViewController.currentUser = posterUser
+        
+        self.navigationController?.pushViewController(userDetailViewController, animated: true)
+    }
+    
+    @objc func segueToLandlordUser(sender: UIButton){
+        
+        let userDetailViewController = UserDetailViewController()
+        userDetailViewController.currentUser = landlordUser
+        
+        self.navigationController?.pushViewController(userDetailViewController, animated: true)
+    }
+    
     
     @objc func showDirections(){
         
@@ -372,7 +421,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             let update = GMSCameraUpdate.setTarget(currentListing.coordinate, zoom: 15.0)
             self.mapView.animate(with: update)
         }
-        
     }
     
     @objc func pinchImageToFullscreen(sender: UIPinchGestureRecognizer){
@@ -383,10 +431,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     }
     
     
-    //fullcreen image methods
+    //fullcreen image methods -  NOT Being used now
     @objc func fullscreenImage() {
-        
-      
         
         let tempImageView = UIImageView()
         tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
@@ -405,8 +451,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         newImageView.addGestureRecognizer(tap)
         
  //       let collapsePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        
-        
         
         self.view.addSubview(newImageView)
         self.navigationController?.isNavigationBarHidden = true
