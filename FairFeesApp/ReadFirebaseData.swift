@@ -224,7 +224,7 @@ class ReadFirebaseData: NSObject {
             
             
             //user["listingRefs"] may have disappeared in the Firebase DB if the user deleted his only listing, so we have to check first.
-            var listingRefs: [String] = []
+            var listingRefs: [String]
             
             if (userData.keys.contains("listings")){
                 listingRefs = (userData["listings"] as? [String])!
@@ -296,7 +296,15 @@ class ReadFirebaseData: NSObject {
                             
                             readUser.listingsRefs = listingRefs
 
-                            FirebaseData.sharedInstance.users.append(readUser)
+                            //USERS ARE BEING READ MULTIPLE TIMES, so instead of appending, we need to check if the user exists, and replace it if true. FIX THIS
+                            if(FirebaseData.sharedInstance.users.contains(where: {$0.UID == readUser.UID})){
+                                let index = FirebaseData.sharedInstance.users.index(where: {$0.UID == readUser.UID})
+                                
+                                FirebaseData.sharedInstance.users[index!] = readUser
+                            }
+                            else {
+                                 FirebaseData.sharedInstance.users.append(readUser)
+                            }
 
                             //if someone is signed in, set the current users details
                             if (Auth.auth().currentUser != nil) {
@@ -304,6 +312,7 @@ class ReadFirebaseData: NSObject {
                                     FirebaseData.sharedInstance.currentUser = readUser
                                 }
                             }
+                            return
                         }
                     })
                     index = index+1
