@@ -33,7 +33,8 @@ class DummyData: NSObject {
                          typeOfUser: ["buyer": true,
                                       "seller": true,
                                       "landlord": true,
-                                      "tenant": true,])
+                                      "tenant": true,],
+                         reviews: [])
         
         let user2 = User(uid: "notRealUID",
                          firstName: "Amir",
@@ -45,7 +46,8 @@ class DummyData: NSObject {
                          typeOfUser: ["buyer": true,
                                       "seller": true,
                                       "landlord": true,
-                                      "tenant": true,])
+                                      "tenant": true,],
+                         reviews: [])
         
         user1.listingsRefs = []
         user2.listingsRefs = []

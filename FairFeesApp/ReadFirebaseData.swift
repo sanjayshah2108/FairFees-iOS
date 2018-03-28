@@ -213,15 +213,45 @@ class ReadFirebaseData: NSObject {
     //read an individual user
     class func readUser(userData: [String: Any]){
      
-            let UID: String = userData["UID"] as! String
-            let firstName: String = userData["firstName"] as! String
-            let lastName: String = userData["lastName"] as! String
-            let email: String = userData["email"] as! String
-            let phoneNumber: Int = userData["phoneNumber"] as! Int
-            let rating: Int = userData["rating"] as! Int
-            let typeOfUser: [String: Bool] = userData["typeOfUser"] as! [String: Bool]
+        let UID: String = userData["UID"] as! String
+        let firstName: String = userData["firstName"] as! String
+        let lastName: String = userData["lastName"] as! String
+        let email: String = userData["email"] as! String
+        let phoneNumber: Int = userData["phoneNumber"] as! Int
+        let rating: Int = userData["rating"] as! Int
+        let typeOfUser: [String: Bool] = userData["typeOfUser"] as! [String: Bool]
+        let reviewDictArray: [String: [String: Any]] = userData["reviews"] as! [String : [String: Any]]
+        
+        var reviews: [Review] = []
+        
+        for (key, value) in reviewDictArray{
+            //try value for key
+            let reviewUID = value["UID"] as! String
+            let text = value["text"] as! String
+            let reviewerUID = value["reviewerUID"] as! String
+            let reviewerName = value["reviewerName"] as! String
+            let upvotes = value["upvotes"] as! Int
+            let downvotes = value["downvotes"] as! Int
+            let votesDict = value["votes"] as! [String: [String: Any]]
             
+            var votes: [Vote] = []
             
+            for (key, value) in votesDict{
+                let typeOfVote: String = value["type"] as! String
+                let voterUID: String = value["voterUID"] as! String
+    
+                let vote:Vote = Vote(type: typeOfVote, voterUID: voterUID)
+                
+                votes.append(vote)
+            }
+            
+            let rev = Review(uid: reviewUID, text: text, upvotes: upvotes, downvotes: downvotes, reviewerUID: reviewerUID, reviewerName: reviewerName, votes: votes)
+            
+            reviews.append(rev)
+        }
+        
+        
+        
             //user["listingRefs"] may have disappeared in the Firebase DB if the user deleted his only listing, so we have to check first.
             var listingRefs: [String]
             
@@ -232,7 +262,8 @@ class ReadFirebaseData: NSObject {
                 listingRefs = [] as [String]
                 
                 //create the user with no listings
-                let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser)
+                let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews)
+                
                 
                 FirebaseData.sharedInstance.users.append(readUser)
                 
@@ -291,7 +322,7 @@ class ReadFirebaseData: NSObject {
                             listings = FirebaseData.sharedInstance.specificUserListings
 
                             //create the user with all the listings
-                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser)
+                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews)
                             
                             readUser.listingsRefs = listingRefs
 

@@ -505,7 +505,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
         //priceFilterSliderResultLabel
-        NSLayoutConstraint(item: priceFilterResultLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 5).isActive = true
+        NSLayoutConstraint(item: priceFilterResultLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 2).isActive = true
         //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceFilterResultLabel, attribute: .centerX, relatedBy: .equal, toItem: filterView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
