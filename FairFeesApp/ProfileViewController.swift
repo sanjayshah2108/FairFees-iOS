@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     var nameLabel: UILabel!
     var emailLabel: UILabel!
+   
 
     var listingsTableView: UITableView!
     
@@ -23,6 +24,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.backgroundColor = UIColor.white
         
         setupProfileLabels()
+     
         setupListingsTableView()
         setupConstraints()
     }
@@ -48,7 +50,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailLabel)
     }
-    
+
     func setupListingsTableView(){
         
         listingsTableView = UITableView()
@@ -78,6 +80,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         NSLayoutConstraint(item: listingsTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
     
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (FirebaseData.sharedInstance.currentUser?.listings.count)!
     }

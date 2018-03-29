@@ -13,6 +13,8 @@ import GoogleMaps
 import GooglePlaces
 import FirebaseStorage
 import Firebase
+import WARangeSlider
+
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchBarDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, GMSAutocompleteResultsViewControllerDelegate {
     
@@ -34,12 +36,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var filterViewHeight: CGFloat!
     
     var buyRentSegmentedControl: UISegmentedControl!
-    var priceFilterSlider: UISlider!
+    var priceFilterSlider: RangeSlider!
+    var priceFilterResultLabel: UILabel!
     var noOfBedroomsLabel: UILabel!
     var noOfBedroomsSegmentedControl: UISegmentedControl!
     var noOfBathroomsLabel: UILabel!
     var noOfBathroomsSegmentedControl: UISegmentedControl!
     var applyFilterButton: UIButton!
+    var resetFilterButton: UIButton!
     
     var navigationBarHeight: CGFloat!
     var searchBarHeight: CGFloat!
@@ -62,7 +66,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         searchBarHeight = 0
-        filterViewHeight = 190
+        filterViewHeight = 220
         
         setupMapListSegmentTitle()
         setupTopRightButtons()
@@ -239,12 +243,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         buyRentSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(buyRentSegmentedControl)
         
-        priceFilterSlider = UISlider()
+        priceFilterSlider = RangeSlider()
+        filterView.addSubview(priceFilterSlider)
+        priceFilterSlider.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
         priceFilterSlider.maximumValue = 10000000
-        priceFilterSlider.minimumValue = 100000
-        priceFilterSlider.setValue(5000000, animated: true)
+        priceFilterSlider.minimumValue = 500
+        priceFilterSlider.lowerValue = 1000
+        priceFilterSlider.upperValue = 1000000
         priceFilterSlider.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(priceFilterSlider)
+        
+        priceFilterResultLabel = UILabel()
+        priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to $\(Int(priceFilterSlider.upperValue))"
+        priceFilterResultLabel.font = UIFont(name: "GillSans-Light", size: 12)
+        priceFilterResultLabel.translatesAutoresizingMaskIntoConstraints = false
+        //priceFilterResultLabel.isHidden = true
+        filterView.addSubview(priceFilterResultLabel)
         
         noOfBedroomsLabel = UILabel()
         noOfBedroomsLabel.text = "No. of Bedrooms"
@@ -282,13 +296,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         applyFilterButton.frame = CGRect.zero
         applyFilterButton.addTarget(self, action: #selector(applyFilters), for: .touchUpInside)
         applyFilterButton.layer.cornerRadius = 5
-        applyFilterButton.isEnabled = false
         applyFilterButton.setTitle("Apply Filters", for: .normal)
-        applyFilterButton.isEnabled = true
         applyFilterButton.backgroundColor = UIColor.blue
         applyFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(applyFilterButton)
+        
+        resetFilterButton = UIButton()
+        resetFilterButton.frame = CGRect.zero
+        resetFilterButton.addTarget(self, action: #selector(resetFilters), for: .touchUpInside)
+        resetFilterButton.layer.cornerRadius = 5
+        resetFilterButton.setTitle("Reset Filters", for: .normal)
+        resetFilterButton.backgroundColor = UIColor.blue
+        resetFilterButton.titleLabel?.textColor = UIProperties.sharedUIProperties.primaryBlackColor
+        resetFilterButton.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(resetFilterButton)
         
         filterViewIsInFront = false
     }
@@ -361,9 +383,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         default:
             print("no need to change anything?")
-            //homeRentalsToPresent = homeRentalsToPresent
+            //homeRentalsToPresent = homeRentalsToPresent9
             //homeSalesToPresent = homeSalesToPresent
         }
+    
+        
+        homeRentalsToPresent = homeRentalsToPresent.filter { ($0.monthlyRent > Int(priceFilterSlider.lowerValue)) && ($0.monthlyRent < Int(priceFilterSlider.upperValue)) }
+        homeSalesToPresent = homeSalesToPresent.filter { ($0.price > Int(priceFilterSlider.lowerValue)) && ($0.price < Int(priceFilterSlider.upperValue)) }
+        
+        priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to  $\(Int(priceFilterSlider.upperValue))"
+        
         
         switch buyRentSegmentedControl.selectedSegmentIndex {
         case 0:
@@ -377,6 +406,28 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         reloadMapAndTable()
         print("apply filters")
+    }
+    
+    @objc func resetFilters(){
+        
+        homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent
+        homeSalesToPresent = FirebaseData.sharedInstance.homesForSale
+        
+        priceFilterSlider.lowerValue = 1000
+        priceFilterSlider.upperValue = 1000000
+        priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to  $\(Int(priceFilterSlider.upperValue))"
+    
+        switch buyRentSegmentedControl.selectedSegmentIndex {
+        case 0:
+            listingsToPresent = homeSalesToPresent
+        case 1:
+            listingsToPresent = homeRentalsToPresent
+        default:
+            print("SHOULDN'T RUN")
+        }
+
+        reloadMapAndTable()
+        print("reset filters")
     }
     
     
@@ -451,10 +502,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: buyRentSegmentedControl, attribute: .bottom , multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -15).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        
+        //priceFilterSliderResultLabel
+        NSLayoutConstraint(item: priceFilterResultLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 2).isActive = true
+        //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: priceFilterResultLabel, attribute: .centerX, relatedBy: .equal, toItem: filterView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
         //bedroomNumberLabel
-        //NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        //NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
@@ -481,8 +539,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: applyFilterButton, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: applyFilterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
-        NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: filterView, attribute: .bottom , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: applyFilterButton, attribute: .bottom, relatedBy: .equal, toItem: resetFilterButton, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
+        //resetFilterButton
+        NSLayoutConstraint(item: resetFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: resetFilterButton, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: resetFilterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: resetFilterButton, attribute: .bottom, relatedBy: .equal, toItem: filterView, attribute: .bottom , multiplier: 1, constant: -10).isActive = true
+        
+    }
+    
+    @objc func priceRangeSliderValueChanged(sender: RangeSlider){
+        
+        
+        
+        print("update")
     }
     
     //segues

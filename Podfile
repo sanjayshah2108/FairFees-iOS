@@ -10,6 +10,7 @@ target 'FairFeesApp' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'Firebase/Analytics'
+  pod 'WARangeSlider'
 
   # Pods for FairFeesApp
 

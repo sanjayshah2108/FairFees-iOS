@@ -46,6 +46,11 @@
 		CE2D6E5B20697A4600104EB6 /* UserDetailListingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5920697A4600104EB6 /* UserDetailListingsTableViewCell.swift */; };
 		CE2D6E5C20697A4600104EB6 /* UserDetailListingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2D6E5A20697A4600104EB6 /* UserDetailListingsTableViewCell.xib */; };
 		CE2D6E5E20697CBA00104EB6 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */; };
+		CE2D6E60206B2EA700104EB6 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5F206B2EA600104EB6 /* Review.swift */; };
+		CE2D6E62206B388800104EB6 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E61206B388800104EB6 /* Vote.swift */; };
+		CE2D6E64206C322600104EB6 /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E63206C322500104EB6 /* ReviewsViewController.swift */; };
+		CE2D6E67206C341500104EB6 /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E65206C341500104EB6 /* ReviewTableViewCell.swift */; };
+		CE2D6E68206C341500104EB6 /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2D6E66206C341500104EB6 /* ReviewTableViewCell.xib */; };
 		CE51484A204F70170021DB67 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514849204F70170021DB67 /* LocationManager.swift */; };
 		CE51484C204F74540021DB67 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484B204F74540021DB67 /* DummyData.swift */; };
 		CE51484E204F778F0021DB67 /* Sale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484D204F778F0021DB67 /* Sale.swift */; };
@@ -208,6 +213,11 @@
 		CE2D6E5920697A4600104EB6 /* UserDetailListingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailListingsTableViewCell.swift; sourceTree = "<group>"; };
 		CE2D6E5A20697A4600104EB6 /* UserDetailListingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserDetailListingsTableViewCell.xib; sourceTree = "<group>"; };
 		CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
+		CE2D6E5F206B2EA600104EB6 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		CE2D6E61206B388800104EB6 /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
+		CE2D6E63206C322500104EB6 /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
+		CE2D6E65206C341500104EB6 /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
+		CE2D6E66206C341500104EB6 /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
 		CE514849204F70170021DB67 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		CE51484B204F74540021DB67 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		CE51484D204F778F0021DB67 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
@@ -468,13 +478,16 @@
 				CE6EFD4520642983009AFF6A /* ProfileListingsTableViewCell.xib */,
 				CE5148572050C1A50021DB67 /* HomeTableViewCell.swift */,
 				CE5148582050C1A50021DB67 /* HomeTableViewCell.xib */,
+				CE2D6E65206C341500104EB6 /* ReviewTableViewCell.swift */,
+				CE2D6E66206C341500104EB6 /* ReviewTableViewCell.xib */,
 				CE6EFD322061A6E4009AFF6A /* LoginViewController.swift */,
 				CE7F7DF3204DD32D00548D5F /* HomeViewController.swift */,
 				CE51485B2051B7000021DB67 /* PostViewController.swift */,
 				CE6EFD3C20634D8B009AFF6A /* EditPostViewController.swift */,
 				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
-				CE6EFD402064261F009AFF6A /* ProfileViewController.swift */,
 				CE2D6E572069767800104EB6 /* UserDetailViewController.swift */,
+				CE2D6E63206C322500104EB6 /* ReviewsViewController.swift */,
+				CE6EFD402064261F009AFF6A /* ProfileViewController.swift */,
 				CE51485D205200880021DB67 /* PostMapViewController.swift */,
 				CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */,
 				CE51484F204F77C20021DB67 /* User.swift */,
@@ -484,6 +497,8 @@
 				CE7F7E2B204DE8C100548D5F /* Rental.swift */,
 				CE6EFD4D2064793A009AFF6A /* HomeRental.swift */,
 				CE7F7E29204DE7B700548D5F /* Building.swift */,
+				CE2D6E5F206B2EA600104EB6 /* Review.swift */,
+				CE2D6E61206B388800104EB6 /* Vote.swift */,
 				CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */,
 				CE514892205860570021DB67 /* ImageScrollView.swift */,
 				CE51485320505FAE0021DB67 /* UIProperties.swift */,
@@ -656,6 +671,7 @@
 				292304F32054D844000ECFCF /* 00a0a_bHlb7rvOfrt_1200x900.jpg in Resources */,
 				292305062054D844000ECFCF /* 00404_8OmXsbv4SED_1200x900.jpg in Resources */,
 				292304F72054D844000ECFCF /* 00Y0Y_dxJFwLrXD2z_1200x900.jpg in Resources */,
+				CE2D6E68206C341500104EB6 /* ReviewTableViewCell.xib in Resources */,
 				2923050E2054D844000ECFCF /* 00l0l_a0QTvRBkXQy_1200x900.jpg in Resources */,
 				292305102054D844000ECFCF /* 00N0N_2MZaQK4150n_1200x900.jpg in Resources */,
 				292305132054D844000ECFCF /* 00Y0Y_1RmFaEtv0nr_1200x900.jpg in Resources */,
@@ -845,6 +861,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/WARangeSlider/WARangeSlider.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -853,6 +870,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WARangeSlider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -890,6 +908,7 @@
 				CE514893205860590021DB67 /* ImageScrollView.swift in Sources */,
 				CE7F7DF4204DD32D00548D5F /* HomeViewController.swift in Sources */,
 				CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */,
+				CE2D6E62206B388800104EB6 /* Vote.swift in Sources */,
 				CE6EFD1720606E00009AFF6A /* FirebaseData.swift in Sources */,
 				CE6EFD2F2061A38B009AFF6A /* AuthenticationManager.swift in Sources */,
 				CE514852204F7A580021DB67 /* HomeSale.swift in Sources */,
@@ -912,11 +931,14 @@
 				CE6EFD4620642983009AFF6A /* ProfileListingsTableViewCell.swift in Sources */,
 				CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */,
 				CE6EFD3D20634D8B009AFF6A /* EditPostViewController.swift in Sources */,
+				CE2D6E64206C322600104EB6 /* ReviewsViewController.swift in Sources */,
 				CE51485420505FAE0021DB67 /* UIProperties.swift in Sources */,
+				CE2D6E60206B2EA700104EB6 /* Review.swift in Sources */,
 				CE7F7E2A204DE7B700548D5F /* Building.swift in Sources */,
 				CE59DAEF205AF391006FD39D /* DirectionsManager.swift in Sources */,
 				CE51484C204F74540021DB67 /* DummyData.swift in Sources */,
 				CE51484A204F70170021DB67 /* LocationManager.swift in Sources */,
+				CE2D6E67206C341500104EB6 /* ReviewTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
