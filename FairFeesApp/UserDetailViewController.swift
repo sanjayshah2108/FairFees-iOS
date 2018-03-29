@@ -25,7 +25,6 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         view.backgroundColor = UIColor.white
         
         self.navigationController?.navigationBar.tintColor = UIColor.blue
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.black]
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
         
         setupLabels()

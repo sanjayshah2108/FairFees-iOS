@@ -35,7 +35,7 @@ class ReviewsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "reviewTableViewCell") as! ReviewTableViewCell
         
-        cell.reviewerNameLabel.text = currentUser.reviews[indexPath.row].reviewerName + " says:"
+        cell.reviewerNameLabel.text = currentUser.reviews[indexPath.row].reviewerName + " writes:"
         cell.reviewTextLabel.text = currentUser.reviews[indexPath.row].text
         cell.upvotesLabel.text = "Up: \(String((currentUser.reviews[indexPath.row].upvotes)!))"
         cell.downvotesLabel.text = "Down: \(String((currentUser.reviews[indexPath.row].downvotes)!))"
