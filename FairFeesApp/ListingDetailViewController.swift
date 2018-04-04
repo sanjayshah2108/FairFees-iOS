@@ -45,6 +45,9 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     var imageViewCarouselExpandPinchGesture: UIPinchGestureRecognizer!
     var imageViewCarouselExpandTapGesture: UITapGestureRecognizer!
     
+    var enlargedMapTopConstraint: NSLayoutConstraint!
+    var minimizedMapTopConstraint: NSLayoutConstraint!
+    
     var photoIndex: Int!
     
     override func viewDidLoad() {
@@ -277,6 +280,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -navigationBarHeight).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 350).isActive = true
         
         //nextImageButton
         NSLayoutConstraint(item: nextImageButton, attribute: .bottom, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: -20).isActive = true
@@ -344,8 +348,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0).isActive = true
+        minimizedMapTopConstraint = NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0)
+        NSLayoutConstraint.activate([minimizedMapTopConstraint])
+        
+       // NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0).isActive = true
         
         //directionsButton
         NSLayoutConstraint(item: directionsButton, attribute: .top, relatedBy: .equal, toItem: mapView, attribute: .top, multiplier: 1, constant: 10).isActive = true
@@ -410,7 +416,17 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func showDirections(){
         
-        print("tapped directions")
+        UIView.animate(withDuration: 1, animations: {
+            self.enlargedMapTopConstraint = NSLayoutConstraint(item: self.mapView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
+            
+            NSLayoutConstraint.deactivate([self.minimizedMapTopConstraint])
+            NSLayoutConstraint.activate([self.enlargedMapTopConstraint])
+            
+            self.view.layoutIfNeeded()
+            
+        }, completion: { finished in
+            
+        })
         
         let destinationLocation = currentListing.location
         let originLocation = LocationManager.theLocationManager.getLocation()
@@ -419,15 +435,44 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         if !(directionsButton.isSelected){
             directionsButton.isSelected = true
-            DirectionsManager.theDirectionsManager.getPolylineRoute(from: originLocation, to: destinationLocation!)
+            
+            UIView.animate(withDuration: 1, animations: {
+                self.enlargedMapTopConstraint = NSLayoutConstraint(item: self.mapView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
+                
+                NSLayoutConstraint.deactivate([self.minimizedMapTopConstraint])
+                NSLayoutConstraint.activate([self.enlargedMapTopConstraint])
+                
+                self.view.layoutIfNeeded()
+                
+            }, completion: { finished in
+              
+                DirectionsManager.theDirectionsManager.getPolylineRoute(from: originLocation, to: destinationLocation!)
+                
+            })
+            
         }
         
         else {
-            directionsButton.isSelected = false
-            DirectionsManager.theDirectionsManager.removePath()
+         
             
-            let update = GMSCameraUpdate.setTarget(currentListing.coordinate, zoom: 15.0)
-            self.mapView.animate(with: update)
+            UIView.animate(withDuration: 1, animations: {
+                self.enlargedMapTopConstraint = NSLayoutConstraint(item: self.mapView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
+                
+                NSLayoutConstraint.deactivate([self.enlargedMapTopConstraint])
+                NSLayoutConstraint.activate([self.minimizedMapTopConstraint])
+                
+                self.view.layoutIfNeeded()
+                
+            }, completion: { finished in
+                
+                self.directionsButton.isSelected = false
+                
+                DirectionsManager.theDirectionsManager.removePath()
+                
+                let update = GMSCameraUpdate.setTarget(self.currentListing.coordinate, zoom: 15.0)
+                self.mapView.animate(with: update)
+            })
+         
         }
     }
     

@@ -49,8 +49,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var navigationBarHeight: CGFloat!
     var searchBarHeight: CGFloat!
     
-    var tapGesture: UITapGestureRecognizer!
-    var swipeUpGesture: UISwipeGestureRecognizer!
+    var tapGestureForTextFieldDelegate: UITapGestureRecognizer!
+    var swipeUpGestureForFilterView: UISwipeGestureRecognizer!
+    var tapGestureForListingPreview: UITapGestureRecognizer!
     
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
@@ -67,6 +68,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var previewSizeLabel: UILabel!
     var previewBedroomsNoLabel: UILabel!
     var previewBathroomsNoLabel: UILabel!
+    
+    var presentedListing: Listing!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -403,9 +406,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let storageRef = Storage.storage().reference()
         
+        let tapGestureForListingPreview = UITapGestureRecognizer(target: self, action: #selector(goToListing))
+        
         listingPreview = UIView()
         listingPreview.translatesAutoresizingMaskIntoConstraints = false
         listingPreview.backgroundColor = UIColor.white
+        listingPreview.addGestureRecognizer(tapGestureForListingPreview)
         view.addSubview(listingPreview)
         
         previewImageView = UIImageView()
@@ -444,6 +450,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             previewBathroomsNoLabel.text = "\((currentHomeSale.bathroomNumber)!) baths"
         }
         
+        presentedListing = listing
+        
         previewCancelButton = UIButton()
         previewCancelButton.setTitle("Cancel", for: .normal)
         previewCancelButton.setTitleColor(UIColor.red, for: .normal)
@@ -460,6 +468,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         listingPreview.removeFromSuperview()
         previewCancelButton.removeFromSuperview()
+    }
+    
+    @objc func goToListing(){
+    
+            let listingDetailViewController = ListingDetailViewController()
+            listingDetailViewController.currentListing = presentedListing
+        
+        self.navigationController?.pushViewController(listingDetailViewController, animated: true)
     }
     
     @objc func applyFilters(){
@@ -562,9 +578,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             filterViewIsInFront = true
             view.layoutIfNeeded()
             
-            swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
-            swipeUpGesture.direction = .up
-            filterView.addGestureRecognizer(swipeUpGesture)
+            swipeUpGestureForFilterView = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+            swipeUpGestureForFilterView.direction = .up
+            filterView.addGestureRecognizer(swipeUpGestureForFilterView)
         }
             
         else if (filterViewIsInFront){
@@ -809,7 +825,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func handleSwipeGestures(swipeGesture: UISwipeGestureRecognizer){
         
         if(swipeGesture.direction == .up){
-            filterView.removeGestureRecognizer(swipeUpGesture)
+            filterView.removeGestureRecognizer(swipeUpGestureForFilterView)
             self.showHideFilterView()
         }
     }
@@ -817,12 +833,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     //searchBarDelegateMethods
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
-        tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
-        self.view.addGestureRecognizer(tapGesture)
+        tapGestureForTextFieldDelegate = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
+        self.view.addGestureRecognizer(tapGestureForTextFieldDelegate)
         
-        swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
-        swipeUpGesture.direction = .up
-        filterView.addGestureRecognizer(swipeUpGesture)
+        swipeUpGestureForFilterView = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+        swipeUpGestureForFilterView.direction = .up
+        filterView.addGestureRecognizer(swipeUpGestureForFilterView)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -833,7 +849,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.view.removeGestureRecognizer(tapGesture)
+        self.view.removeGestureRecognizer(tapGestureForTextFieldDelegate)
         //searchBarHeight = 40
         searchController?.searchBar.isHidden = true
         self.searchBar.translatesAutoresizingMaskIntoConstraints = false
