@@ -124,10 +124,44 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         print("didLongPressInfoWindowOf")
     }
     
-//    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool{
-//        
-//        return true
-//    }
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool{
+        
+        let update = GMSCameraUpdate.setTarget(marker.position, zoom: 15.0)
+        self.googleMapView.animate(with: update)
+        
+        presentListingPreview(marker: marker)
+        return true
+    }
+    
+    
+    func presentListingPreview(marker: GMSMarker){
+        
+        var listingToPresent: Listing!
+        var homeSaleToPresent: HomeSale!
+        var homeRentalToPresent: HomeRental!
+        
+        
+        //NOT THE BEST WAY TO FIND THE LISTING
+        for listing in FirebaseData.sharedInstance.homesForSale {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeSaleToPresent = listing
+                listingToPresent = homeSaleToPresent
+            }
+        }
+        
+        for listing in FirebaseData.sharedInstance.homesForRent {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeRentalToPresent = listing
+                listingToPresent = homeRentalToPresent
+            }
+        }
+        
+        let homeVC = topController() as! HomeViewController
+        homeVC.showListingPreview(listing: listingToPresent)
+        
+    }
+
     
     /* set a custom Info Window */
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
@@ -153,13 +187,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
             }
         }
         
-//        //NOT THE BEST WAY TO FIND THE LISTING
-//        for listing in FirebaseData.sharedInstance.homesForSale {
-//            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
-//                listingToPresent = listing
-//            }
-//        }
-        
+
         let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 250, height: 60))
         view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 6

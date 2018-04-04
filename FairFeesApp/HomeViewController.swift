@@ -1,3 +1,4 @@
+
 //
 //  FirstViewController.swift
 //  FairFeesApp
@@ -54,16 +55,24 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
-
+    
     var listingsToPresent: [Listing]!
     var homeSalesToPresent: [HomeSale]!
     var homeRentalsToPresent: [HomeRental]!
+    
+    var listingPreview: UIView!
+    var previewCancelButton : UIButton!
+    var previewImageView: UIImageView!
+    var previewPriceLabel: UILabel!
+    var previewSizeLabel: UILabel!
+    var previewBedroomsNoLabel: UILabel!
+    var previewBathroomsNoLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         guestUser = true
         locationManager = LocationManager.theLocationManager
-    
+        
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
         searchBarHeight = 0
         filterViewHeight = 220
@@ -127,19 +136,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
         ///Apple Maps stuff
-//        homeMapView = MKMapView()
-//        homeMapView.frame = CGRect.zero
-//        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
-//        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
-//        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
-//        homeMapView.showsUserLocation = true
-//
-//        view.addSubview(homeMapView)
-//        homeMapView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-//
-//        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
+        //        homeMapView = MKMapView()
+        //        homeMapView.frame = CGRect.zero
+        //        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
+        //        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
+        //        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
+        //        homeMapView.showsUserLocation = true
+        //
+        //        view.addSubview(homeMapView)
+        //        homeMapView.translatesAutoresizingMaskIntoConstraints = false
+        //
+        //        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
+        //
+        //        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     func setupHomeTableView(){
@@ -157,7 +166,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         mapListSegmentedControl = UISegmentedControl()
         mapListSegmentedControl.insertSegment(withTitle: "Map", at: 0, animated: false)
         mapListSegmentedControl.insertSegment(withTitle: "List", at: 1, animated: false)
-        mapListSegmentedControl.insertSegment(withTitle: "Gallery", at: 2, animated: false)
         mapListSegmentedControl.selectedSegmentIndex = 0
         mapListSegmentedControl.addTarget(self, action: #selector(bringMapOrListToFront), for: .valueChanged)
         self.navigationItem.titleView = mapListSegmentedControl
@@ -172,7 +180,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupTopLeftButtons(){
         topLeftButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-        filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showHideFilterView))
+        filterButton = UIBarButtonItem(image:  #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showHideFilterView))
         
         self.navigationItem.leftBarButtonItems = [topLeftButton, filterButton]
     }
@@ -208,7 +216,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
         searchController?.searchBar.isHidden = false
         searchController?.searchBar.becomeFirstResponder()
-    
+        
         definesPresentationContext = false
         
         // Keep the navigation bar visible.
@@ -229,7 +237,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.bringSubview(toFront: searchBar)
     }
     
-     func setupFilterView(){
+    func setupFilterView(){
         filterView = UIView()
         filterView.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
         filterView.translatesAutoresizingMaskIntoConstraints = false
@@ -335,19 +343,127 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func reloadMapAndTable(){
         
         homeMapView.clear()
-
+        
         for listing in listingsToPresent{
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            
+            let priceTextView = UIView()
+            priceTextView.frame = CGRect(x: 0, y: 0, width: 80, height: 20)
+            priceTextView.backgroundColor = UIColor.gray
+            
+            let priceLabel = UILabel()
+            priceLabel.frame = CGRect(x: 0, y: 0, width: 80, height: 20)
+            priceLabel.textColor = UIColor.black
+            
+            if(listing.isKind(of: HomeRental.self)){
+                let currentHomeRental = listing as! HomeRental
+                priceLabel.text = shortenPriceLabel(price: currentHomeRental.monthlyRent, typeOfListing: "HomeRental")
+                // priceLabel.text = "$\((currentHomeRental.monthlyRent)!)/month"
+            }
+            else if (listing.isKind(of: HomeSale.self)){
+                let currentHomeSale = listing as! HomeSale
+                priceLabel.text = shortenPriceLabel(price: currentHomeSale.price, typeOfListing: "HomeSale")
+                //priceLabel.text = "$\((currentHomeSale.price)!)"
+            }
+            
+            priceTextView.addSubview(priceLabel)
+            marker.iconView = priceTextView
             marker.map = homeMapView
         }
         
         homeTableView.reloadData()
     }
     
+    func shortenPriceLabel(price: Int, typeOfListing: String) -> String{
+        
+        var returnText: String = ""
+        
+        switch typeOfListing {
+        case "HomeSale":
+            if (price > 999999){
+                let returnPrice = String(format: "%.1f", Double(price/1000000))
+                returnText = "$" + returnPrice + "M"
+            }
+                
+            else if (price > 999){
+                let returnPrice = String(format: "%.1f", Double(price/1000))
+                returnText = "$" + returnPrice + "K"
+            }
+        case "HomeRental":
+            returnText = "$\(price)/mth"
+        default:
+            returnText = "Unknown"
+        }
+        
+        return returnText
+    }
+    
+    func showListingPreview(listing: Listing){
+        
+        let storageRef = Storage.storage().reference()
+        
+        listingPreview = UIView()
+        listingPreview.translatesAutoresizingMaskIntoConstraints = false
+        listingPreview.backgroundColor = UIColor.white
+        view.addSubview(listingPreview)
+        
+        previewImageView = UIImageView()
+        previewImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
+        previewImageView.translatesAutoresizingMaskIntoConstraints = false
+        listingPreview.addSubview(previewImageView)
+        
+        previewPriceLabel = UILabel()
+        previewPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        listingPreview.addSubview(previewPriceLabel)
+        
+        previewSizeLabel = UILabel()
+        previewSizeLabel.translatesAutoresizingMaskIntoConstraints = false
+        listingPreview.addSubview(previewSizeLabel)
+        
+        previewBedroomsNoLabel = UILabel()
+        previewBedroomsNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        listingPreview.addSubview(previewBedroomsNoLabel)
+        
+        previewBathroomsNoLabel = UILabel()
+        previewBathroomsNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        listingPreview.addSubview(previewBathroomsNoLabel)
+        
+        if(listing.isKind(of: HomeRental.self)){
+            let currentHomeRental = listing as! HomeRental
+            previewPriceLabel.text = "$\((currentHomeRental.monthlyRent)!)/month"
+            previewSizeLabel.text = "\((currentHomeRental.size)!) SF"
+            previewBedroomsNoLabel.text = "\((currentHomeRental.bedroomNumber)!) beds"
+            previewBathroomsNoLabel.text = "\((currentHomeRental.bathroomNumber)!) baths"
+        }
+        else if (listing.isKind(of: HomeSale.self)){
+            let currentHomeSale = listing as! HomeSale
+            previewPriceLabel.text = "$\((currentHomeSale.price)!)"
+            previewSizeLabel.text = "\((currentHomeSale.size)!) SF"
+            previewBedroomsNoLabel.text = "\((currentHomeSale.bedroomNumber)!) beds"
+            previewBathroomsNoLabel.text = "\((currentHomeSale.bathroomNumber)!) baths"
+        }
+        
+        previewCancelButton = UIButton()
+        previewCancelButton.setTitle("Cancel", for: .normal)
+        previewCancelButton.setTitleColor(UIColor.red, for: .normal)
+        previewCancelButton.backgroundColor = UIColor.white
+        previewCancelButton.addTarget(self, action: #selector(removeListingPreview), for: .touchUpInside)
+        previewCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(previewCancelButton)
+        
+        setupListingPreviewConstraints()
+        
+    }
+    
+    @objc func removeListingPreview(){
+        
+        listingPreview.removeFromSuperview()
+        previewCancelButton.removeFromSuperview()
+    }
     
     @objc func applyFilters(){
-
+        
         switch noOfBedroomsSegmentedControl.selectedSegmentIndex {
         case 0:
             homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent.filter { $0.bedroomNumber > 0 }
@@ -383,10 +499,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         default:
             print("no need to change anything?")
-            //homeRentalsToPresent = homeRentalsToPresent9
+            //homeRentalsToPresent = homeRentalsToPresent
             //homeSalesToPresent = homeSalesToPresent
         }
-    
+        
         
         homeRentalsToPresent = homeRentalsToPresent.filter { ($0.monthlyRent > Int(priceFilterSlider.lowerValue)) && ($0.monthlyRent < Int(priceFilterSlider.upperValue)) }
         homeSalesToPresent = homeSalesToPresent.filter { ($0.price > Int(priceFilterSlider.lowerValue)) && ($0.price < Int(priceFilterSlider.upperValue)) }
@@ -403,7 +519,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("SHOULDN'T RUN")
         }
         
-        
         reloadMapAndTable()
         print("apply filters")
     }
@@ -416,7 +531,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         priceFilterSlider.lowerValue = 1000
         priceFilterSlider.upperValue = 1000000
         priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to  $\(Int(priceFilterSlider.upperValue))"
-    
+        
         switch buyRentSegmentedControl.selectedSegmentIndex {
         case 0:
             listingsToPresent = homeSalesToPresent
@@ -425,7 +540,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         default:
             print("SHOULDN'T RUN")
         }
-
+        
         reloadMapAndTable()
         print("reset filters")
     }
@@ -437,7 +552,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             UIView.animate(withDuration: 0, animations: {
                 
-    
+                
             }, completion: { (finished: Bool) in
                 self.filterView.frame.size.height = self.filterViewHeight
                 self.filterView.isHidden = false
@@ -450,8 +565,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
             swipeUpGesture.direction = .up
             filterView.addGestureRecognizer(swipeUpGesture)
-            }
-        
+        }
+            
         else if (filterViewIsInFront){
             UIView.animate(withDuration: 0, animations: {
                 
@@ -484,6 +599,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: searchBar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
+        
+        
         
         //filterView
         NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
@@ -549,9 +666,45 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    func setupListingPreviewConstraints(){
+        
+        //listingPreviewCancelButton
+        NSLayoutConstraint(item: previewCancelButton, attribute: .bottom, relatedBy: .equal, toItem: view , attribute: .bottom, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: previewCancelButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
+        NSLayoutConstraint(item: previewCancelButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: previewCancelButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        
+        //listingPreview
+        NSLayoutConstraint(item: listingPreview, attribute: .bottom, relatedBy: .equal, toItem: previewCancelButton , attribute: .top, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: listingPreview, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
+        NSLayoutConstraint(item: listingPreview, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: listingPreview, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        
+        //previewImageView
+        NSLayoutConstraint(item: previewImageView, attribute: .bottom, relatedBy: .equal, toItem: listingPreview , attribute: .bottom, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: previewImageView, attribute: .top, relatedBy: .equal, toItem: listingPreview, attribute: .top, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: previewImageView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: previewImageView, attribute: .width, relatedBy: .equal, toItem: previewImageView, attribute: .height, multiplier: 1, constant: 0).isActive = true
+        
+        //previewPriceLabel
+        NSLayoutConstraint(item: previewPriceLabel, attribute: .top, relatedBy: .equal, toItem: listingPreview, attribute: .top, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: previewPriceLabel, attribute: .leading, relatedBy: .equal, toItem: previewImageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        
+        //previewSizeLabel
+        NSLayoutConstraint(item: previewSizeLabel, attribute: .top, relatedBy: .equal, toItem: previewPriceLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: previewSizeLabel, attribute: .leading, relatedBy: .equal, toItem: previewImageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        
+        //previewBRLabel
+        NSLayoutConstraint(item: previewBedroomsNoLabel, attribute: .top, relatedBy: .equal, toItem: previewSizeLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: previewBedroomsNoLabel, attribute: .leading, relatedBy: .equal, toItem: previewImageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        
+        //previewBALabel
+        NSLayoutConstraint(item: previewBathroomsNoLabel, attribute: .top, relatedBy: .equal, toItem: previewBedroomsNoLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: previewBathroomsNoLabel, attribute: .leading, relatedBy: .equal, toItem: previewImageView, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
+        
+    }
+    
     @objc func priceRangeSliderValueChanged(sender: RangeSlider){
-        
-        
         
         print("update")
     }
@@ -595,8 +748,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.present(signInAlert, animated: true, completion: nil)
     }
-
- 
+    
+    
     
     //tableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -638,7 +791,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let listingViewController = ListingDetailViewController()
         
         if (buyRentSegmentedControl.selectedSegmentIndex == 0){
-             listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeSale
+            listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeSale
         }
         else if (buyRentSegmentedControl.selectedSegmentIndex == 1){
             listingViewController.currentListing = listingsToPresent![indexPath.row] as! HomeRental
@@ -702,12 +855,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         dismiss(animated: true, completion: nil)
     }
-        
+    
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
     }
-
+    
     // User canceled the operation.
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         dismiss(animated: true, completion: nil)
@@ -738,6 +891,5 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-
+    
 }
-
