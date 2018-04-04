@@ -18,6 +18,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
     weak var theMapView: MKMapView!
     weak var googleMapView: GMSMapView!
     weak var myLocation: CLLocation! = LocationManager.theLocationManager.getLocation()
+    weak var selectedMarker: GMSMarker!
     let storageRef = Storage.storage().reference()
     
     func setHomeVCMapRegion(){
@@ -130,6 +131,8 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         let update = GMSCameraUpdate.setTarget(marker.position, zoom: 15.0)
         self.googleMapView.animate(with: update)
         
+        selectedMarker = marker
+        marker.iconView?.subviews[0].backgroundColor = UIColor.blue
         presentListingPreview(marker: marker)
         return true
     }

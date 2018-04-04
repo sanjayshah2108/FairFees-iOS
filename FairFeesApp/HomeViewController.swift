@@ -41,8 +41,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var priceFilterResultLabel: UILabel!
     var noOfBedroomsLabel: UILabel!
     var noOfBedroomsSegmentedControl: UISegmentedControl!
-    var noOfBathroomsLabel: UILabel!
-    var noOfBathroomsSegmentedControl: UISegmentedControl!
+    //var noOfBathroomsLabel: UILabel!
+    //var noOfBathroomsSegmentedControl: UISegmentedControl!
+    var listingsCountLabel: UILabel!
     var applyFilterButton: UIButton!
     var resetFilterButton: UIButton!
     
@@ -69,6 +70,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var previewBedroomsNoLabel: UILabel!
     var previewBathroomsNoLabel: UILabel!
     
+  
     var presentedListing: Listing!
     
     override func viewDidLoad() {
@@ -242,7 +244,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupFilterView(){
         filterView = UIView()
-        filterView.backgroundColor = UIProperties.sharedUIProperties.primaryGrayColor
+        filterView.backgroundColor = UIColor.white
         filterView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterView)
         
@@ -287,21 +289,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         noOfBedroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         filterView.addSubview(noOfBedroomsSegmentedControl)
         
-        noOfBathroomsLabel = UILabel()
-        noOfBathroomsLabel.text = "No. of Bathrooms"
-        noOfBathroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
-        noOfBathroomsLabel.translatesAutoresizingMaskIntoConstraints = false
-        filterView.addSubview(noOfBathroomsLabel)
+//        noOfBathroomsLabel = UILabel()
+//        noOfBathroomsLabel.text = "No. of Bathrooms"
+//        noOfBathroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
+//        noOfBathroomsLabel.translatesAutoresizingMaskIntoConstraints = false
+//        filterView.addSubview(noOfBathroomsLabel)
+//
+//        noOfBathroomsSegmentedControl = UISegmentedControl()
+//        noOfBathroomsSegmentedControl.frame = CGRect.zero
+//        noOfBathroomsSegmentedControl.insertSegment(withTitle: "1+", at: 0, animated: false)
+//        noOfBathroomsSegmentedControl.insertSegment(withTitle: "2+", at: 1, animated: false)
+//        noOfBathroomsSegmentedControl.insertSegment(withTitle: "3+", at: 2, animated: false)
+//        noOfBathroomsSegmentedControl.insertSegment(withTitle: "4+", at: 3, animated: false)
+//        noOfBathroomsSegmentedControl.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
+//        noOfBathroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+//        filterView.addSubview(noOfBathroomsSegmentedControl)
         
-        noOfBathroomsSegmentedControl = UISegmentedControl()
-        noOfBathroomsSegmentedControl.frame = CGRect.zero
-        noOfBathroomsSegmentedControl.insertSegment(withTitle: "1+", at: 0, animated: false)
-        noOfBathroomsSegmentedControl.insertSegment(withTitle: "2+", at: 1, animated: false)
-        noOfBathroomsSegmentedControl.insertSegment(withTitle: "3+", at: 2, animated: false)
-        noOfBathroomsSegmentedControl.insertSegment(withTitle: "4+", at: 3, animated: false)
-        noOfBathroomsSegmentedControl.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
-        noOfBathroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        filterView.addSubview(noOfBathroomsSegmentedControl)
+        listingsCountLabel = UILabel()
+        listingsCountLabel.text = String(listingsToPresent.count) + " listings found"
+        listingsCountLabel.font = UIFont(name: "GillSans-Light", size: 15)
+        listingsCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        filterView.addSubview(listingsCountLabel)
         
         applyFilterButton = UIButton()
         applyFilterButton.frame = CGRect.zero
@@ -357,7 +365,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             let priceLabel = UILabel()
             priceLabel.frame = CGRect(x: 0, y: 0, width: 80, height: 20)
-            priceLabel.textColor = UIColor.black
+            priceLabel.textColor = UIColor.white
+            priceLabel.textAlignment = .center
             
             if(listing.isKind(of: HomeRental.self)){
                 let currentHomeRental = listing as! HomeRental
@@ -466,6 +475,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func removeListingPreview(){
         
+        MapViewDelegate.theMapViewDelegate.selectedMarker.iconView?.subviews[0].backgroundColor = UIColor.gray
         listingPreview.removeFromSuperview()
         previewCancelButton.removeFromSuperview()
     }
@@ -499,25 +509,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             homeSalesToPresent = FirebaseData.sharedInstance.homesForSale
         }
         
-        switch noOfBathroomsSegmentedControl.selectedSegmentIndex {
-        case 0:
-            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 0 }
-            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 0 }
-        case 1:
-            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 1 }
-            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 1 }
-        case 2:
-            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 2 }
-            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 2 }
-        case 3:
-            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 3 }
-            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 3 }
-            
-        default:
-            print("no need to change anything?")
-            //homeRentalsToPresent = homeRentalsToPresent
-            //homeSalesToPresent = homeSalesToPresent
-        }
+//        switch noOfBathroomsSegmentedControl.selectedSegmentIndex {
+//        case 0:
+//            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 0 }
+//            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 0 }
+//        case 1:
+//            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 1 }
+//            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 1 }
+//        case 2:
+//            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 2 }
+//            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 2 }
+//        case 3:
+//            homeRentalsToPresent = homeRentalsToPresent.filter { $0.bathroomNumber > 3 }
+//            homeSalesToPresent = homeSalesToPresent.filter { $0.bathroomNumber > 3 }
+//
+//        default:
+//            print("no need to change anything?")
+//            //homeRentalsToPresent = homeRentalsToPresent
+//            //homeSalesToPresent = homeSalesToPresent
+//        }
         
         
         homeRentalsToPresent = homeRentalsToPresent.filter { ($0.monthlyRent > Int(priceFilterSlider.lowerValue)) && ($0.monthlyRent < Int(priceFilterSlider.upperValue)) }
@@ -535,8 +545,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("SHOULDN'T RUN")
         }
         
+        listingsCountLabel.text = String(listingsToPresent.count) + " listings found"
         reloadMapAndTable()
-        print("apply filters")
     }
     
     @objc func resetFilters(){
@@ -557,8 +567,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("SHOULDN'T RUN")
         }
         
+        listingsCountLabel.text = String(listingsToPresent.count) + " listings found"
         reloadMapAndTable()
-        print("reset filters")
     }
     
     
@@ -635,7 +645,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: priceFilterSlider, attribute: .top, relatedBy: .equal, toItem: buyRentSegmentedControl, attribute: .bottom , multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceFilterSlider, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -20).isActive = true
+        NSLayoutConstraint(item: priceFilterSlider, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 20).isActive = true
         
         //priceFilterSliderResultLabel
         NSLayoutConstraint(item: priceFilterResultLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 2).isActive = true
@@ -654,19 +665,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: noOfBathroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: noOfBedroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: listingsCountLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
         //bathroomNumberLabel
-        //NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBathroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 10).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBathroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
         
         //bathroomNumberSegment
-        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: -10).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+//        NSLayoutConstraint(item: noOfBathroomsSegmentedControl, attribute: .bottom, relatedBy: .equal, toItem: listingsCountLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
+        
+        //listingsCountLabel
+        NSLayoutConstraint(item: listingsCountLabel, attribute: .centerX, relatedBy: .equal, toItem: filterView, attribute: .centerX , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: listingsCountLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: listingsCountLabel, attribute: .bottom, relatedBy: .equal, toItem: applyFilterButton, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
         //applyFilterButton
         NSLayoutConstraint(item: applyFilterButton, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
