@@ -10,7 +10,9 @@ import UIKit
 
 open class ImageScrollView: UIScrollView {
     
-    var presentingVC: UIViewController!
+    var presentingVC: ListingDetailViewController!
+    var currentListing: Listing!
+    var imageViewPageControl: UIPageControl!
     
     static let kZoomInFactorFromMinWhenDoubleTap: CGFloat = 2
     
@@ -157,6 +159,11 @@ open class ImageScrollView: UIScrollView {
         zoomView!.addGestureRecognizer(tapGesture)
         
         configureImageForSize(image.size)
+        
+        
+        if (imageViewPageControl == nil){
+            setupPageControl()
+        }
     }
     
     fileprivate func configureImageForSize(_ size: CGSize) {
@@ -228,6 +235,23 @@ open class ImageScrollView: UIScrollView {
     
     @objc func changeOrientationNotification() {
         configureImageForSize(imageSize)
+    }
+    
+    
+    open func setupPageControl(){
+        
+        imageViewPageControl = UIPageControl()
+        imageViewPageControl.currentPage = (presentingVC.photoIndex)!
+        imageViewPageControl.numberOfPages = presentingVC.currentListing.photoRefs.count
+        imageViewPageControl.pageIndicatorTintColor = UIColor.gray
+        imageViewPageControl.currentPageIndicatorTintColor = UIColor.white
+        imageViewPageControl.translatesAutoresizingMaskIntoConstraints = false
+        superview!.addSubview(imageViewPageControl)
+        superview!.bringSubview(toFront: imageViewPageControl)
+        
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .centerX, relatedBy: .equal, toItem: superview, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .bottom, relatedBy: .equal, toItem: superview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: imageViewPageControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
     }
     
 

@@ -55,6 +55,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     var minimizedMapTopConstraint: NSLayoutConstraint!
     var minimizedMapHeightConstraint: NSLayoutConstraint!
     
+    var enlargedImageContainerView: UIView!
+    var tempImageView: UIImageView!
+    var newImageView: ImageScrollView!
+    
     var photoIndex: Int!
     
     override func viewDidLoad() {
@@ -408,39 +412,39 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
     }
     
-    @objc func nextImage(){
+    func nextImage(imageView: UIImageView, pageControl: UIPageControl){
         if (photoIndex == currentListing.photoRefs.count-1){
             photoIndex = 0
-            imageViewPageControl.currentPage = 0
+            pageControl.currentPage = 0
         }
         else {
             photoIndex = photoIndex + 1
-            imageViewPageControl.currentPage += 1
+            pageControl.currentPage += 1
         }
-        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs![photoIndex!]), placeholderImage: nil)
+        imageView.sd_setImage(with: storageRef.child(currentListing.photoRefs![photoIndex!]), placeholderImage: #imageLiteral(resourceName: "placeholderImage"))
     }
     
-    @objc func previousImage(){
+    func previousImage(imageView: UIImageView, pageControl: UIPageControl){
         if (photoIndex == 0){
             photoIndex = currentListing.photoRefs.count-1
-            imageViewPageControl.currentPage = currentListing.photoRefs.count-1
+            pageControl.currentPage = currentListing.photoRefs.count-1
         }
         else {
             photoIndex = photoIndex - 1
-            imageViewPageControl.currentPage -= 1
+            pageControl.currentPage -= 1
         }
-       imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+       imageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: #imageLiteral(resourceName: "placeholderImage"))
     }
 
     @objc func swipeThroughImages(gesture: UISwipeGestureRecognizer){
     
         if (gesture.direction == .left){
-            nextImage()
+            nextImage(imageView: imageViewCarousel, pageControl: imageViewPageControl)
             print("swiped left")
         }
         
         else if (gesture.direction == .right){
-            previousImage()
+            previousImage(imageView: imageViewCarousel, pageControl: imageViewPageControl)
             print("swiped right")
         }
     }
@@ -538,29 +542,53 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     }
     
     
-    //fullcreen image methods -  NOT Being used now
+    //fullcreen image methods
     @objc func fullscreenImage() {
         
-        let tempImageView = UIImageView()
+        tempImageView = UIImageView()
         tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
         
-        let newImageView = ImageScrollView()
+        let enlargedImageContainerView = UIView()
+        enlargedImageContainerView.frame = UIScreen.main.bounds
+        enlargedImageContainerView.backgroundColor = UIColor.black
+        self.view.addSubview(enlargedImageContainerView)
+        
+        newImageView = ImageScrollView()
         newImageView.translatesAutoresizingMaskIntoConstraints = true
-        newImageView.frame = UIScreen.main.bounds
-        newImageView.backgroundColor = .black
+        newImageView.frame = enlargedImageContainerView.frame
+        newImageView.backgroundColor = .clear
         
         newImageView.presentingVC = self
+        enlargedImageContainerView.addSubview(newImageView)
         
         newImageView.display(image: tempImageView.image!)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughEnlargedImages))
+        swipeRight.direction = .right
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughEnlargedImages))
+        swipeLeft.direction = .left
 
-        newImageView.addGestureRecognizer(tap)
+        enlargedImageContainerView.addGestureRecognizer(tap)
+        enlargedImageContainerView.addGestureRecognizer(swipeRight)
+        enlargedImageContainerView.addGestureRecognizer(swipeLeft)
         
  //       let collapsePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
         
-        self.view.addSubview(newImageView)
         self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    @objc func swipeThroughEnlargedImages(gesture: UISwipeGestureRecognizer){
+        
+        if (gesture.direction == .left){
+            nextImage(imageView: tempImageView, pageControl: newImageView.imageViewPageControl)
+        }
+            
+        else if (gesture.direction == .right){
+            previousImage(imageView: tempImageView, pageControl: newImageView.imageViewPageControl)
+        }
+
+        newImageView.display(image: tempImageView.image!)
     }
     
     @objc func dismissFullscreenImage(_ sender: UIPinchGestureRecognizer) {
