@@ -32,4 +32,9 @@ class Listing: GMSMarker, MKAnnotation  {
     var zipcode: String!
     var active: Bool!
     
+    func distance(to location: CLLocation) -> CLLocationDistance {
+        return location.distance(from: self.location)
+    }
+
+    
 }
