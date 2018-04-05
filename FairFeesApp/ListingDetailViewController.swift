@@ -389,7 +389,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        //NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .greaterThanOrEqual , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .greaterThanOrEqual , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
     
         
         //posterButton
