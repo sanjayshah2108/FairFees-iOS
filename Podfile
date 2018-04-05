@@ -12,6 +12,7 @@ target 'FairFeesApp' do
   pod 'Firebase/Analytics'
   pod 'WARangeSlider'
 
+
   # Pods for FairFeesApp
 
   target 'FairFeesAppTests' do
