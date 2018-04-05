@@ -75,7 +75,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         self.navigationController?.navigationBar.isTranslucent = true
         //self.navigationItem.titleView?.tintColor = UIColor.white
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+        
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         
         posterUser = FirebaseData.sharedInstance.users.first(where: { $0.UID == currentListing.posterUID })
@@ -86,6 +86,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         setupMapView()
         
         setupConstraints()
+        view.layoutIfNeeded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -225,6 +226,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         setupStackView()
         
         descriptionLabel = UILabel()
+        descriptionLabel.numberOfLines = 0
         descriptionLabel.textAlignment = .center
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.backgroundColor = UIColor.white
@@ -237,6 +239,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         featuresHorizontalStackView = UIStackView()
         featuresHorizontalStackView.axis = .horizontal
         featuresHorizontalStackView.distribution = .fillProportionally
+        featuresHorizontalStackView.layer.borderWidth = 1
+        featuresHorizontalStackView.layer.borderColor = UIColor.black.cgColor
         featuresHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(featuresHorizontalStackView)
         
@@ -244,6 +248,11 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         bedroomLabel = UILabel()
         bathroomLabel = UILabel()
         yearBuiltLabel = UILabel()
+        
+        sizeLabel.textAlignment = .center
+        bedroomLabel.textAlignment = .center
+        bathroomLabel.textAlignment = .center
+        yearBuiltLabel.textAlignment = .center
         
         sizeLabel.translatesAutoresizingMaskIntoConstraints = false
         bedroomLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -322,7 +331,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -navigationBarHeight).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-        //NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height/3).isActive = true
+        NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height/3).isActive = true
         
         
         //imageViewPageControl
@@ -380,13 +389,13 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        //NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .greaterThanOrEqual , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
     
         
         //posterButton
         NSLayoutConstraint(item: posterButton, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: posterButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: posterButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: posterButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: posterButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: posterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
         //mapView
@@ -394,12 +403,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: mapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         minimizedMapTopConstraint = NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: posterButton, attribute: .bottom, multiplier: 1, constant: 0)
-        minimizedMapHeightConstraint = NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.3, constant: 0)
+        minimizedMapHeightConstraint = NSLayoutConstraint(item: mapView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.2, constant: 0)
         NSLayoutConstraint.activate([minimizedMapTopConstraint, minimizedMapHeightConstraint])
         
         
         //directionsButton
-        NSLayoutConstraint(item: directionsButton, attribute: .top, relatedBy: .equal, toItem: mapView, attribute: .top, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: directionsButton, attribute: .top, relatedBy: .equal, toItem: mapView, attribute: .top, multiplier: 1, constant: 25).isActive = true
         NSLayoutConstraint(item: directionsButton, attribute: .trailing, relatedBy: .equal, toItem: mapView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: directionsButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         NSLayoutConstraint(item: directionsButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
@@ -594,6 +603,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     @objc func dismissFullscreenImage(_ sender: UIPinchGestureRecognizer) {
         
         self.navigationController?.isNavigationBarHidden = false
+        imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+        imageViewPageControl.currentPage = photoIndex
         sender.view?.removeFromSuperview()
     }
 }
