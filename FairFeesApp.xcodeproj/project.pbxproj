@@ -78,6 +78,7 @@
 		CE3D411F2076C5C80099A895 /* GMUDefaultClusterRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3D41072076C5C80099A895 /* GMUDefaultClusterRenderer.m */; };
 		CE3D41252076EF1A0099A895 /* MapMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D41242076EF1A0099A895 /* MapMarker.swift */; };
 		CE3D412720771AB40099A895 /* CustomGMUClusterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D412620771AB40099A895 /* CustomGMUClusterRenderer.swift */; };
+		CE3D412A207822960099A895 /* AlertDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D4129207822950099A895 /* AlertDefault.swift */; };
 		CE51484A204F70170021DB67 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514849204F70170021DB67 /* LocationManager.swift */; };
 		CE51484C204F74540021DB67 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484B204F74540021DB67 /* DummyData.swift */; };
 		CE51484E204F778F0021DB67 /* Sale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484D204F778F0021DB67 /* Sale.swift */; };
@@ -312,6 +313,7 @@
 		CE3D41242076EF1A0099A895 /* MapMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarker.swift; sourceTree = "<group>"; };
 		CE3D412620771AB40099A895 /* CustomGMUClusterRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGMUClusterRenderer.swift; sourceTree = "<group>"; };
 		CE3D412820771C870099A895 /* MarkerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MarkerManager.h; path = FairFeesApp/MarkerManager.h; sourceTree = SOURCE_ROOT; };
+		CE3D4129207822950099A895 /* AlertDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDefault.swift; sourceTree = "<group>"; };
 		CE514849204F70170021DB67 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		CE51484B204F74540021DB67 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		CE51484D204F778F0021DB67 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
@@ -686,6 +688,7 @@
 				292304A42054D5F1000ECFCF /* listing images */,
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
+				CE3D4129207822950099A895 /* AlertDefault.swift */,
 				CE3D412820771C870099A895 /* MarkerManager.h */,
 				CE3D412620771AB40099A895 /* CustomGMUClusterRenderer.swift */,
 				CE3D41242076EF1A0099A895 /* MapMarker.swift */,
@@ -1169,6 +1172,7 @@
 				CE514850204F77C20021DB67 /* User.swift in Sources */,
 				CE6EFD4620642983009AFF6A /* ProfileListingsTableViewCell.swift in Sources */,
 				CE3D41092076C5C80099A895 /* GMUHeatmapTileLayer.m in Sources */,
+				CE3D412A207822960099A895 /* AlertDefault.swift in Sources */,
 				CE3D410B2076C5C80099A895 /* GQTPointQuadTree.m in Sources */,
 				CE3D411F2076C5C80099A895 /* GMUDefaultClusterRenderer.m in Sources */,
 				CE3D41112076C5C80099A895 /* GMUGeometryCollection.m in Sources */,

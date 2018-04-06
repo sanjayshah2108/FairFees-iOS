@@ -33,22 +33,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var profileButton: UIBarButtonItem!
     var loadMoreButton: UIButton!
     
-    var searchBar: UISearchBar!
-//    var filterView: UIView!
-//    var filterViewIsInFront: Bool!
-//    var filterViewHeight: CGFloat!
-//
-//    var buyRentSegmentedControl: UISegmentedControl!
-//    var priceFilterSlider: RangeSlider!
-//    var priceFilterResultLabel: UILabel!
-//    var noOfBedroomsLabel: UILabel!
-//    var noOfBedroomsSegmentedControl: UISegmentedControl!
-//    var listingsCountLabel: UILabel!
-//    var applyFilterButton: UIButton!
-//    var resetFilterButton: UIButton!
-    
+    //var searchBar: UISearchBar!
     var navigationBarHeight: CGFloat!
-    var searchBarHeight: CGFloat!
+    //var searchBarHeight: CGFloat!
     
     var tapGestureForTextFieldDelegate: UITapGestureRecognizer!
     var swipeUpGestureForFilterView: UISwipeGestureRecognizer!
@@ -80,8 +67,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guestUser = true
         locationManager = LocationManager.theLocationManager
         
-        navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
-        searchBarHeight = 0
         //filterViewHeight = 220
         
         setupMapListSegmentTitle()
@@ -97,8 +82,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupHomeMapView()
         setupHomeTableView()
         setupLoadMoreButton()
-        setupSearchBar()
+        //setupSearchBar()
+        showSearchBar()
         
+        navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
+    
         setupConstraints()
         
         //right now we are only being notified when rentals are downloaded, because they are being dowloaded last
@@ -110,12 +98,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         ReadFirebaseData.readHomesForRent()
         
         view.bringSubview(toFront: homeMapView)
-        view.bringSubview(toFront: searchBar)
+        //view.bringSubview(toFront: searchBar)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.navigationController?.navigationBar.tintColor = UIColor(red: 0.0, green: 122/255, blue: 1.0, alpha: 1)
+        
+        self.navigationController?.navigationBar.isOpaque = true
+        self.navigationItem.searchController?.searchBar.isOpaque = true
+        //self.navigationController?.navigationBar.backgroundColor = UIColor(white: 1, alpha: 0.9)
+  
+       // self.navigationItem.searchController?.searchBar.backgroundColor = self.navigationController?.navigationBar.barTintColor
         homeTableView.reloadData()
     }
     
@@ -181,17 +175,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func setupTopRightButtons(){
-        topRightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newPostAction))
-        profileButton =  UIBarButtonItem(title: "Prof", style: .plain, target: self, action: #selector(profileViewControllerSegue))
+ 
+        filterButton = UIBarButtonItem(image:  #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showFilterView))
         
-        self.navigationItem.rightBarButtonItems = [profileButton, topRightButton]
+        self.navigationItem.rightBarButtonItems = [filterButton]
     }
     
     func setupTopLeftButtons(){
-        topLeftButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-        filterButton = UIBarButtonItem(image:  #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showFilterView))
+        topLeftButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newPostAction))
+        profileButton =  UIBarButtonItem(title: "Prof", style: .plain, target: self, action: #selector(profileViewControllerSegue))
         
-        self.navigationItem.leftBarButtonItems = [topLeftButton, filterButton]
+        
+        self.navigationItem.leftBarButtonItems = [topLeftButton, profileButton]
     }
     
     func setupLoadMoreButton(){
@@ -220,7 +215,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func loadMoreListings(){
         
-        //listingsToPresent = Array(allOnlineListings.prefix(upTo: listingsToPresent.count + 2))
         numberOfListingsToShow = numberOfListingsToShow + 3
         
         if(numberOfListingsToShow > listingsToPresent.count){
@@ -230,38 +224,47 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func showSearchBar(){
+        
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-        searchController?.searchBar.delegate = self
-        searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44.0))
-        view.addSubview((searchController?.searchBar)!)
-        searchController?.searchBar.setShowsCancelButton(true, animated: true)
+        searchController?.searchBar.searchBarStyle = .minimal
+        searchController?.searchBar.isTranslucent = true
+        //searchController?.searchBar.backgroundColor = UIColor.white
+        
+        // Include the search bar within the navigation bar.
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
-        searchController?.searchBar.isHidden = false
-        searchController?.searchBar.becomeFirstResponder()
+
+        definesPresentationContext = true
         
-        definesPresentationContext = false
+    }
+    
+    func showSearchResults(){
+        searchController?.searchBar.setShowsCancelButton(true, animated: true)
         
-        // Keep the navigation bar visible.
-        searchController?.hidesNavigationBarDuringPresentation = true
         searchController?.modalPresentationStyle = .popover
     }
     
     //NOT BEING USED
-    func setupSearchBar(){
-        
-        searchBar = UISearchBar()
-        searchBar.frame = CGRect.zero
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.delegate = self
-        searchBar.placeholder = "Search Address, Zip or City"
-        view.addSubview(searchBar)
-        searchBar.isHidden = true
-        view.bringSubview(toFront: searchBar)
-    }
+//    func setupSearchBar(){
+//
+//        searchBar = UISearchBar()
+//        searchBar.frame = CGRect.zero
+//        searchBar.translatesAutoresizingMaskIntoConstraints = false
+//        searchBar.delegate = self
+//        searchBar.placeholder = "Search Address, Zip or City"
+//        searchBar.layer.zPosition = .greatestFiniteMagnitude
+//        view.addSubview(searchBar)
+//        searchBar.isHidden = false
+//        view.bringSubview(toFront: searchBar)
+//    }
     
  
     
@@ -292,17 +295,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         MapViewDelegate.theMapViewDelegate.setupClusterManager()
         
-//        let iconGenerator = GMUDefaultClusterIconGenerator()
-//        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
-//        let renderer = GMUDefaultClusterRenderer(mapView: homeMapView,
-//                                                 clusterIconGenerator: iconGenerator)
-//        
-//        MapViewDelegate.theMapViewDelegate.clusterManager = GMUClusterManager(map: homeMapView, algorithm: algorithm, renderer: renderer)
-        
-        // Register self to listen to both GMUClusterManagerDelegate and
-        // GMSMapViewDelegate events.
-        //MapViewDelegate.theMapViewDelegate.clusterManager.setDelegate(MapViewDelegate.theMapViewDelegate, mapDelegate: MapViewDelegate.theMapViewDelegate)
-        
         for listing in listingsToPresent{
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
@@ -319,12 +311,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             if(listing.isKind(of: HomeRental.self)){
                 let currentHomeRental = listing as! HomeRental
                 priceLabel.text = shortenPriceLabel(price: currentHomeRental.monthlyRent, typeOfListing: "HomeRental")
-                // priceLabel.text = "$\((currentHomeRental.monthlyRent)!)/month"
             }
             else if (listing.isKind(of: HomeSale.self)){
                 let currentHomeSale = listing as! HomeSale
                 priceLabel.text = shortenPriceLabel(price: currentHomeSale.price, typeOfListing: "HomeSale")
-                //priceLabel.text = "$\((currentHomeSale.price)!)"
             }
             
             priceTextView.addSubview(priceLabel)
@@ -438,8 +428,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func goToListing(){
     
-            let listingDetailViewController = ListingDetailViewController()
-            listingDetailViewController.currentListing = presentedListing
+        let listingDetailViewController = ListingDetailViewController()
+        listingDetailViewController.currentListing = presentedListing
         
         self.navigationController?.pushViewController(listingDetailViewController, animated: true)
     }
@@ -493,7 +483,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: searchBar, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
         
         //homeTableView
         NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
@@ -507,12 +497,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NSLayoutConstraint(item: loadMoreButton, attribute: .width, relatedBy: .equal, toItem: homeTableView, attribute: .width , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: loadMoreButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 20).isActive = true
         
-        //searchBar
-        NSLayoutConstraint(item: searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
-        NSLayoutConstraint(item: searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: searchBar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
-        
+//        //searchBar
+//        NSLayoutConstraint(item: searchController!.searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: searchController!.searchBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: searchBarHeight).isActive = true
+//        NSLayoutConstraint(item: searchController!.searchBar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: searchController!.searchBar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
+//        
         //filterView
 //        NSLayoutConstraint(item: filterView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
 //        NSLayoutConstraint(item: filterView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: filterViewHeight).isActive = true
@@ -678,40 +668,43 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 //        }
 //    }
     
-    //searchBarDelegateMethods
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-        tapGestureForTextFieldDelegate = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
-        self.view.addGestureRecognizer(tapGestureForTextFieldDelegate)
-        
-//        swipeUpGestureForFilterView = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
-//        swipeUpGestureForFilterView.direction = .up
-//        filterView.addGestureRecognizer(swipeUpGestureForFilterView)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        //searchBarHeight = 40
-        self.searchBar.translatesAutoresizingMaskIntoConstraints = false
-        setupConstraints()
-        self.navigationItem.rightBarButtonItem = topRightButton
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.view.removeGestureRecognizer(tapGestureForTextFieldDelegate)
-        //searchBarHeight = 40
-        searchController?.searchBar.isHidden = true
-        self.searchBar.translatesAutoresizingMaskIntoConstraints = false
-        setupConstraints()
-        self.navigationItem.rightBarButtonItem = topRightButton
-    }
-    
-    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
-        searchBar.resignFirstResponder()
-        //searchBarHeight = 40
-        self.searchBar.translatesAutoresizingMaskIntoConstraints = false
-        setupConstraints()
-        self.navigationItem.rightBarButtonItem = topRightButton
-    }
+    //searchBarDelegates not being used anymore
+//    //searchBarDelegateMethods
+//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+//
+//       // showSearchResults()
+//
+//        tapGestureForTextFieldDelegate = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
+//        self.view.addGestureRecognizer(tapGestureForTextFieldDelegate)
+//
+////        swipeUpGestureForFilterView = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+////        swipeUpGestureForFilterView.direction = .up
+////        filterView.addGestureRecognizer(swipeUpGestureForFilterView)
+//    }
+//
+//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+//        //searchBarHeight = 40
+//        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+//        setupConstraints()
+//        self.navigationItem.rightBarButtonItem = topRightButton
+//    }
+//
+//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+//        self.view.removeGestureRecognizer(tapGestureForTextFieldDelegate)
+//        //searchBarHeight = 40
+//        searchController?.searchBar.isHidden = true
+//        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+//        setupConstraints()
+//        self.navigationItem.rightBarButtonItem = topRightButton
+//    }
+//
+//    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+//        //searchBar.resignFirstResponder()
+//        //searchBarHeight = 40
+//        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+//        setupConstraints()
+//        self.navigationItem.rightBarButtonItem = topRightButton
+//    }
     
     
     //GMSPlaceSearch Methods

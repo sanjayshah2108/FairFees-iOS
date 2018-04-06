@@ -42,6 +42,10 @@ class CustomGMUClusterRenderer: GMUDefaultClusterRenderer {
         return marker
     }
     
+    override func shouldRender(as cluster: GMUCluster, atZoom zoom: Float) -> Bool {
+        return cluster.count >= 2 && zoom <= 20
+    }
+    
     func getCustomTitleItem(userData: AnyObject) -> UIImage {
         let item = userData as! MapMarker
         return item.marker.icon!

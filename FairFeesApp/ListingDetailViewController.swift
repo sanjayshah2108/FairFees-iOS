@@ -554,37 +554,45 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     //fullcreen image methods
     @objc func fullscreenImage() {
         
-        tempImageView = UIImageView()
-        tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
-        
-        let enlargedImageContainerView = UIView()
-        enlargedImageContainerView.frame = UIScreen.main.bounds
-        enlargedImageContainerView.backgroundColor = UIColor.black
-        self.view.addSubview(enlargedImageContainerView)
-        
-        newImageView = ImageScrollView()
-        newImageView.translatesAutoresizingMaskIntoConstraints = true
-        newImageView.frame = enlargedImageContainerView.frame
-        newImageView.backgroundColor = .clear
-        
-        newImageView.presentingVC = self
-        enlargedImageContainerView.addSubview(newImageView)
-        
-        newImageView.display(image: tempImageView.image!)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughEnlargedImages))
-        swipeRight.direction = .right
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughEnlargedImages))
-        swipeLeft.direction = .left
-
-        enlargedImageContainerView.addGestureRecognizer(tap)
-        enlargedImageContainerView.addGestureRecognizer(swipeRight)
-        enlargedImageContainerView.addGestureRecognizer(swipeLeft)
-        
- //       let collapsePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        
-        self.navigationController?.isNavigationBarHidden = true
+        if(tempImageView.image != nil){
+            
+            tempImageView = UIImageView()
+            tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+            
+            let enlargedImageContainerView = UIView()
+            enlargedImageContainerView.frame = UIScreen.main.bounds
+            enlargedImageContainerView.backgroundColor = UIColor.black
+            self.view.addSubview(enlargedImageContainerView)
+            
+            newImageView = ImageScrollView()
+            newImageView.translatesAutoresizingMaskIntoConstraints = true
+            newImageView.frame = enlargedImageContainerView.frame
+            newImageView.backgroundColor = .clear
+            
+            newImageView.presentingVC = self
+            enlargedImageContainerView.addSubview(newImageView)
+            
+            newImageView.display(image: tempImageView.image!)
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+            let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughEnlargedImages))
+            swipeRight.direction = .right
+            let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeThroughEnlargedImages))
+            swipeLeft.direction = .left
+            
+            enlargedImageContainerView.addGestureRecognizer(tap)
+            enlargedImageContainerView.addGestureRecognizer(swipeRight)
+            enlargedImageContainerView.addGestureRecognizer(swipeLeft)
+            
+            //       let collapsePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+            
+            self.navigationController?.isNavigationBarHidden = true
+            
+        }
+        else {
+            let alert = AlertDefault.showAlert(title: "No image", message: "There is no image to show")
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc func swipeThroughEnlargedImages(gesture: UISwipeGestureRecognizer){
