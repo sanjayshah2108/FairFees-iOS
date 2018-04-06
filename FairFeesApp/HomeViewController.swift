@@ -290,6 +290,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         homeMapView.clear()
         
+        MapViewDelegate.theMapViewDelegate.setupClusterManager()
+        
+//        let iconGenerator = GMUDefaultClusterIconGenerator()
+//        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+//        let renderer = GMUDefaultClusterRenderer(mapView: homeMapView,
+//                                                 clusterIconGenerator: iconGenerator)
+//        
+//        MapViewDelegate.theMapViewDelegate.clusterManager = GMUClusterManager(map: homeMapView, algorithm: algorithm, renderer: renderer)
+        
+        // Register self to listen to both GMUClusterManagerDelegate and
+        // GMSMapViewDelegate events.
+        //MapViewDelegate.theMapViewDelegate.clusterManager.setDelegate(MapViewDelegate.theMapViewDelegate, mapDelegate: MapViewDelegate.theMapViewDelegate)
+        
         for listing in listingsToPresent{
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
@@ -316,8 +329,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             priceTextView.addSubview(priceLabel)
             marker.iconView = priceTextView
-            marker.map = homeMapView
+           // marker.map = homeMapView
+            
+            let name = "Item \(listing.name)"
+            
+            let markerToAddToCluster = MapMarker.init(position: marker.position, name: name, marker: marker)
+            //markerToAddToCluster.mapItem = listing
+            
+            MapViewDelegate.theMapViewDelegate.clusterManager.add(markerToAddToCluster)
         }
+        
+        MapViewDelegate.theMapViewDelegate.clusterManager.cluster()
+        MapViewDelegate.theMapViewDelegate.clusterManager.setDelegate(MapViewDelegate.theMapViewDelegate, mapDelegate: MapViewDelegate.theMapViewDelegate)
     }
     
     func shortenPriceLabel(price: Int, typeOfListing: String) -> String{
