@@ -20,6 +20,7 @@ class User: NSObject {
     var rating: Int
     var typeOfUser: [String : Bool]!
     var reviews: [Review]
+    var reviewsDict : [String: Any]!
     
     init(uid:String,
          firstName:String,
@@ -41,6 +42,7 @@ class User: NSObject {
         self.listingsRefs = []
         self.typeOfUser = typeOfUser
         self.reviews = reviews
+        self.reviewsDict = [:]
         
     }
     
@@ -79,6 +81,16 @@ class User: NSObject {
     
     
     func toDictionary() -> [String:Any] {
+        
+        for review in reviews {
+           let reviewDict:[String: Any] = review.toDictionary()
+            
+            self.reviewsDict["\(review.UID)"] = reviewDict
+                                           
+        }
+        
+        
+        
         let userDict:[String:Any] = [ "UID":self.UID,
                                       "email":self.email,
                                       "phoneNumber": self.phoneNumber,
@@ -87,7 +99,7 @@ class User: NSObject {
                                       "rating":self.rating,
                                       //"profileImage":self.profileImage,
                                       "listings":self.listingsRefs,
-                                      "reviews": self.reviews,
+                                      "reviews": self.reviewsDict,
                                       "typeOfUser": self.typeOfUser]
         return userDict
     }

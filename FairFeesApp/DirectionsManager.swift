@@ -15,6 +15,7 @@ class DirectionsManager: NSObject {
     static let theDirectionsManager = DirectionsManager()
     
     var mapView: GMSMapView!
+    var distanceLabel: UILabel!
     var activePolylines: [GMSPolyline]!
     
     
@@ -67,12 +68,24 @@ class DirectionsManager: NSObject {
                         }
                         
                         if (routes.count > 0) {
+                            
+                            
                             let overview_polyline = routes[0] as? NSDictionary
                             let dictPolyline = overview_polyline?["overview_polyline"] as? NSDictionary
                             
                             let points = dictPolyline?.object(forKey: "points") as? String
                             
                             self.showPath(polyStr: points!)
+                            
+                
+                            self.getPathDistance(from: source, to: destination) { (distance) in
+                                //Update UI on main thread
+                                DispatchQueue.main.async {
+                                    print(distance)
+                                    self.distanceLabel.text = distance
+                                }
+                            }
+                      
                             
                             DispatchQueue.main.async {
                                 //topController.activityIndicator.stopAnimating()
@@ -117,6 +130,32 @@ class DirectionsManager: NSObject {
         
         activePolylines[0].map = nil
         activePolylines.removeAll()
+    }
+    
+    func getPathDistance(from source: CLLocation, to destination: CLLocation, completion: @escaping(String) -> Void) {
+            
+            var dist = ""
+        
+        let sourceCoordinate = source.coordinate
+        let destinationCoordinate = destination.coordinate
+        
+            let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(sourceCoordinate.latitude),\(sourceCoordinate.longitude)&destination=\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)&sensor=true&mode=driving&key=AIzaSyDT14Cef5MjsDIc70mQPh4ToyJnltmEGPA")!
+            let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                guard let data = data, error == nil else {
+                    print(error?.localizedDescription ?? "")
+                    completion(dist)
+                    return
+                }
+                if let result = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String:Any],
+                    let routes = result["routes"] as? [[String:Any]], let route = routes.first,
+                    let legs = route["legs"] as? [[String:Any]], let leg = legs.first,
+                    let distance = leg["distance"] as? [String:Any], let distanceText = distance["text"] as? String {
+                    
+                    dist = distanceText
+                }
+                completion(dist)
+            })
+            task.resume()
     }
 
 }

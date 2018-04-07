@@ -11,12 +11,13 @@ import MapKit
 import GoogleMaps
 import Firebase
 
-class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
+class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate, GMUClusterManagerDelegate {
     
     static let theMapViewDelegate = MapViewDelegate()
 
     weak var theMapView: MKMapView!
     weak var googleMapView: GMSMapView!
+    var clusterManager: GMUClusterManager!
     weak var myLocation: CLLocation! = LocationManager.theLocationManager.getLocation()
     weak var selectedMarker: GMSMarker!
     let storageRef = Storage.storage().reference()
@@ -136,6 +137,38 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         presentListingPreview(marker: marker)
         return true
     }
+    
+//    func mapView(mapView: GMSMapView, didTapMarker marker: GMSMarker) -> Bool {
+//        if let poiItem = marker.userData as? POIItem {
+//            NSLog("Did tap marker for cluster item \(poiItem.name)")
+//        } else {
+//            NSLog("Did tap a normal marker")
+//        }
+//        return false
+//    }
+
+    
+    
+    func clusterManager(_ clusterManager: GMUClusterManager, didTap cluster: GMUCluster) -> Bool {
+       
+        let newCamera = GMSCameraPosition.camera(withTarget: cluster.position, zoom: googleMapView.camera.zoom + 1)
+        let update = GMSCameraUpdate.setCamera(newCamera)
+        googleMapView.moveCamera(update)
+        
+        return true
+    }
+    
+    func renderer(_ renderer: GMUClusterRenderer, markerFor object: Any) -> GMSMarker? {
+        
+        var marker = GMSMarker()
+        if let model = object as? MapMarker {
+            // set image view for gmsmarker
+            marker = model.marker
+        }
+        
+        return marker
+    }
+
     
     
     func presentListingPreview(marker: GMSMarker){
@@ -301,6 +334,32 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate {
         print("didEndDragging")
     }
     
+    
+    //clustermarkers
+    
+    func setupClusterManager(){
+        // Set up the cluster manager with the supplied icon generator and
+        // renderer.
+        
+        let iconGenerator = GMUDefaultClusterIconGenerator()
+        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+        let renderer = CustomGMUClusterRenderer(mapView: googleMapView, clusterIconGenerator: iconGenerator)
+       // let renderer = GMUDefaultClusterRenderer(mapView: googleMapView, clusterIconGenerator: iconGenerator)
+        
+        clusterManager = GMUClusterManager(map: googleMapView, algorithm: algorithm, renderer: renderer)
+    
+        // Generate and add random items to the cluster manager.
+        //generateClusterItems()
+        
+        // Call cluster() after items have been added to perform the clustering
+        // and rendering on map.
+        //clusterManager.cluster()
+        
+        // Register self to listen to both GMUClusterManagerDelegate and
+        // GMSMapViewDelegate events.
+        clusterManager.setDelegate(self, mapDelegate: self)
+
+    }
 
     
     
