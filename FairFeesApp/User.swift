@@ -81,6 +81,16 @@ class User: NSObject {
     
     
     func toDictionary() -> [String:Any] {
+        
+        for review in reviews {
+           let reviewDict:[String: Any] = review.toDictionary()
+            
+            self.reviewsDict["\(review.UID)"] = reviewDict
+                                           
+        }
+        
+        
+        
         let userDict:[String:Any] = [ "UID":self.UID,
                                       "email":self.email,
                                       "phoneNumber": self.phoneNumber,

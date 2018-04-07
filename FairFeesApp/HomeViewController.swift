@@ -42,6 +42,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var tapGestureForListingPreview: UITapGestureRecognizer!
     
     var resultsViewController: GMSAutocompleteResultsViewController?
+    var chosenResultLocation: CLLocation!
     var searchController: UISearchController?
     var resultView: UITextView?
     
@@ -85,7 +86,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         //setupSearchBar()
         showSearchBar()
         
-        navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
+     
     
         setupConstraints()
         
@@ -103,14 +104,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
         self.navigationController?.navigationBar.tintColor = UIColor(red: 0.0, green: 122/255, blue: 1.0, alpha: 1)
         
-        self.navigationController?.navigationBar.isOpaque = true
-        self.navigationItem.searchController?.searchBar.isOpaque = true
-        //self.navigationController?.navigationBar.backgroundColor = UIColor(white: 1, alpha: 0.9)
-  
-       // self.navigationItem.searchController?.searchBar.backgroundColor = self.navigationController?.navigationBar.barTintColor
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+
         homeTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+       // navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -232,18 +239,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
+        searchController?.searchBar.delegate = self
         searchController?.searchBar.searchBarStyle = .minimal
         searchController?.searchBar.isTranslucent = true
         //searchController?.searchBar.backgroundColor = UIColor.white
         
         // Include the search bar within the navigation bar.
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+        //navigationItem.hidesSearchBarWhenScrolling = false
+       
+        
         
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
 
         definesPresentationContext = true
         
+        navigationBarHeight = 56
     }
     
     func showSearchResults(){
@@ -270,23 +281,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func setInitialListingsToPresent(){
         
+        //can change this when there are more than 3 listings for HomeSales and HomeRentals
         numberOfListingsToShow = 3
         
-        //can remove this when there are more than 3 listings for HomeSales and HomeRentals
-        
-
         //homesForSale will be default
         listingsToPresent = FirebaseData.sharedInstance.homesForSale
         
-        
-        //sort the listings by proximity
-        listingsToPresent.sort(by: { $0.distance(to: LocationManager.theLocationManager.getLocation()) < $1.distance(to: LocationManager.theLocationManager.getLocation())})
-        
-        //listingsToPresent = Array(allOnlineListings.prefix(upTo: 3))
+        sortListings()
         
         reloadMap()
         homeTableView.reloadData()
         
+    }
+    
+    func sortListings(){
+        
+        //sort the listings by proximity to chosen location
+        if (chosenResultLocation == nil){
+            listingsToPresent.sort(by: { $0.distance(to: LocationManager.theLocationManager.getLocation()) < $1.distance(to: LocationManager.theLocationManager.getLocation())})
+        }
+            
+        //sort the listings by proximity to our location
+        else {
+            listingsToPresent.sort(by: { $0.distance(to: LocationManager.theLocationManager.getLocation()) < $1.distance(to: LocationManager.theLocationManager.getLocation())})
+        }
     }
     
     @objc func reloadMap(){
@@ -668,43 +686,47 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 //        }
 //    }
     
-    //searchBarDelegates not being used anymore
-//    //searchBarDelegateMethods
-//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    
+    //searchBarDelegateMethods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+
+       // showSearchResults()
+
+        tapGestureForTextFieldDelegate = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
+        self.view.addGestureRecognizer(tapGestureForTextFieldDelegate)
+        
+      //  navigationBarHeight = self.navigationItem.searchController?.searchBar.frame.maxY
+      //  setupConstraints()
+        
+
+//        swipeUpGestureForFilterView = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
+//        swipeUpGestureForFilterView.direction = .up
+//        filterView.addGestureRecognizer(swipeUpGestureForFilterView)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        //searchBarHeight = 40
+        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        
+//        navigationBarHeight = (self.navigationItem.searchController?.searchBar.frame.maxY)! + 64
 //
-//       // showSearchResults()
-//
-//        tapGestureForTextFieldDelegate = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
-//        self.view.addGestureRecognizer(tapGestureForTextFieldDelegate)
-//
-////        swipeUpGestureForFilterView = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGestures))
-////        swipeUpGestureForFilterView.direction = .up
-////        filterView.addGestureRecognizer(swipeUpGestureForFilterView)
-//    }
-//
-//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        //searchBarHeight = 40
-//        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
 //        setupConstraints()
-//        self.navigationItem.rightBarButtonItem = topRightButton
-//    }
-//
-//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        self.view.removeGestureRecognizer(tapGestureForTextFieldDelegate)
-//        //searchBarHeight = 40
-//        searchController?.searchBar.isHidden = true
-//        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
-//        setupConstraints()
-//        self.navigationItem.rightBarButtonItem = topRightButton
-//    }
-//
-//    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
-//        //searchBar.resignFirstResponder()
-//        //searchBarHeight = 40
-//        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
-//        setupConstraints()
-//        self.navigationItem.rightBarButtonItem = topRightButton
-//    }
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        self.view.removeGestureRecognizer(tapGestureForTextFieldDelegate)
+        //searchBarHeight = 40
+        //searchController?.searchBar.isHidden = true
+        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+       // setupConstraints()
+    }
+
+    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+        //searchBar.resignFirstResponder()
+        //searchBarHeight = 40
+        //self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        setupConstraints()
+    }
     
     
     //GMSPlaceSearch Methods
@@ -730,6 +752,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cameraUpdate = GMSCameraUpdate.setTarget(place.coordinate, zoom: 10.0)
         
         homeMapView.moveCamera(cameraUpdate)
+        
+        chosenResultLocation = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        
+        sortListings()
+        
+        homeTableView.reloadData()
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,

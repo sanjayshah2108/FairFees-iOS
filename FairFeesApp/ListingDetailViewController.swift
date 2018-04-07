@@ -10,8 +10,11 @@ import UIKit
 import MapKit
 import GoogleMaps
 import FirebaseStorageUI
+import MessageUI
 
-class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
+class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailComposeViewControllerDelegate {
+    
+    
     
     var navigationBarHeight: CGFloat!
     
@@ -28,9 +31,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     var descriptionLabel: UILabel!
     //var mapView: MKMapView!
     var mapView: GMSMapView!
+    var distanceLabel: UILabel!
     var directionsButton: UIButton!
     var landlordButton: UIButton!
     var posterButton: UIButton!
+    
+    var shareBarButton: UIBarButtonItem!
     
     var contactButtonsStackView: UIStackView!
     var callButton: UIButton!
@@ -72,8 +78,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        //self.navigationItem.titleView?.tintColor = UIColor.white
+//        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.backgroundColor = UIColor.clear
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
@@ -92,7 +98,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         self.navigationController?.navigationBar.tintColor = UIColor.white
     }
@@ -113,6 +118,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
         
         imageViewCarousel.contentMode = .scaleAspectFill
+        imageViewCarousel.clipsToBounds = true
         
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
@@ -145,6 +151,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     }
     
     func setupButtons(){
+    
+        shareBarButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(shareListing))
+        self.navigationItem.rightBarButtonItem = shareBarButton
+        
         posterButton = UIButton()
         posterButton.setTitle("Listed by: \(posterUser.firstName)", for: .normal)
         posterButton.setTitleColor(UIColor.white, for: .normal)
@@ -312,6 +322,16 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         directionsButton.translatesAutoresizingMaskIntoConstraints = false
         mapView.addSubview(directionsButton)
         
+        distanceLabel = UILabel()
+        distanceLabel.backgroundColor = UIColor.white
+        distanceLabel.layer.cornerRadius = 10
+        distanceLabel.textAlignment = .center
+        distanceLabel.isHidden = true
+        distanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        mapView.addSubview(distanceLabel)
+        
+        
+        
 //        mapView = MKMapView()
 //        mapView.delegate = MapViewDelegate.theMapViewDelegate
 //        MapViewDelegate.theMapViewDelegate.theMapView = mapView
@@ -331,7 +351,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -navigationBarHeight).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height/3).isActive = true
+        NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height/3).isActive = true
         
         
         //imageViewPageControl
@@ -389,7 +409,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .greaterThanOrEqual , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 90).isActive = true
     
         
         //posterButton
@@ -413,12 +433,23 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: directionsButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         NSLayoutConstraint(item: directionsButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
+        //distanceLabel
+        NSLayoutConstraint(item: distanceLabel, attribute: .centerX, relatedBy: .equal, toItem: mapView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: distanceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 70).isActive = true
+        NSLayoutConstraint(item: distanceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: distanceLabel, attribute: .bottom, relatedBy: .equal, toItem: mapView, attribute: .bottom, multiplier: 1, constant: -10).isActive = true
+        
+        
         //contactButtonsStackView
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .top, relatedBy: .equal, toItem: mapView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+    }
+    
+    @objc func shareListing(){
+        print("Share")
     }
     
     func nextImage(imageView: UIImageView, pageControl: UIPageControl){
@@ -476,10 +507,68 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func callPoster(){
         
+        guard let number = URL(string: "tel://" + "\(posterUser.phoneNumber)") else { return }
+        UIApplication.shared.open(number)
     }
     
     @objc func emailPoster(){
         
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        
+        let destinationUser = FirebaseData.sharedInstance.users.filter{ $0.UID == currentListing.posterUID }.first
+
+            //show error if the VC cant send mail
+            if MFMailComposeViewController.canSendMail()
+            {
+                self.present(mailComposerVC, animated: true, completion: nil)
+            } else {
+                self.showSendMailErrorAlert()
+            }
+        
+        sendMail(mailComposerVC: mailComposerVC, destinationUser: destinationUser!)
+    }
+    
+    func sendMail(mailComposerVC: MFMailComposeViewController, destinationUser: User){
+        
+        let destinationEmail = destinationUser.email
+        let destinationName = destinationUser.firstName
+        
+        let currentUserName = FirebaseData.sharedInstance.currentUser!.firstName
+
+        let currentListingName = currentListing.name!
+        let currentListingAddress = currentListing.address!
+        
+        //mailVC properties
+        mailComposerVC.setToRecipients([destinationEmail])
+        mailComposerVC.setSubject("U-List: \(currentListingName) inquiry")
+        mailComposerVC.setMessageBody("Hey \(destinationName),\n\nI'm interested in your listing at \(currentListingAddress).\n\nThanks!\n\n\(currentUserName)", isHTML: false)
+        
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertController.init(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+    
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        switch result {
+        case .cancelled:
+            break
+            
+        case .saved:
+            print ("Go back")
+            
+        case .sent:
+            print ("Go back")
+            
+        case .failed:
+            print ("Mail sent failure: \([error!.localizedDescription])")
+        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func addListingForComparison(){
@@ -490,10 +579,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func showDirections(){
         
+        
         let destinationLocation = currentListing.location
         let originLocation = LocationManager.theLocationManager.getLocation()
         
         DirectionsManager.theDirectionsManager.mapView = mapView
+        DirectionsManager.theDirectionsManager.distanceLabel = distanceLabel
         
         if !(directionsButton.isSelected){
             directionsButton.isSelected = true
@@ -513,6 +604,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
                 
             }, completion: { finished in
               
+ 
+                self.distanceLabel.isHidden = false
             
             })
             
@@ -521,6 +614,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
         else {
          
             UIView.animate(withDuration: 1, animations: {
+                
+                self.distanceLabel.isHidden = true
                 
                 NSLayoutConstraint.deactivate([self.enlargedMapTopConstraint, self.enlargedMapHeightConstraint])
                 NSLayoutConstraint.activate([self.minimizedMapTopConstraint, self.minimizedMapHeightConstraint])
@@ -536,6 +631,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
             }, completion: { finished in
                 
                 self.directionsButton.isSelected = false
+    
 
                 self.navigationController?.navigationBar.isHidden = false
             })
@@ -554,15 +650,28 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate {
     //fullcreen image methods
     @objc func fullscreenImage() {
         
-        if(tempImageView.image != nil){
-            
+
+        
             tempImageView = UIImageView()
             tempImageView.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
+        
+        if(currentListing.photoRefs[photoIndex] != ""){
             
             let enlargedImageContainerView = UIView()
             enlargedImageContainerView.frame = UIScreen.main.bounds
             enlargedImageContainerView.backgroundColor = UIColor.black
             self.view.addSubview(enlargedImageContainerView)
+            
+            let minimizeFullscreenButton = UIButton()
+            minimizeFullscreenButton.setTitle("Min", for: .normal)
+            minimizeFullscreenButton.setTitleColor(UIColor.white, for: .normal)
+            minimizeFullscreenButton.addTarget(self, action: #selector(dismissFullscreenImage), for: .touchUpInside)
+            minimizeFullscreenButton.translatesAutoresizingMaskIntoConstraints = false
+            enlargedImageContainerView.addSubview(minimizeFullscreenButton)
+            
+            NSLayoutConstraint(item: minimizeFullscreenButton, attribute: .centerX, relatedBy: .equal, toItem: enlargedImageContainerView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+            NSLayoutConstraint(item: minimizeFullscreenButton, attribute: .top, relatedBy: .equal, toItem: enlargedImageContainerView, attribute: .top, multiplier: 1, constant: 10).isActive = true
+            
             
             newImageView = ImageScrollView()
             newImageView.translatesAutoresizingMaskIntoConstraints = true
