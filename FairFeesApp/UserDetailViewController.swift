@@ -23,6 +23,10 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     var listingsTableView: UITableView!
     
     var reviewsButton: UIButton!
+    
+    var childContainerView: UIView!
+    //var myListingsTableViewController: MyListingsTableViewController!
+    var myReviewsTableViewController: MyReviewsTableViewController!
 
 
     override func viewDidLoad() {
@@ -36,6 +40,8 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         setupButtons()
         setupRatingsView()
         setupTableView()
+        setupSegmentedControl()
+        setupChildViewControllers()
         setupConstraints()
     }
 
@@ -94,6 +100,10 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         view.addSubview(ratingsContainerView)
     }
     
+    func setupSegmentedControl(){
+        
+    }
+    
     func setupTableView(){
         listingsTableView = UITableView()
         listingsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +113,28 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         
         listingsTableView.register(UINib(nibName: "UserDetailListingsTableViewCell", bundle: nil), forCellReuseIdentifier: "userDetailListingTableViewCell")
     }
+    
+    func setupChildViewControllers(){
+        
+        childContainerView = UIView()
+        childContainerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(childContainerView)
+        
+        myReviewsTableViewController = MyReviewsTableViewController()
+        addViewControllerAsChildViewController(childViewController: myReviewsTableViewController)
+        
+        //myListingsTableViewController = MyListingsTableViewController()
+        //addViewControllerAsChildViewController(childViewController: myListingsTableViewController)
+    }
+    
+    func addViewControllerAsChildViewController(childViewController: UIViewController){
+        
+        addChildViewController(childViewController)
+        childContainerView.addSubview(childViewController.view)
+        childViewController.view.frame = childContainerView.bounds
+        childViewController.didMove(toParentViewController: self)
+    }
+
     
     func setupConstraints(){
         
@@ -151,13 +183,17 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         NSLayoutConstraint(item: reviewsButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: reviewsButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
-        
+        //containerView
+        NSLayoutConstraint(item: childContainerView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: childContainerView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: childContainerView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: childContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
         //tableViewController
-        NSLayoutConstraint(item: listingsTableView, attribute: .top, relatedBy: .equal, toItem: reviewsButton, attribute: .bottom, multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: listingsTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: listingsTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: listingsTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: listingsTableView, attribute: .top, relatedBy: .equal, toItem: reviewsButton, attribute: .bottom, multiplier: 1, constant: 30).isActive = true
+//        NSLayoutConstraint(item: listingsTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: listingsTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: listingsTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
     }
     
