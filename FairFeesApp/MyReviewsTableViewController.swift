@@ -8,7 +8,9 @@
 
 import UIKit
 
-class MyReviewsTableViewController: UITableViewController {
+class MyReviewsTableViewController: UITableViewController, ReviewTableViewCellDelegate {
+
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,14 +49,97 @@ class MyReviewsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reviewTableViewCell", for: indexPath) as! ReviewTableViewCell
+        cell.delegate = self
+        
+        let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
 
-        cell.reviewTextLabel.text = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row].text
-        cell.reviewerNameLabel.text = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row].reviewerName
-        cell.upvotesLabel.text = String((FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row].upvotes)!)
-        cell.downvotesLabel.text = String((FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row].downvotes)!)
+        cell.reviewTextLabel.text = review?.text
+        cell.reviewerProfileImageView.image = nil
+        cell.reviewerNameLabel.text = review?.reviewerName
+        cell.upvotesLabel.text = String((review?.upvotes)!)
+        cell.downvotesLabel.text = String((review?.downvotes)!)
+        cell.starRatingView.redraw(withRating: 4)
+        
+        
+        for vote in (review?.votes)!{
+            if((vote.type == "upvote") && (vote.voterUID == FirebaseData.sharedInstance.currentUser?.UID)){
+                cell.upvoteButton.isSelected = true
+            }
+            else if((vote.type == "downvote") && (vote.voterUID == FirebaseData.sharedInstance.currentUser?.UID)){
+                cell.downvoteButton.isSelected = true
+            }
+        }
+        
+        //this should technically never run when we are viewing reviews from profileView
+        if(review?.reviewerUID == FirebaseData.sharedInstance.currentUser?.UID){
+            cell.reportDeleteButton.setTitle("Delete Review", for: .normal)
+        }
 
         return cell
         
+    }
+    
+    func upvoteAction(_ sender: UIButton) {
+        if let indexPath = getCurrentCellIndexPath(sender) {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "reviewTableViewCell", for: indexPath) as! ReviewTableViewCell
+            
+            let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
+            
+            if(cell.upvoteButton.isSelected){
+                review?.upvotes! -= 1
+                
+                cell.upvoteButton.isSelected = false
+                
+                let index = review?.votes.index(where:{($0.voterUID == FirebaseData.sharedInstance.currentUser?.UID) && ($0.type == "upvote")})
+                review?.votes.remove(at: index!)
+            }
+            else {
+                review?.upvotes! += 1
+                cell.upvoteButton.isSelected = true
+                review?.votes.append(Vote(type: "upvote", voterUID: (FirebaseData.sharedInstance.currentUser?.UID)!))
+            }
+            
+            WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
+            
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func downvoteAction(_ sender: UIButton) {
+        if let indexPath = getCurrentCellIndexPath(sender) {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "reviewTableViewCell", for: indexPath) as! ReviewTableViewCell
+            
+            let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
+            
+            if(cell.downvoteButton.isSelected){
+                review?.downvotes! += 1
+                cell.downvoteButton.isSelected = false
+                
+                let index = review?.votes.index(where:{($0.voterUID == FirebaseData.sharedInstance.currentUser?.UID) && ($0.type == "downvote")})
+                review?.votes.remove(at: index!)
+            }
+            else {
+                review?.downvotes! -= 1
+                cell.downvoteButton.isSelected = true
+                review?.votes.append(Vote(type: "downvote", voterUID: (FirebaseData.sharedInstance.currentUser?.UID)!))
+            }
+            
+            WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
+            
+        }
+        
+        tableView.reloadData()
+    }
+
+    func getCurrentCellIndexPath(_ sender: UIButton) -> IndexPath? {
+        let buttonPosition = sender.convert(CGPoint.zero, to: tableView)
+        if let indexPath: IndexPath = tableView.indexPathForRow(at: buttonPosition) {
+            return indexPath
+        }
+        return nil
     }
  
 
