@@ -19,8 +19,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="356" height="133.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NhN-9M-uqu" userLabel="Upvotes">
-                        <rect key="frame" x="304" y="58" width="22" height="10"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NhN-9M-uqu" userLabel="Upvotes">
+                        <rect key="frame" x="304" y="62" width="22" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="Xc8-0t-iUT"/>
                         </constraints>
@@ -28,8 +28,8 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIt-VH-fhz" userLabel="Downvotes">
-                        <rect key="frame" x="304" y="72" width="22" height="10"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIt-VH-fhz" userLabel="Downvotes">
+                        <rect key="frame" x="304" y="76" width="22" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="DFF-Xa-5z9"/>
                         </constraints>
@@ -38,7 +38,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvL-4K-hbc" userLabel="ReviewerName">
-                        <rect key="frame" x="59" y="7" width="200" height="21"/>
+                        <rect key="frame" x="82" y="7" width="200" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="200" id="DKc-5u-L7J"/>
                         </constraints>
@@ -47,7 +47,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HXU-K2-wVR" userLabel="Text">
-                        <rect key="frame" x="15" y="71" width="200" height="17"/>
+                        <rect key="frame" x="25" y="76" width="200" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="200" id="poZ-0b-VJb"/>
                         </constraints>
@@ -56,7 +56,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mkm-je-gEH" userLabel="StarRatingContainerView">
-                        <rect key="frame" x="59" y="33" width="139" height="23"/>
+                        <rect key="frame" x="79" y="38" width="139" height="23"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="23" id="dhv-14-0cH"/>
@@ -72,25 +72,26 @@
                         <state key="normal" title="Report"/>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fv2-uq-fE2" userLabel="ReviewerProfileImageView">
-                        <rect key="frame" x="7" y="7" width="35" height="35"/>
+                        <rect key="frame" x="7" y="7" width="55" height="55"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="35" id="NJG-eO-k2P"/>
-                            <constraint firstAttribute="height" constant="35" id="Y9W-8S-fZB"/>
+                            <constraint firstAttribute="width" constant="55" id="NJG-eO-k2P"/>
+                            <constraint firstAttribute="height" constant="55" id="Y9W-8S-fZB"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azP-Aw-bCS" userLabel="UpvoteButton">
-                        <rect key="frame" x="299" y="35" width="31" height="20"/>
+                        <rect key="frame" x="290" y="35" width="40" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="31" id="P8l-bz-9uC"/>
+                            <constraint firstAttribute="width" constant="40" id="P8l-bz-9uC"/>
                             <constraint firstAttribute="height" constant="20" id="ysj-Hx-QWd"/>
                         </constraints>
                         <state key="normal" title="Button"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WdV-BZ-klJ" userLabel="DownvoteButton">
-                        <rect key="frame" x="299" y="82" width="31" height="20"/>
+                        <rect key="frame" x="290" y="93" width="40" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="HLI-sA-fFW"/>
-                            <constraint firstAttribute="width" constant="31" id="xdX-lv-cIM"/>
+                            <constraint firstAttribute="width" constant="40" id="xdX-lv-cIM"/>
                         </constraints>
                         <state key="normal" title="Button"/>
                     </button>
@@ -103,18 +104,18 @@
                     <constraint firstAttribute="bottom" secondItem="HXU-K2-wVR" secondAttribute="bottom" constant="7" id="3Dw-j4-jax"/>
                     <constraint firstItem="N2c-Ob-XzL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="69C-q8-3iO"/>
                     <constraint firstItem="hvL-4K-hbc" firstAttribute="centerY" secondItem="N2c-Ob-XzL" secondAttribute="centerY" id="7km-O2-SwZ"/>
-                    <constraint firstItem="NhN-9M-uqu" firstAttribute="top" secondItem="azP-Aw-bCS" secondAttribute="bottom" constant="3" id="Lgz-2g-hqc"/>
+                    <constraint firstItem="NhN-9M-uqu" firstAttribute="top" secondItem="azP-Aw-bCS" secondAttribute="bottom" constant="7" id="Lgz-2g-hqc"/>
                     <constraint firstItem="fv2-uq-fE2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="LqZ-yg-oHk"/>
                     <constraint firstItem="HXU-K2-wVR" firstAttribute="top" secondItem="mkm-je-gEH" secondAttribute="bottom" constant="15" id="NYa-gs-PhB"/>
                     <constraint firstItem="fv2-uq-fE2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="PaZ-7q-7sr"/>
-                    <constraint firstItem="mkm-je-gEH" firstAttribute="top" secondItem="hvL-4K-hbc" secondAttribute="bottom" constant="5" id="QIc-Hc-Hjs"/>
+                    <constraint firstItem="mkm-je-gEH" firstAttribute="top" secondItem="hvL-4K-hbc" secondAttribute="bottom" constant="10" id="QIc-Hc-Hjs"/>
                     <constraint firstAttribute="trailingMargin" secondItem="NhN-9M-uqu" secondAttribute="trailing" constant="14" id="Svi-fp-YW6"/>
-                    <constraint firstItem="hvL-4K-hbc" firstAttribute="leading" secondItem="fv2-uq-fE2" secondAttribute="trailing" constant="17" id="Uav-Kp-Rj0"/>
+                    <constraint firstItem="hvL-4K-hbc" firstAttribute="leading" secondItem="fv2-uq-fE2" secondAttribute="trailing" constant="20" id="Uav-Kp-Rj0"/>
                     <constraint firstAttribute="bottom" secondItem="WdV-BZ-klJ" secondAttribute="bottom" constant="25" id="dbe-q3-Ec4"/>
                     <constraint firstItem="vIt-VH-fhz" firstAttribute="top" secondItem="NhN-9M-uqu" secondAttribute="bottom" constant="4" id="ex3-kz-zoe"/>
-                    <constraint firstItem="WdV-BZ-klJ" firstAttribute="top" secondItem="vIt-VH-fhz" secondAttribute="bottom" id="fDE-VB-gGi"/>
+                    <constraint firstItem="WdV-BZ-klJ" firstAttribute="top" secondItem="vIt-VH-fhz" secondAttribute="bottom" constant="7" id="fDE-VB-gGi"/>
                     <constraint firstAttribute="trailingMargin" secondItem="azP-Aw-bCS" secondAttribute="trailing" constant="10" id="gTC-8F-qka"/>
-                    <constraint firstItem="HXU-K2-wVR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="rjx-G5-6rS"/>
+                    <constraint firstItem="HXU-K2-wVR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="rjx-G5-6rS"/>
                     <constraint firstItem="mkm-je-gEH" firstAttribute="leading" secondItem="fv2-uq-fE2" secondAttribute="trailing" constant="17" id="z03-tM-w6g"/>
                     <constraint firstAttribute="trailingMargin" secondItem="vIt-VH-fhz" secondAttribute="trailing" constant="14" id="zC0-7P-4Rc"/>
                 </constraints>

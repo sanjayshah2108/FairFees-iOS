@@ -32,7 +32,6 @@ class ReviewTableViewCell: UITableViewCell {
     
     weak var delegate: ReviewTableViewCellDelegate?
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

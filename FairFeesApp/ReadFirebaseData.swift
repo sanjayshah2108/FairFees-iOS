@@ -232,6 +232,7 @@ class ReadFirebaseData: NSObject {
             let reviewerName = value["reviewerName"] as! String
             let upvotes = value["upvotes"] as! Int
             let downvotes = value["downvotes"] as! Int
+            let rating = value["rating"] as! Int
             let votesDict = value["votes"] as! [String: [String: Any]]
             
             var votes: [Vote] = []
@@ -245,7 +246,7 @@ class ReadFirebaseData: NSObject {
                 votes.append(vote)
             }
             
-            let rev = Review(uid: reviewUID, text: text, upvotes: upvotes, downvotes: downvotes, reviewerUID: reviewerUID, reviewerName: reviewerName, votes: votes)
+            let rev = Review(uid: reviewUID, text: text, upvotes: upvotes, downvotes: downvotes, reviewerUID: reviewerUID, reviewerName: reviewerName, rating: rating, votes: votes)
             
             reviews.append(rev)
         }

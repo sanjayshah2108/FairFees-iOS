@@ -12,7 +12,12 @@ import Firebase
 class ProfileViewController: UIViewController {
 
     var nameLabel: UILabel!
+    var nameTextField: UITextField!
     var emailLabel: UILabel!
+    var emailTextField: UITextField!
+    var profileImageView: UIImageView!
+    var phoneNumberLabel: UILabel!
+    var phoneNumberTextField: UITextField!
     var listingsReviewsSegmentedControl: UISegmentedControl!
    
 
@@ -42,6 +47,7 @@ class ProfileViewController: UIViewController {
             }
         }
         
+        setupProfileImage()
         setupProfileLabels()
         setupSegmentedControl()
         setupChildViewControllers()
@@ -57,6 +63,11 @@ class ProfileViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupProfileImage(){
+        profileImageView = UIImageView()
+        profileImageView.backgroundColor = UIColor.black
     }
     func setupProfileLabels(){
         

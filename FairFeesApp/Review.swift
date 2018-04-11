@@ -16,6 +16,7 @@ class Review: NSObject {
     var downvotes: Int!
     var reviewerUID: String!
     var reviewerName: String!
+    var rating: Int!
     var votes: [Vote]!
     //var votesDict: [String: Any]!
     
@@ -25,6 +26,7 @@ class Review: NSObject {
          downvotes: Int,
          reviewerUID: String,
          reviewerName: String,
+         rating: Int,
          votes: [Vote]) {
         
         self.UID = uid
@@ -33,6 +35,7 @@ class Review: NSObject {
         self.downvotes = downvotes
         self.reviewerUID = reviewerUID
         self.reviewerName = reviewerName
+        self.rating = rating
         self.votes = votes
         //self.votesDict = [:]
     }
@@ -45,7 +48,7 @@ class Review: NSObject {
         for vote in votes{
             //votesDict.append(vote.toDictionary())
             let voteDict:[String: Any] = vote.toDictionary()
-            votesDict["\(vote.type)_\(vote.voterUID)"] = voteDict
+            votesDict["\(vote.type!)_\(vote.voterUID!)"] = voteDict
         }
         
         let reviewDict:[String:Any] = ["UID":self.UID,
@@ -54,6 +57,7 @@ class Review: NSObject {
                                       "downvotes":self.downvotes,
                                       "reviewerUID": self.reviewerUID,
                                       "reviewerName":self.reviewerName,
+                                      "rating": self.rating,
                                       "votes": votesDict]
         
         return reviewDict
