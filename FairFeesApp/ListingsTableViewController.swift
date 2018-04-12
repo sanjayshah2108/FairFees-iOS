@@ -67,6 +67,19 @@ class ListingsTableViewController: UITableViewController {
         }
         
     }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    {
+        switch section
+        {
+        case 0:
+            return "For Sale"
+        case 1:
+            return "For Rent"
+        default:
+            return "Other"
+        }
+    }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -124,6 +137,9 @@ class ListingsTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
  
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
 
     /*
     // Override to support conditional editing of the table view.

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReviewsTableViewController: UITableViewController {
+class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDelegate {
 
     var currentUser: User!
    // var tableView: UITableView!
@@ -34,6 +34,7 @@ class ReviewsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "reviewTableViewCell") as! ReviewTableViewCell
+        cell.delegate = self
         
          let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
         
