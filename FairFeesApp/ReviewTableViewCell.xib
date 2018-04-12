@@ -64,10 +64,10 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N2c-Ob-XzL" userLabel="ReportDeleteButton">
-                        <rect key="frame" x="299" y="7" width="50" height="20"/>
+                        <rect key="frame" x="269" y="7" width="80" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="9uM-Tm-SRe"/>
-                            <constraint firstAttribute="width" constant="50" id="k0n-iK-c6i"/>
+                            <constraint firstAttribute="width" constant="80" id="k0n-iK-c6i"/>
                         </constraints>
                         <state key="normal" title="Report"/>
                     </button>

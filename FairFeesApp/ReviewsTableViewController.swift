@@ -58,6 +58,9 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
         if(review?.reviewerUID == FirebaseData.sharedInstance.currentUser?.UID){
             cell.reportDeleteButton.setTitle("Delete Review", for: .normal)
         }
+        else {
+            cell.reportDeleteButton.setTitle("Report", for: .normal)
+        }
         
         return cell
        
@@ -117,6 +120,32 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
             WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
         }
         tableView.reloadData()
+    }
+    
+    func deleteReview(_ sender: UIButton){
+        
+        let deleteReviewAlert = UIAlertController(title: "Are you sure you want to delete your review?", message: nil, preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: {(alert) in
+    
+            if let indexPath = self.getCurrentCellIndexPath(sender) {
+                
+                let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
+                
+                let indexOfReview = self.currentUser.reviews.index(of: review!)
+                self.currentUser.reviews.remove(at: indexOfReview!)
+                
+                WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
+            }
+            self.tableView.reloadData()
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        deleteReviewAlert.addAction(yesAction)
+        deleteReviewAlert.addAction(cancelAction)
+        
+        present(deleteReviewAlert, animated: true, completion: nil)
     }
     
     func getCurrentCellIndexPath(_ sender: UIButton) -> IndexPath? {

@@ -10,6 +10,8 @@ import UIKit
 
 class MyReviewsTableViewController: UITableViewController, ReviewTableViewCellDelegate {
 
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -130,6 +132,10 @@ class MyReviewsTableViewController: UITableViewController, ReviewTableViewCellDe
         tableView.reloadData()
     }
 
+    
+    func deleteReview(_ sender: UIButton) {
+        print("This delegate method shouldnt run from this view controller, because we shouldnt be able to review ourselves anyways")
+    }
     func getCurrentCellIndexPath(_ sender: UIButton) -> IndexPath? {
         let buttonPosition = sender.convert(CGPoint.zero, to: tableView)
         if let indexPath: IndexPath = tableView.indexPathForRow(at: buttonPosition) {

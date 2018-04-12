@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserDetailViewController: UIViewController {
+class UserDetailViewController: UIViewController, UITextViewDelegate {
     
     weak var currentUser: User!
     
@@ -26,6 +26,13 @@ class UserDetailViewController: UIViewController {
     var childContainerView: UIView!
     var userListingsTableViewController: ListingsTableViewController!
     var userReviewsTableViewController: ReviewsTableViewController!
+    
+    var newReviewContainerView: UIView!
+    var newReviewTextView: UITextView!
+    var newReviewSubmitButton: UIButton!
+    var newReviewCancelButton: UIButton!
+    var newReviewStarRatingView: StarRatingView!
+    var newReviewStarRatingContainerView: UIView!
 
 
     override func viewDidLoad() {
@@ -277,8 +284,132 @@ class UserDetailViewController: UIViewController {
     
     @objc func addReview(){
         
+
+        //container view
+        newReviewContainerView = UIView()
+        newReviewContainerView.isUserInteractionEnabled = true
+        newReviewContainerView.layer.cornerRadius = 5
+        newReviewContainerView.layer.borderColor = UIColor.lightGray.cgColor
+        newReviewContainerView.layer.borderWidth = 1
+        newReviewContainerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(newReviewContainerView)
+       
+ 
+        //textField
+        newReviewTextView = UITextView()
+        newReviewTextView.delegate = self
+        newReviewTextView.text = "Add a review"
+        newReviewTextView.textAlignment = .center
+        newReviewTextView.textColor = UIColor.gray
+        newReviewTextView.layer.cornerRadius = 3
+        newReviewTextView.layer.borderColor = UIColor.lightGray.cgColor
+        newReviewTextView.layer.borderWidth = 1
+        newReviewTextView.translatesAutoresizingMaskIntoConstraints = false
+        newReviewContainerView.addSubview(newReviewTextView)
+        
+        //submit button
+        newReviewSubmitButton = UIButton()
+        newReviewSubmitButton.setTitle("Submit", for: .normal)
+        newReviewSubmitButton.setTitleColor(UIColor.blue, for: .normal)
+        newReviewSubmitButton.addTarget(self, action: #selector(submitNewReview), for: .touchUpInside)
+        newReviewSubmitButton.translatesAutoresizingMaskIntoConstraints = false
+        newReviewContainerView.addSubview(newReviewSubmitButton)
+        
+        //cancelButton
+        newReviewCancelButton = UIButton()
+        newReviewCancelButton.setTitle("Cancel", for: .normal)
+        newReviewCancelButton.setTitleColor(UIColor.blue, for: .normal)
+        newReviewCancelButton.addTarget(self, action: #selector(cancelNewReview), for: .touchUpInside)
+        newReviewCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        newReviewContainerView.addSubview(newReviewCancelButton)
+        
+        //starRatingContainerView
+        newReviewStarRatingContainerView = UIView()
+        newReviewStarRatingContainerView.translatesAutoresizingMaskIntoConstraints = false
+        newReviewContainerView.addSubview(newReviewStarRatingContainerView)
+        
+        //starRating
+        newReviewStarRatingView = StarRatingView()
+        newReviewStarRatingView.translatesAutoresizingMaskIntoConstraints = false
+        newReviewStarRatingContainerView.addSubview(newReviewStarRatingView)
+        
+        setupNewReviewConstraints()
     }
     
+    func setupNewReviewConstraints(){
+    
+        
+        //container view
+        NSLayoutConstraint(item: newReviewContainerView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewContainerView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewContainerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
+        NSLayoutConstraint(item: newReviewContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
+        
+        //starRatingContainerView
+        NSLayoutConstraint(item: newReviewStarRatingContainerView, attribute: .top, relatedBy: .equal, toItem: newReviewContainerView, attribute: .top, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: newReviewStarRatingContainerView, attribute: .leading, relatedBy: .equal, toItem: newReviewContainerView, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: newReviewStarRatingContainerView, attribute: .trailing, relatedBy: .equal, toItem: newReviewContainerView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: newReviewStarRatingContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        
+        //starRating
+        NSLayoutConstraint(item: newReviewStarRatingView, attribute: .top, relatedBy: .equal, toItem: newReviewStarRatingContainerView, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewStarRatingView, attribute: .leading, relatedBy: .equal, toItem: newReviewStarRatingContainerView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewStarRatingView, attribute: .trailing, relatedBy: .equal, toItem: newReviewStarRatingContainerView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewStarRatingView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        
+        //textField
+        NSLayoutConstraint(item: newReviewTextView, attribute: .top, relatedBy: .equal, toItem: newReviewStarRatingView, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: newReviewTextView, attribute: .leading, relatedBy: .equal, toItem: newReviewContainerView, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: newReviewTextView, attribute: .trailing, relatedBy: .equal, toItem: newReviewContainerView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: newReviewTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80).isActive = true
+        
+        //submit button
+        NSLayoutConstraint(item: newReviewSubmitButton, attribute: .top, relatedBy: .equal, toItem: newReviewTextView, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: newReviewSubmitButton, attribute: .leading, relatedBy: .equal, toItem: newReviewContainerView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewSubmitButton, attribute: .trailing, relatedBy: .equal, toItem: newReviewContainerView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewSubmitButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+
+        //cancelButton
+        NSLayoutConstraint(item: newReviewCancelButton, attribute: .top, relatedBy: .equal, toItem: newReviewSubmitButton, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: newReviewCancelButton, attribute: .leading, relatedBy: .equal, toItem: newReviewContainerView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewCancelButton, attribute: .trailing, relatedBy: .equal, toItem: newReviewContainerView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: newReviewCancelButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+  
+        
+        
+    }
+    
+    @objc func cancelNewReview(){
+        
+        for subview in newReviewContainerView.subviews{
+            subview.removeFromSuperview()
+        }
+        
+        newReviewContainerView.isHidden = true
+        newReviewContainerView = nil
+    }
+    
+    @objc func submitNewReview(){
+        
+        //by using users UID as the reviewUID, a user can only review someone once!
+        let newReview = Review(uid: (FirebaseData.sharedInstance.currentUser?.UID)!, text: newReviewTextView.text, upvotes: 0, downvotes: 0, reviewerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, reviewerName: (FirebaseData.sharedInstance.currentUser?.firstName)! + " " + (FirebaseData.sharedInstance.currentUser?.lastName)!, rating: newReviewStarRatingView.rating, votes: [])
+        
+        currentUser.reviews.append(newReview)
+        
+        WriteFirebaseData.write(user: currentUser)
+        
+        present(AlertDefault.showAlert(title: "Success", message: "Your review has been submitted"), animated: true, completion: nil)
+        
+        userReviewsTableViewController.tableView.reloadData()
+        
+        for subview in newReviewContainerView.subviews{
+            subview.removeFromSuperview()
+        }
+        
+        newReviewContainerView.isHidden = true
+        newReviewContainerView = nil
+        
+    }
     
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return currentUser.listingsRefs.count

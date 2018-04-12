@@ -126,7 +126,7 @@ class ListingsTableViewController: UITableViewController {
         
         switch indexPath.section {
         case 0:
-            listingDetailViewController.currentListing = homeRentals[indexPath.row]
+            listingDetailViewController.currentListing = homeSales[indexPath.row]
         case 1:
             listingDetailViewController.currentListing = homeRentals[indexPath.row]
         default:

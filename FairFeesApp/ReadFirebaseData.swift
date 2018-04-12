@@ -233,7 +233,17 @@ class ReadFirebaseData: NSObject {
             let upvotes = value["upvotes"] as! Int
             let downvotes = value["downvotes"] as! Int
             let rating = value["rating"] as! Int
-            let votesDict = value["votes"] as! [String: [String: Any]]
+            
+            //votesDict may have disappeared from the FB DB if the last one was deleted, so just check first
+            var votesDict: [String: [String: Any]]
+            
+            if (value.keys.contains("votes")){
+                votesDict = value["votes"] as! [String: [String: Any]]
+            }
+            else {
+            
+                votesDict = [:]
+            }
             
             var votes: [Vote] = []
             

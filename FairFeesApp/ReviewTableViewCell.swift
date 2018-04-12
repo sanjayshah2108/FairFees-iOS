@@ -11,6 +11,7 @@ import UIKit
 protocol ReviewTableViewCellDelegate: class {
     func upvoteAction(_ sender: UIButton)
     func downvoteAction(_ sender: UIButton)
+    func deleteReview(_ sender: UIButton)
 }
 
 class ReviewTableViewCell: UITableViewCell {
@@ -72,6 +73,8 @@ class ReviewTableViewCell: UITableViewCell {
             
         }
         else {
+            
+            delegate?.deleteReview(sender)
             
             print("delete")
         }
