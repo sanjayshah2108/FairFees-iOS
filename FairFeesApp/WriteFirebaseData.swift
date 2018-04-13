@@ -22,6 +22,18 @@ class WriteFirebaseData: NSObject {
         FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(SecondCharOfUserEmail).child(ThirdCharOfUserEmail).child(user.UID).setValue(user.toDictionary())
     }
     
+    class func writeListings(listing: Listing){
+        if (listing.isKind(of: HomeSale.self)){
+            let homeSaleToWrite = listing as! HomeSale
+            writeHomesForSale(homeForSale: homeSaleToWrite)
+        }
+        
+        else if(listing.isKind(of: HomeRental.self)){
+            let homeRentalToWrite = listing as! HomeRental
+            writeHomesForRent(homeForRent: homeRentalToWrite)
+        }
+    }
+    
     class func writeHomesForSale(homeForSale:HomeSale) {
         
         let user = FirebaseData.sharedInstance.currentUser!

@@ -48,7 +48,7 @@
 		CE2D6E5E20697CBA00104EB6 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */; };
 		CE2D6E60206B2EA700104EB6 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E5F206B2EA600104EB6 /* Review.swift */; };
 		CE2D6E62206B388800104EB6 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E61206B388800104EB6 /* Vote.swift */; };
-		CE2D6E64206C322600104EB6 /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E63206C322500104EB6 /* ReviewsViewController.swift */; };
+		CE2D6E64206C322600104EB6 /* ReviewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E63206C322500104EB6 /* ReviewsTableViewController.swift */; };
 		CE2D6E67206C341500104EB6 /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D6E65206C341500104EB6 /* ReviewTableViewCell.swift */; };
 		CE2D6E68206C341500104EB6 /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2D6E66206C341500104EB6 /* ReviewTableViewCell.xib */; };
 		CE3D40C020769F470099A895 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D40BF20769F470099A895 /* FilterViewController.swift */; };
@@ -79,6 +79,9 @@
 		CE3D41252076EF1A0099A895 /* MapMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D41242076EF1A0099A895 /* MapMarker.swift */; };
 		CE3D412720771AB40099A895 /* CustomGMUClusterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D412620771AB40099A895 /* CustomGMUClusterRenderer.swift */; };
 		CE3D412A207822960099A895 /* AlertDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D4129207822950099A895 /* AlertDefault.swift */; };
+		CE3D412C207C0AD40099A895 /* MyListingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D412B207C0AD30099A895 /* MyListingsTableViewController.swift */; };
+		CE3D412E207C28380099A895 /* MyReviewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D412D207C28380099A895 /* MyReviewsTableViewController.swift */; };
+		CE3D4130207E5F470099A895 /* ListingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D412F207E5F470099A895 /* ListingsTableViewController.swift */; };
 		CE51484A204F70170021DB67 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE514849204F70170021DB67 /* LocationManager.swift */; };
 		CE51484C204F74540021DB67 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484B204F74540021DB67 /* DummyData.swift */; };
 		CE51484E204F778F0021DB67 /* Sale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51484D204F778F0021DB67 /* Sale.swift */; };
@@ -241,7 +244,7 @@
 		CE2D6E5D20697CBA00104EB6 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
 		CE2D6E5F206B2EA600104EB6 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		CE2D6E61206B388800104EB6 /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
-		CE2D6E63206C322500104EB6 /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
+		CE2D6E63206C322500104EB6 /* ReviewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsTableViewController.swift; sourceTree = "<group>"; };
 		CE2D6E65206C341500104EB6 /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		CE2D6E66206C341500104EB6 /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
 		CE3D40BF20769F470099A895 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
@@ -314,6 +317,9 @@
 		CE3D412620771AB40099A895 /* CustomGMUClusterRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGMUClusterRenderer.swift; sourceTree = "<group>"; };
 		CE3D412820771C870099A895 /* MarkerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MarkerManager.h; path = FairFeesApp/MarkerManager.h; sourceTree = SOURCE_ROOT; };
 		CE3D4129207822950099A895 /* AlertDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDefault.swift; sourceTree = "<group>"; };
+		CE3D412B207C0AD30099A895 /* MyListingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListingsTableViewController.swift; sourceTree = "<group>"; };
+		CE3D412D207C28380099A895 /* MyReviewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReviewsTableViewController.swift; sourceTree = "<group>"; };
+		CE3D412F207E5F470099A895 /* ListingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsTableViewController.swift; sourceTree = "<group>"; };
 		CE514849204F70170021DB67 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		CE51484B204F74540021DB67 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		CE51484D204F778F0021DB67 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
@@ -716,8 +722,11 @@
 				CE6EFD3C20634D8B009AFF6A /* EditPostViewController.swift */,
 				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
 				CE2D6E572069767800104EB6 /* UserDetailViewController.swift */,
-				CE2D6E63206C322500104EB6 /* ReviewsViewController.swift */,
+				CE3D412F207E5F470099A895 /* ListingsTableViewController.swift */,
+				CE2D6E63206C322500104EB6 /* ReviewsTableViewController.swift */,
 				CE6EFD402064261F009AFF6A /* ProfileViewController.swift */,
+				CE3D412B207C0AD30099A895 /* MyListingsTableViewController.swift */,
+				CE3D412D207C28380099A895 /* MyReviewsTableViewController.swift */,
 				CE51485D205200880021DB67 /* PostMapViewController.swift */,
 				CE51485F205203700021DB67 /* PostMapSearchResultsTableViewController.swift */,
 				CE51484F204F77C20021DB67 /* User.swift */,
@@ -1141,6 +1150,7 @@
 				CE514860205203700021DB67 /* PostMapSearchResultsTableViewController.swift in Sources */,
 				CE2D6E62206B388800104EB6 /* Vote.swift in Sources */,
 				CE3D412720771AB40099A895 /* CustomGMUClusterRenderer.swift in Sources */,
+				CE3D412E207C28380099A895 /* MyReviewsTableViewController.swift in Sources */,
 				CE3D41142076C5C80099A895 /* GMUPlacemark.m in Sources */,
 				CE6EFD1720606E00009AFF6A /* FirebaseData.swift in Sources */,
 				CE6EFD2F2061A38B009AFF6A /* AuthenticationManager.swift in Sources */,
@@ -1174,12 +1184,13 @@
 				CE3D41092076C5C80099A895 /* GMUHeatmapTileLayer.m in Sources */,
 				CE3D412A207822960099A895 /* AlertDefault.swift in Sources */,
 				CE3D410B2076C5C80099A895 /* GQTPointQuadTree.m in Sources */,
+				CE3D412C207C0AD40099A895 /* MyListingsTableViewController.swift in Sources */,
 				CE3D411F2076C5C80099A895 /* GMUDefaultClusterRenderer.m in Sources */,
 				CE3D41112076C5C80099A895 /* GMUGeometryCollection.m in Sources */,
 				CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */,
 				CE6EFD3D20634D8B009AFF6A /* EditPostViewController.swift in Sources */,
 				CE3D41192076C5C80099A895 /* GMUNonHierarchicalDistanceBasedAlgorithm.m in Sources */,
-				CE2D6E64206C322600104EB6 /* ReviewsViewController.swift in Sources */,
+				CE2D6E64206C322600104EB6 /* ReviewsTableViewController.swift in Sources */,
 				CE51485420505FAE0021DB67 /* UIProperties.swift in Sources */,
 				CE2D6E60206B2EA700104EB6 /* Review.swift in Sources */,
 				CE3D40C020769F470099A895 /* FilterViewController.swift in Sources */,
@@ -1192,6 +1203,7 @@
 				CE3D411E2076C5C80099A895 /* GMUDefaultClusterIconGenerator.m in Sources */,
 				CE3D41152076C5C80099A895 /* GMUPoint.m in Sources */,
 				CE2D6E67206C341500104EB6 /* ReviewTableViewCell.swift in Sources */,
+				CE3D4130207E5F470099A895 /* ListingsTableViewController.swift in Sources */,
 				CE3D41132076C5C80099A895 /* GMULineString.m in Sources */,
 				CE3D411C2076C5C80099A895 /* GMUClusterManager.m in Sources */,
 				CE3D410E2076C5C80099A895 /* GMUGeometryRenderer.m in Sources */,

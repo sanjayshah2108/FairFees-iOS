@@ -23,6 +23,7 @@ class StarRatingView: UIView {
     
     var rating: Int!
     
+    var starArray: [UIImageView]!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,6 +49,8 @@ class StarRatingView: UIView {
         star5.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.addSubview(star5)
         
+        starArray = [star1, star2, star3, star4, star5]
+        
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAStar))
         backgroundView.addGestureRecognizer(tapGestureRecognizer)
         
@@ -59,6 +62,14 @@ class StarRatingView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    func redraw(withRating: Int){
+    
+        for star in starArray.prefix(withRating){
+            star.image = #imageLiteral(resourceName: "filledStar")
+        }
+    }
+    
     
     @objc func tapAStar(sender: UITapGestureRecognizer){
         let location = sender.location(in: backgroundView)

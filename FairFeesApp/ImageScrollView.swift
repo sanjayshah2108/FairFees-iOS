@@ -165,9 +165,15 @@ open class ImageScrollView: UIScrollView {
         configureImageForSize(image.size)
         //configureImageForSize((zoomView?.image)!.size)
         
-        if (imageViewPageControl == nil){
-            setupPageControl()
+        //if we are accessing this class from the ListingDetailVC
+        if(presentingVC.photoIndex != nil){
+            
+            //if we havent already enlarged any of the listing's pictures
+            if (imageViewPageControl == nil){
+                setupPageControl()
+            }
         }
+
     }
     
     fileprivate func configureImageForSize(_ size: CGSize) {
@@ -243,7 +249,7 @@ open class ImageScrollView: UIScrollView {
     
     
     open func setupPageControl(){
-        
+    
         imageViewPageControl = UIPageControl()
         imageViewPageControl.currentPage = (presentingVC.photoIndex)!
         imageViewPageControl.numberOfPages = presentingVC.currentListing.photoRefs.count

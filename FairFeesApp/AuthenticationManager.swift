@@ -109,7 +109,7 @@ class AuthenticationManager: NSObject {
                 print("login failed: \(loginError.debugDescription)")
                 
                 //present an alert in the LoginViewController
-                if var topController: LoginViewController = UIApplication.shared.keyWindow?.rootViewController as? LoginViewController {
+                if var topController: LoginViewController = topController(UIApplication.shared.keyWindow?.rootViewController) as? LoginViewController {
                     while let presentedViewController = topController.presentedViewController {
                         topController = presentedViewController as! LoginViewController
                     }
@@ -159,6 +159,22 @@ class AuthenticationManager: NSObject {
                     }
                 }
             }
+        }
+    }
+    
+    class func topController(_ parent:UIViewController? = nil) -> UIViewController {
+        if let vc = parent {
+            if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
+                return topController(selected)
+            } else if let nav = vc as? UINavigationController, let top = nav.topViewController {
+                return topController(top)
+            } else if let presented = vc.presentedViewController {
+                return topController(presented)
+            } else {
+                return vc
+            }
+        } else {
+            return topController(UIApplication.shared.keyWindow!.rootViewController!)
         }
     }
 }

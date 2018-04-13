@@ -85,7 +85,7 @@ class User: NSObject {
         for review in reviews {
            let reviewDict:[String: Any] = review.toDictionary()
             
-            self.reviewsDict["\(review.UID)"] = reviewDict
+            self.reviewsDict["\(review.UID!)"] = reviewDict
                                            
         }
         

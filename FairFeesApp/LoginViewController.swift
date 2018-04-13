@@ -12,7 +12,7 @@ import Firebase
 public var loggedInBool: Bool!
 public var guestUser: Bool!
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var rememberMeKey = "rememberMe"
   
@@ -20,7 +20,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let minPasswordLength = 8
     let signupTitleString = "Create Account"
     let loginTitleString = "Log In"
-    let signupButtonString = "Sign in"
+    let signupButtonString = "Sign Up"
     let loginButtonString = "Go!"
     let signupSwitchString = "Already have an account?"
     let loginSwitchString = "Don't have an account yet?"
@@ -31,19 +31,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
      var titleLabel: UILabel!
      var toggleLabel: UILabel!
+    
+    var promptLabel: UILabel!
+    var loginRegisterSegmentedControl: UISegmentedControl!
+    
      var firstNameLabel: UILabel!
      var lastNameLabel: UILabel!
      var emailLabel: UILabel!
      var passwordLabel: UILabel!
+    var phoneNumberLabel: UILabel!
      var confirmPasswordLabel: UILabel!
      var rememberMeLabel: UILabel!
     
      var firstNameTextfield: UITextField!
      var lastNameTextfield: UITextField!
      var emailTextfield: UITextField!
-    
+    var phoneNumberTextField: UITextField!
      var passwordTextfield: UITextField!
      var confirmPasswordTextfield: UITextField!
+    
+    var profileImageView: UIImageView!
+    var addPhotoButton: UIButton!
 
      var rememberMeSwitch: UISwitch!
     
@@ -51,29 +59,45 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
      var toggleButton: UIButton!
      var guestLoginButton: UIButton!
     
+    var forgotPasswordButton: UIButton!
+    
+    var imagePicker: UIImagePickerController!
+    
     var tapGesture: UITapGestureRecognizer!
+    
+    var emailTextFieldTopConstraintAtLogin: NSLayoutConstraint!
+    var emailTextFieldTopConstraintAtRegister: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         setupLabels()
+        setupSegmentedControl()
         setupSwitches()
         setupTextFields()
         setupButtons()
+        setupImageView()
         setupConstraints()
         setToLogIn()
     }
     
     func setupLabels(){
-        titleLabel = UILabel()
-        titleLabel.text = loginTitleString
-        titleLabel.font = UIFont(name: "Avenir-Light", size: 30)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(titleLabel)
+//        titleLabel = UILabel()
+//        titleLabel.text = loginTitleString
+//        titleLabel.font = UIFont(name: "Avenir-Light", size: 30)
+//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(titleLabel)
+        
+        promptLabel = UILabel()
+        promptLabel.text = "What would you like to do?"
+        promptLabel.font = UIFont(name: "Avenir-Light", size: 20)
+        promptLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(promptLabel)
         
         firstNameLabel = UILabel()
         lastNameLabel = UILabel()
         emailLabel = UILabel()
+        phoneNumberLabel = UILabel()
         passwordLabel = UILabel()
         confirmPasswordLabel = UILabel()
         
@@ -82,10 +106,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         rememberMeLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(rememberMeLabel)
         
-        toggleLabel = UILabel()
-        toggleLabel.text = signupSwitchString
-        toggleLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(toggleLabel)
+//        toggleLabel = UILabel()
+//        toggleLabel.text = signupSwitchString
+//        toggleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(toggleLabel)
+    }
+    
+    func setupSegmentedControl(){
+        loginRegisterSegmentedControl = UISegmentedControl()
+        loginRegisterSegmentedControl.insertSegment(withTitle: "Login", at: 0, animated: false)
+        loginRegisterSegmentedControl.insertSegment(withTitle: "Register", at: 1, animated: false)
+        loginRegisterSegmentedControl.selectedSegmentIndex = 0
+        loginRegisterSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        loginRegisterSegmentedControl.addTarget(self, action: #selector(toggleScreen), for: .valueChanged)
+        view.addSubview(loginRegisterSegmentedControl)
     }
     
     func setupTextFields(){
@@ -145,6 +179,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         confirmPasswordTextfield.isSecureTextEntry = true
         confirmPasswordTextfield.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(confirmPasswordTextfield)
+        
+        phoneNumberTextField = UITextField()
+        phoneNumberTextField.delegate = self
+        phoneNumberTextField.keyboardType = .numberPad
+        phoneNumberTextField.placeholder = "Phone Number"
+        phoneNumberTextField.textAlignment = .center
+        phoneNumberTextField.layer.borderColor = UIColor.lightGray.cgColor
+        phoneNumberTextField.layer.borderWidth = 1
+        phoneNumberTextField.layer.cornerRadius = 2
+        phoneNumberTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(phoneNumberTextField)
+        
     }
     
     func setupSwitches(){
@@ -158,46 +204,109 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func setupButtons(){
         
-        toggleButton = UIButton()
-        toggleButton.setTitle(loginButtonString, for: .normal)
-        toggleButton.backgroundColor = UIProperties.sharedUIProperties.primaryRedColor
-        toggleButton.layer.borderWidth = 3.0
-        toggleButton.layer.cornerRadius = 7.0
-        toggleButton.addTarget(self, action: #selector(toggleScreen), for: .touchUpInside)
-        toggleButton.translatesAutoresizingMaskIntoConstraints = false
-        toggleButton.tintColor = UIProperties.sharedUIProperties.primaryGrayColor
-        view.addSubview(toggleButton)
+//        toggleButton = UIButton()
+//        toggleButton.setTitle(loginButtonString, for: .normal)
+//        toggleButton.backgroundColor = UIProperties.sharedUIProperties.primaryRedColor
+//        toggleButton.layer.borderWidth = 3.0
+//        toggleButton.layer.cornerRadius = 7.0
+//        toggleButton.addTarget(self, action: #selector(toggleScreen), for: .touchUpInside)
+//        toggleButton.translatesAutoresizingMaskIntoConstraints = false
+//        toggleButton.tintColor = UIProperties.sharedUIProperties.primaryGrayColor
+//        view.addSubview(toggleButton)
         
         guestLoginButton = UIButton()
         guestLoginButton.setTitle("Log in as guest", for: .normal)
-        guestLoginButton.tintColor = UIProperties.sharedUIProperties.primaryRedColor
-        guestLoginButton.layer.borderWidth = 3.0
-        guestLoginButton.layer.cornerRadius = 7.0
-        guestLoginButton.backgroundColor = UIProperties.sharedUIProperties.primaryRedColor
+        guestLoginButton.setTitleColor(view.tintColor, for: .normal)
+        guestLoginButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 14)
+        guestLoginButton.layer.borderWidth = 1.0
+        guestLoginButton.layer.borderColor = view.tintColor.cgColor
+        guestLoginButton.layer.cornerRadius = 3.0
+        guestLoginButton.backgroundColor = UIColor.white
         guestLoginButton.addTarget(self, action: #selector(guestLogin), for: .touchUpInside)
         guestLoginButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(guestLoginButton)
         
         goButton = UIButton()
         goButton.setTitle(signupButtonString, for: .normal)
+        goButton.setTitleColor(UIColor.white, for: .normal)
+        goButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 17)
         goButton.addTarget(self, action: #selector(goPressed), for: .touchUpInside)
-        goButton.tintColor = UIProperties.sharedUIProperties.primaryGrayColor
-        goButton.layer.borderWidth = 3.0
-        goButton.layer.cornerRadius = 7.0
-        goButton.backgroundColor = UIProperties.sharedUIProperties.primaryRedColor
+        goButton.layer.borderWidth = 1.0
+        goButton.layer.cornerRadius = 3.0
+        goButton.backgroundColor = view.tintColor
         goButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(goButton)
+        
+        addPhotoButton = UIButton()
+        addPhotoButton.setTitle("Add Photo", for: .normal)
+        addPhotoButton.setTitleColor(UIColor.white, for: .normal)
+        addPhotoButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 14)
+        addPhotoButton.addTarget(self, action: #selector(presentImagePickerAlert), for: .touchUpInside)
+        addPhotoButton.tintColor = UIProperties.sharedUIProperties.primaryGrayColor
+        addPhotoButton.layer.borderWidth = 1.0
+        addPhotoButton.layer.cornerRadius = 3.0
+        addPhotoButton.backgroundColor = view.tintColor
+        addPhotoButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addPhotoButton)
+        
+        forgotPasswordButton = UIButton()
+        forgotPasswordButton.setTitle("Forgot your password?", for: .normal)
+        forgotPasswordButton.setTitleColor(view.tintColor, for: .normal)
+        forgotPasswordButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 12)
+        forgotPasswordButton.addTarget(self, action: #selector(forgotPassword), for: .touchUpInside)
+        forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(forgotPasswordButton)
+        
+    }
+    
+    func setupImageView(){
+    
+        profileImageView = UIImageView()
+        profileImageView.contentMode = .scaleToFill
+        profileImageView.layer.borderColor = UIColor.black.cgColor
+        profileImageView.layer.borderWidth = 2
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileImageView)
         
     }
     
     func setupConstraints(){
-        //titleLabel
-        NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
+//        //titleLabel
+//        NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 30).isActive = true
+//        NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
+        
+        //promptLabel
+        NSLayoutConstraint(item: promptLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: promptLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: promptLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        
+        //loginRegisterSegment
+        NSLayoutConstraint(item: loginRegisterSegmentedControl, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
+        NSLayoutConstraint(item: loginRegisterSegmentedControl, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: loginRegisterSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: loginRegisterSegmentedControl, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
+        
+        //guestLoginButton
+        NSLayoutConstraint(item: guestLoginButton, attribute: .top, relatedBy: .equal, toItem: loginRegisterSegmentedControl, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: guestLoginButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: guestLoginButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: guestLoginButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
+        
+        //profileImageView
+        NSLayoutConstraint(item: profileImageView, attribute: .top, relatedBy: .equal, toItem: guestLoginButton, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
+        
+        //addPhotoButton
+        NSLayoutConstraint(item: addPhotoButton, attribute: .top, relatedBy: .equal, toItem: profileImageView, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: addPhotoButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: addPhotoButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
+        NSLayoutConstraint(item: addPhotoButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //firstNameTextField
-        NSLayoutConstraint(item: firstNameTextfield, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: firstNameTextfield, attribute: .top, relatedBy: .equal, toItem: addPhotoButton, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: firstNameTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: firstNameTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
@@ -207,12 +316,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint(item: lastNameTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //emailTextfield
-        NSLayoutConstraint(item: emailTextfield, attribute: .top, relatedBy: .equal, toItem: lastNameTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        emailTextFieldTopConstraintAtRegister = NSLayoutConstraint(item: emailTextfield, attribute: .top, relatedBy: .equal, toItem: lastNameTextfield, attribute: .bottom, multiplier: 1, constant: 10)
+        emailTextFieldTopConstraintAtLogin = NSLayoutConstraint(item: emailTextfield, attribute: .top, relatedBy: .equal, toItem: guestLoginButton, attribute: .bottom, multiplier: 1, constant: 50)
+        emailTextFieldTopConstraintAtRegister.isActive = false
+        emailTextFieldTopConstraintAtLogin.isActive = true
+        
         NSLayoutConstraint(item: emailTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: emailTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
+        //phoneNumberTextField
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .top, relatedBy: .equal, toItem: emailTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
+        
         //passwordTextField
-        NSLayoutConstraint(item: passwordTextfield, attribute: .top, relatedBy: .equal, toItem: emailTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: passwordTextfield, attribute: .top, relatedBy: .equal, toItem: phoneNumberTextField, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: passwordTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: passwordTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
@@ -220,6 +338,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint(item: confirmPasswordTextfield, attribute: .top, relatedBy: .equal, toItem: passwordTextfield, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: confirmPasswordTextfield, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: confirmPasswordTextfield, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
+        
+        //forgotPasswordButton
+        NSLayoutConstraint(item: forgotPasswordButton, attribute: .top, relatedBy: .equal, toItem: passwordTextfield, attribute: .bottom, multiplier: 1, constant: 7).isActive = true
+        NSLayoutConstraint(item: forgotPasswordButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: forgotPasswordButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
         
         //rememberMeLabel
         NSLayoutConstraint(item: rememberMeLabel, attribute: .top, relatedBy: .equal, toItem: confirmPasswordTextfield, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
@@ -236,58 +359,75 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint(item: goButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
          NSLayoutConstraint(item: goButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
         
-        //toggleLabel
-        NSLayoutConstraint(item: toggleLabel, attribute: .top, relatedBy: .equal, toItem: goButton, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: toggleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+//        //toggleLabel
+//        NSLayoutConstraint(item: toggleLabel, attribute: .top, relatedBy: .equal, toItem: goButton, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
+//        NSLayoutConstraint(item: toggleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+//
+//        //toggleButton
+//        NSLayoutConstraint(item: toggleButton, attribute: .top, relatedBy: .equal, toItem: toggleLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+//        NSLayoutConstraint(item: toggleButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: toggleButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+//        NSLayoutConstraint(item: toggleButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
         
-        //toggleButton
-        NSLayoutConstraint(item: toggleButton, attribute: .top, relatedBy: .equal, toItem: toggleLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: toggleButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: toggleButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
-        NSLayoutConstraint(item: toggleButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
-        
-        //guestLoginButton
-        NSLayoutConstraint(item: guestLoginButton, attribute: .top, relatedBy: .equal, toItem: toggleButton, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: guestLoginButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: guestLoginButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
-        NSLayoutConstraint(item: guestLoginButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
+
     }
     
-    @objc func toggleScreen(sender: UIButton) {
-        if titleLabel.text == signupTitleString {
+    @objc func toggleScreen() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
             setToLogIn()
         }
-        else if titleLabel.text == loginTitleString {
+        else if loginRegisterSegmentedControl.selectedSegmentIndex == 1 {
             setToSignUp()
         }
     }
     
     func setToSignUp() {
-        titleLabel.text = signupTitleString
-        toggleLabel.text = signupSwitchString
+        //titleLabel.text = signupTitleString
+        //toggleLabel.text = signupSwitchString
         passwordLabel.text =  signupPasswordLabelString
         goButton.setTitle(signupButtonString, for: .normal)
-        toggleButton.setTitle(signupSwitchButtonString, for: .normal)
+       // toggleButton.setTitle(signupSwitchButtonString, for: .normal)
         firstNameLabel.isHidden = false
         firstNameTextfield.isHidden = false
         lastNameLabel.isHidden = false
         lastNameTextfield.isHidden = false
+        phoneNumberLabel.isHidden = false
+        phoneNumberTextField.isHidden = false
         confirmPasswordTextfield.isHidden = false
         confirmPasswordLabel.isHidden = false
+        
+        forgotPasswordButton.isHidden = true
+        
+        profileImageView.isHidden = false
+        addPhotoButton.isHidden = false
+        
+        emailTextFieldTopConstraintAtLogin.isActive = false
+        emailTextFieldTopConstraintAtRegister.isActive = true
     }
     
     func setToLogIn() {
-        titleLabel.text = loginTitleString
-        toggleLabel.text = loginSwitchString
+        //titleLabel.text = loginTitleString
+        //toggleLabel.text = loginSwitchString
         passwordLabel.text = loginPasswordLabelString
         goButton.setTitle(loginButtonString, for: .normal)
-        toggleButton.setTitle(loginSwitchButtonString, for: .normal)
+        //toggleButton.setTitle(loginSwitchButtonString, for: .normal)
         firstNameLabel.isHidden = true
         firstNameTextfield.isHidden = true
         lastNameLabel.isHidden = true
         lastNameTextfield.isHidden = true
+        phoneNumberLabel.isHidden = true
+        phoneNumberTextField.isHidden = true
         confirmPasswordTextfield.isHidden = true
         confirmPasswordLabel.isHidden = true
+        
+        forgotPasswordButton.isHidden = false
+        
+        profileImageView.isHidden = true
+        addPhotoButton.isHidden = true
+        
+        emailTextFieldTopConstraintAtRegister.isActive = false
+        emailTextFieldTopConstraintAtLogin.isActive = true
+      
     }
     
     func setUserDefaults() {
@@ -305,10 +445,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @objc func goPressed(sender: UIButton) {
     
-        if titleLabel.text == signupTitleString {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 1 {
             
             if (validateInputOf(textfield: confirmPasswordTextfield).valid) {
-                AuthenticationManager.signUp(withEmail: emailTextfield.text!, password: passwordTextfield.text!, firstName: firstNameTextfield.text!, lastName: lastNameTextfield.text!, phoneNumber: 0, completionHandler: { (success) -> Void in
+                AuthenticationManager.signUp(withEmail: emailTextfield.text!, password: passwordTextfield.text!, firstName: firstNameTextfield.text!, lastName: lastNameTextfield.text!, phoneNumber: Int(phoneNumberTextField.text!)!, completionHandler: { (success) -> Void in
                     if success == true {
                         loggedInBool = true
                         self.loginSuccess()
@@ -343,7 +483,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
             
             
-        else if titleLabel.text == loginTitleString {
+        else if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
             
             if  validateInputOf(textfield: passwordTextfield).valid {
             
@@ -422,8 +562,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     
     func loginSuccess() {
-        //ReadFirebaseData.readUsers()
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func forgotPassword(){
+        
     }
     
     //textField delegate methods
@@ -456,7 +599,49 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordTextfield.resignFirstResponder()
         confirmPasswordTextfield.resignFirstResponder()
         emailTextfield.resignFirstResponder()
+        phoneNumberTextField.resignFirstResponder()
     }
+    
+    //imagePicker delegate methods
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let myImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        if myImage != nil {
+            print("image loaded: \(myImage!)")
+        }
+        profileImageView.image = myImage
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func presentImagePickerAlert() {
+        
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        let photoSourceAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default, handler:{ (action) in
+            self.imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            self.present(self.imagePicker, animated: true, completion: nil)
+        })
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default, handler:{ (action) in
+            self.imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            self.present(self.imagePicker, animated: true, completion: nil)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        
+        photoSourceAlert.addAction(cameraAction)
+        photoSourceAlert.addAction(photoLibraryAction)
+        photoSourceAlert.addAction(cancelAction)
+        
+        self.present(photoSourceAlert, animated: true, completion: nil)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

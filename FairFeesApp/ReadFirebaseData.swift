@@ -232,7 +232,18 @@ class ReadFirebaseData: NSObject {
             let reviewerName = value["reviewerName"] as! String
             let upvotes = value["upvotes"] as! Int
             let downvotes = value["downvotes"] as! Int
-            let votesDict = value["votes"] as! [String: [String: Any]]
+            let rating = value["rating"] as! Int
+            
+            //votesDict may have disappeared from the FB DB if the last one was deleted, so just check first
+            var votesDict: [String: [String: Any]]
+            
+            if (value.keys.contains("votes")){
+                votesDict = value["votes"] as! [String: [String: Any]]
+            }
+            else {
+            
+                votesDict = [:]
+            }
             
             var votes: [Vote] = []
             
@@ -245,7 +256,7 @@ class ReadFirebaseData: NSObject {
                 votes.append(vote)
             }
             
-            let rev = Review(uid: reviewUID, text: text, upvotes: upvotes, downvotes: downvotes, reviewerUID: reviewerUID, reviewerName: reviewerName, votes: votes)
+            let rev = Review(uid: reviewUID, text: text, upvotes: upvotes, downvotes: downvotes, reviewerUID: reviewerUID, reviewerName: reviewerName, rating: rating, votes: votes)
             
             reviews.append(rev)
         }
