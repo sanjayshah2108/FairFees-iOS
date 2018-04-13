@@ -396,6 +396,15 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         
         currentUser.reviews.append(newReview)
         
+        var sumOfRatings = 0
+        
+        for review in currentUser.reviews {
+           sumOfRatings = sumOfRatings + review.rating
+        }
+        
+        let avgOfRatings = sumOfRatings/currentUser.reviews.count
+        currentUser.rating = avgOfRatings
+        
         WriteFirebaseData.write(user: currentUser)
         
         present(AlertDefault.showAlert(title: "Success", message: "Your review has been submitted"), animated: true, completion: nil)

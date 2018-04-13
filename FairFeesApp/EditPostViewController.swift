@@ -143,17 +143,29 @@ class EditPostViewController: PostViewController {
         provinceTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(provinceTextField)
         
-        addressTextField = UITextField()
-        addressTextField.delegate = self
-        addressTextField.frame = CGRect.zero
-        addressTextField.layer.borderWidth = 1
-        addressTextField.layer.borderColor = UIColor.gray.cgColor
-        addressTextField.layer.cornerRadius = 3
-        addressTextField.text = listingToEdit.address
-        addressTextField.textAlignment = .center
-        addressTextField.font = UIFont(name: "Avenir-Light", size: 15)
-        addressTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addressTextField)
+        streetNumberTextField = UITextField()
+        streetNumberTextField.delegate = self
+        streetNumberTextField.frame = CGRect.zero
+        streetNumberTextField.layer.borderWidth = 1
+        streetNumberTextField.layer.borderColor = UIColor.gray.cgColor
+        streetNumberTextField.layer.cornerRadius = 3
+        streetNumberTextField.text = listingToEdit.address
+        streetNumberTextField.textAlignment = .center
+        streetNumberTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        streetNumberTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(streetNumberTextField)
+        
+        streetNameTextField = UITextField()
+        streetNameTextField.delegate = self
+        streetNameTextField.frame = CGRect.zero
+        streetNameTextField.layer.borderWidth = 1
+        streetNameTextField.layer.borderColor = UIColor.gray.cgColor
+        streetNameTextField.layer.cornerRadius = 3
+        streetNameTextField.text = listingToEdit.address
+        streetNameTextField.textAlignment = .center
+        streetNameTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        streetNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(streetNameTextField)
         
         zipcodeTextField = UITextField()
         zipcodeTextField.delegate = self
@@ -240,8 +252,15 @@ class EditPostViewController: PostViewController {
             return false
         }
         
-        guard (addressTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add an address", preferredStyle: UIAlertControllerStyle.alert)
+        guard (streetNameTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a street name", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        
+        guard (streetNumberTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add a street number", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             present(alert, animated: true, completion: nil)
             return false
@@ -287,7 +306,7 @@ class EditPostViewController: PostViewController {
             
             if sellOrLeaseSegmentedControl.selectedSegmentIndex == 0 {
                 
-                let homeSalePost = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: homeSaleToEdit.UID, price: Int(priceTextField.text!)!, ownerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                let homeSalePost = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: streetNumberTextField.text! + " " + streetNameTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: homeSaleToEdit.UID, price: Int(priceTextField.text!)!, ownerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
                 
                 for index in 0..<photosArray.count {
                     let storagePath = "\(homeSalePost.UID!)/\(index)"
@@ -306,7 +325,7 @@ class EditPostViewController: PostViewController {
             }
             else if sellOrLeaseSegmentedControl.selectedSegmentIndex == 1 {
                 
-                let homeRentalPost = HomeRental(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: homeRentalToEdit.UID, monthlyRent: Int(priceTextField.text!)!, rentalTerm: 12, landlordUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                let homeRentalPost = HomeRental(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: streetNumberTextField.text! + " " + streetNameTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: homeRentalToEdit.UID, monthlyRent: Int(priceTextField.text!)!, rentalTerm: 12, landlordUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
                 
                 
                 for index in 0..<photosArray.count {

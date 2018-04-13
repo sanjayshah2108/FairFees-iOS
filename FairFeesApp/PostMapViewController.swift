@@ -59,22 +59,22 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
         previousVC = self.navigationController?.viewControllers[thisViewControllerIndex!-1] as! PostViewController
     }
     func setupMapView(){
-        postMapView = MKMapView()
-        postMapView.showsUserLocation = true
-        view.addSubview(postMapView)
-        postMapView.translatesAutoresizingMaskIntoConstraints = false
-        
-        postMapView.delegate = self
-    
-        let span = MKCoordinateSpanMake(0.045, 0.045)
-        postMapView.setRegion(MKCoordinateRegionMake(LocationManager.theLocationManager.currentLocation.coordinate, span) , animated: true)
-        
-        postMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "postLocationMarkerView")
-        
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedALocation(sender:)))
-        postMapView.addGestureRecognizer(tapGestureRecognizer)
-        
-        selectedAnnotation = MKPointAnnotation()
+//        postMapView = MKMapView()
+//        postMapView.showsUserLocation = true
+//        view.addSubview(postMapView)
+//        postMapView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        postMapView.delegate = self
+//
+//        let span = MKCoordinateSpanMake(0.045, 0.045)
+//        postMapView.setRegion(MKCoordinateRegionMake(LocationManager.theLocationManager.currentLocation.coordinate, span) , animated: true)
+//
+//        postMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "postLocationMarkerView")
+//
+//        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedALocation(sender:)))
+//        postMapView.addGestureRecognizer(tapGestureRecognizer)
+//
+//        selectedAnnotation = MKPointAnnotation()
     }
     
     
@@ -221,48 +221,48 @@ class PostMapViewController: UIViewController, UISearchBarDelegate, MKMapViewDel
     
     @objc func saveLocationButon(_ sender: UIButton) {
         
-        if (self.pointAnnotation != nil){
-            self.navigationController?.popViewController(animated: true)
-           // previousVC.addressTextField.text = self.pointAnnotation.title ?? ""
-            previousVC.addressTextField.text = self.address ?? ""
-            previousVC.cityTextField.text = self.city ?? ""
-            previousVC.provinceTextField.text = self.province ?? ""
-            previousVC.countryTextField.text = self.country ?? ""
-            previousVC.zipcodeTextField.text = self.zipcode ?? ""
-            previousVC.location = CLLocation(latitude: self.pointAnnotation.coordinate.latitude, longitude: self.pointAnnotation.coordinate.longitude)
-            
-        }
-        else {
-            
-            let noLocationAlert = UIAlertController(title: "Can't Save!", message: "Select a location before saving", preferredStyle: UIAlertControllerStyle.alert)
-            
-            let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-            
-            noLocationAlert.addAction(okayAction)
-            present(noLocationAlert, animated: true, completion: nil)
-        }
+//        if (self.pointAnnotation != nil){
+//            self.navigationController?.popViewController(animated: true)
+//           // previousVC.addressTextField.text = self.pointAnnotation.title ?? ""
+//            previousVC.addressTextField.text = self.address ?? ""
+//            previousVC.cityTextField.text = self.city ?? ""
+//            previousVC.provinceTextField.text = self.province ?? ""
+//            previousVC.countryTextField.text = self.country ?? ""
+//            previousVC.zipcodeTextField.text = self.zipcode ?? ""
+//            previousVC.location = CLLocation(latitude: self.pointAnnotation.coordinate.latitude, longitude: self.pointAnnotation.coordinate.longitude)
+//
+//        }
+//        else {
+//
+//            let noLocationAlert = UIAlertController(title: "Can't Save!", message: "Select a location before saving", preferredStyle: UIAlertControllerStyle.alert)
+//
+//            let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
+//
+//            noLocationAlert.addAction(okayAction)
+//            present(noLocationAlert, animated: true, completion: nil)
+//        }
     }
     
     
     @objc func tappedALocation(sender: UITapGestureRecognizer) {
         
-        let touchLocation = sender.location(in: postMapView)
-        let locationCoordinate = postMapView.convert(touchLocation, toCoordinateFrom: postMapView)
-        
-        if (self.pointAnnotation != nil) {
-            self.postMapView.removeAnnotation(self.pointAnnotation)
-        }
-        
-        pointAnnotation = MKPointAnnotation()
-        pointAnnotation.coordinate = locationCoordinate
-        
-        reverseGeocode(location: CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
+//        let touchLocation = sender.location(in: postMapView)
+//        let locationCoordinate = postMapView.convert(touchLocation, toCoordinateFrom: postMapView)
+//
+//        if (self.pointAnnotation != nil) {
+//            self.postMapView.removeAnnotation(self.pointAnnotation)
+//        }
+//
+//        pointAnnotation = MKPointAnnotation()
+//        pointAnnotation.coordinate = locationCoordinate
+//
+//        reverseGeocode(location: CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
     }
     
     
     @objc func useMyLocationButton(_ sender: UIButton) {
         
-        reverseGeocode(location: LocationManager.theLocationManager.getLocation())
+//        reverseGeocode(location: LocationManager.theLocationManager.getLocation())
     
     }
     

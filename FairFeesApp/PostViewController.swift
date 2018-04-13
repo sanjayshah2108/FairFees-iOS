@@ -12,11 +12,14 @@ import GooglePlaces
 import GooglePlacePicker
 import Firebase
 
-class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, GMSPlacePickerViewControllerDelegate {
+class PostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, GMSPlacePickerViewControllerDelegate {
     
     var navigationBarHeight: CGFloat!
+    
+    var submitButton: UIBarButtonItem!
 
     var promptLabel: UILabel!
+    
     var sellOrLeaseSegmentedControl: UISegmentedControl!
     
     var nameTextField: UITextField!
@@ -25,11 +28,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var bedroomNumberTextField: UITextField!
     var bathroomNumberTextField: UITextField!
     var descriptionTextField: UITextView!
-    var countryTextField: UITextField!
-    var cityTextField: UITextField!
-    var provinceTextField: UITextField!
-    var addressTextField: UITextField!
-    var zipcodeTextField: UITextField!
     
     var customBedroomStepper: UIView!
     var bedroomMinusButton: UIButton!
@@ -43,29 +41,47 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var bathroomNumberLabel: UILabel!
     var bathroomNumber: Int!
     
-    var addressInstructionLabel: UILabel!
-    
-    var submitButton: UIBarButtonItem!
     var locationButton: UIButton!
-    var addPhotosButton: UIButton!
+    
+    var countryTextField: UITextField!
+    var cityTextField: UITextField!
+    var provinceTextField: UITextField!
+    var streetNameTextField: UITextField!
+    var streetNumberTextField: UITextField!
+    var zipcodeTextField: UITextField!
+    
+    var mainImageView: UIImageView!
     var photosArray: [UIImage]!
     var photoCollectionView: UICollectionView!
     
     var nextButton: UIButton!
     var previousButton: UIButton!
     var stepIndex: Int!
-    
 
     var location: CLLocation!
     
     var tapGesture: UITapGestureRecognizer!
     var imagePicker: UIImagePickerController!
     
+    var sellOrRentSegmentedControlTopConstraintInStep: NSLayoutConstraint!
+    var sellOrRentSegmentedControlTopConstraintInPreview: NSLayoutConstraint!
+    
+    var nameTextFieldTopConstraintInStep: NSLayoutConstraint!
+    var nameTextFieldTopConstraintInPreview: NSLayoutConstraint!
+    
+    var locationButtonTopConstraintInStep: NSLayoutConstraint!
+    var locationButtonTopConstraintInPreview: NSLayoutConstraint!
+    
+    var mainImageViewTopConstraintInStep: NSLayoutConstraint!
+    var mainImageViewTopConstraintInPreview: NSLayoutConstraint!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
         self.navigationItem.title = "New Listing"
+        self.navigationItem.titleView?.tintColor = UIColor.black
         submitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submitPost))
         self.navigationItem.rightBarButtonItem = submitButton
         navigationBarHeight = (self.navigationController?.navigationBar.frame.maxY)!
@@ -74,7 +90,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupTextFields()
         setupLabels()
         setupLocationButton()
-        setupPhotosButton()
         setupCollectionView()
         setupSegmentedControls()
         setupButtons()
@@ -95,6 +110,9 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //this func makes everything hidden
     func setupInitialUI(){
         
+        nextButton.isHidden = true
+        previousButton.isHidden = true
+        
         promptLabel.isHidden = true
         sellOrLeaseSegmentedControl.isHidden = true
         
@@ -105,7 +123,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         countryTextField.isHidden = true
         cityTextField.isHidden = true
         provinceTextField.isHidden = true
-        addressTextField.isHidden = true
+        streetNameTextField.isHidden = true
+        streetNumberTextField.isHidden = true
         zipcodeTextField.isHidden = true
         
         customBedroomStepper.isHidden = true
@@ -117,11 +136,10 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         bathroomPlusButton.isHidden = true
         bathroomMinusButton.isHidden = true
         bathroomNumberLabel.isHidden = true
-        
-        addressInstructionLabel.isHidden = true
-    
+
         locationButton.isHidden = true
-        addPhotosButton.isHidden = true
+        
+        mainImageView.isHidden = true
         photoCollectionView.isHidden = true
     }
     
@@ -134,6 +152,25 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         promptLabel.text = "What kind of listing is this?"
         
         sellOrLeaseSegmentedControl.isHidden = false
+
+        nextButton.isHidden = false
+        nextButton.setTitle("Add Details", for: .normal)
+        previousButton.isHidden = true
+       
+    }
+    
+    func setupSecondStepUI(){
+        
+        setupInitialUI()
+        
+        promptLabel.isHidden = false
+        promptLabel.text = "Add details of the listing"
+        
+        sellOrLeaseSegmentedControl.isHidden = true
+        
+        nameTextFieldTopConstraintInPreview.isActive = false
+        nameTextFieldTopConstraintInStep = NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        nameTextFieldTopConstraintInStep.isActive = true
         
         nameTextField.isHidden = false
         descriptionTextField.isHidden = false
@@ -149,33 +186,114 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         bathroomPlusButton.isHidden = false
         bathroomMinusButton.isHidden = false
         bathroomNumberLabel.isHidden = false
-       
-    }
-    
-    func setupSecondStepUI(){
         
-        setupInitialUI()
-        
-        promptLabel.text = "Add some photos"
-        
-        addPhotosButton.isHidden = false
-        photoCollectionView.isHidden = false
+        nextButton.isHidden = false
+        nextButton.setTitle("Add Photos", for: .normal)
+        previousButton.isHidden = false
+        previousButton.setTitle("Type of Listing", for: .normal)
         
     }
     
     func setupThirdStepUI(){
         
         setupInitialUI()
+        promptLabel.isHidden = false
+        promptLabel.text = "Add some photos"
         
-        promptLabel.text = "Where is it located"
+        mainImageViewTopConstraintInPreview.isActive = false
+        mainImageViewTopConstraintInStep = NSLayoutConstraint(item: mainImageView, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        mainImageViewTopConstraintInStep.isActive = true
         
-        addressInstructionLabel.isHidden = false
+        mainImageView.isHidden = false
+        photoCollectionView.isHidden = false
+        
+        nextButton.isHidden = false
+        nextButton.setTitle("Select a location", for: .normal)
+        previousButton.isHidden = false
+        previousButton.setTitle("Back to details", for: .normal)
+        
+    }
+    
+    func setupFourthStepUI(){
+        
+        pickPlace()
+        
+        setupInitialUI()
+        promptLabel.isHidden = false
+        promptLabel.text = "Where is it located?"
+        
+        locationButtonTopConstraintInPreview.isActive = false
+        locationButtonTopConstraintInStep = NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        locationButtonTopConstraintInStep.isActive = true
+        
         locationButton.isHidden = false
         countryTextField.isHidden = false
         cityTextField.isHidden = false
         provinceTextField.isHidden = false
-        addressTextField.isHidden = false
+        streetNameTextField.isHidden = false
+        streetNumberTextField.isHidden = false
         zipcodeTextField.isHidden = false
+        
+        nextButton.isHidden = false
+        nextButton.setTitle("Preview", for: .normal)
+        previousButton.isHidden = false
+        previousButton.setTitle("Back to photos", for: .normal)
+        
+        
+    }
+    
+    func setupPreviewUI(){
+        
+        nextButton.isHidden = true
+        previousButton.isHidden = true
+        
+        promptLabel.isHidden = true
+        
+        sellOrLeaseSegmentedControl.isHidden = false
+        
+        sellOrRentSegmentedControlTopConstraintInStep.isActive = false
+        sellOrRentSegmentedControlTopConstraintInPreview = NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: (navigationBarHeight + 10))
+        sellOrRentSegmentedControlTopConstraintInPreview.isActive = true
+        
+        
+        nameTextFieldTopConstraintInStep.isActive = false
+        nameTextFieldTopConstraintInPreview = NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: sellOrLeaseSegmentedControl, attribute: .bottom, multiplier: 1, constant: 15)
+        nameTextFieldTopConstraintInPreview.isActive = true
+        
+        nameTextField.isHidden = false
+        priceTextField.isHidden = false
+        sizeTextField.isHidden = false
+        descriptionTextField.isHidden = false
+        
+        locationButton.isHidden = false
+        locationButtonTopConstraintInStep.isActive = false
+        locationButtonTopConstraintInPreview = NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 15)
+        locationButtonTopConstraintInPreview.isActive = true
+        
+        countryTextField.isHidden = false
+        cityTextField.isHidden = false
+        provinceTextField.isHidden = false
+        streetNameTextField.isHidden = false
+        streetNumberTextField.isHidden = false
+        zipcodeTextField.isHidden = false
+        
+        customBedroomStepper.isHidden = false
+        bedroomMinusButton.isHidden = false
+        bedroomPlusButton.isHidden = false
+        bedroomNumberLabel.isHidden = false
+        
+        customBathroomStepper.isHidden = false
+        bathroomPlusButton.isHidden = false
+        bathroomMinusButton.isHidden = false
+        bathroomNumberLabel.isHidden = false
+        
+        mainImageView.isHidden = false
+        
+        mainImageViewTopConstraintInStep.isActive = false
+        mainImageViewTopConstraintInPreview = NSLayoutConstraint(item: mainImageView, attribute: .top, relatedBy: .equal, toItem: zipcodeTextField, attribute: .bottom, multiplier: 1, constant: 20)
+        mainImageViewTopConstraintInPreview.isActive = true
+        
+        photoCollectionView.isHidden = false
     }
     
     func setupSegmentedControls(){
@@ -276,17 +394,29 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         provinceTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(provinceTextField)
         
-        addressTextField = UITextField()
-        addressTextField.delegate = self
-        addressTextField.frame = CGRect.zero
-        addressTextField.layer.borderWidth = 1
-        addressTextField.layer.borderColor = UIColor.gray.cgColor
-        addressTextField.layer.cornerRadius = 3
-        addressTextField.placeholder = "Address"
-        addressTextField.textAlignment = .center
-        addressTextField.font = UIFont(name: "Avenir-Light", size: 15)
-        addressTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addressTextField)
+        streetNameTextField = UITextField()
+        streetNameTextField.delegate = self
+        streetNameTextField.frame = CGRect.zero
+        streetNameTextField.layer.borderWidth = 1
+        streetNameTextField.layer.borderColor = UIColor.gray.cgColor
+        streetNameTextField.layer.cornerRadius = 3
+        streetNameTextField.placeholder = "Street Name"
+        streetNameTextField.textAlignment = .center
+        streetNameTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        streetNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(streetNameTextField)
+        
+        streetNumberTextField = UITextField()
+        streetNumberTextField.delegate = self
+        streetNumberTextField.frame = CGRect.zero
+        streetNumberTextField.layer.borderWidth = 1
+        streetNumberTextField.layer.borderColor = UIColor.gray.cgColor
+        streetNumberTextField.layer.cornerRadius = 3
+        streetNumberTextField.placeholder = "Street No."
+        streetNumberTextField.textAlignment = .center
+        streetNumberTextField.font = UIFont(name: "Avenir-Light", size: 15)
+        streetNumberTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(streetNumberTextField)
         
         zipcodeTextField = UITextField()
         zipcodeTextField.delegate = self
@@ -395,7 +525,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func setupLocationButton(){
         locationButton = UIButton()
-        locationButton.setTitle("Pick Location", for: .normal)
+        locationButton.setTitle("Select on Map", for: .normal)
         locationButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 15)
         locationButton.setTitleColor(UIColor.blue, for: .normal)
         locationButton.titleLabel?.textAlignment = .left
@@ -415,32 +545,18 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         promptLabel.textAlignment = .center
         promptLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promptLabel)
-        
-        addressInstructionLabel = UILabel()
-        addressInstructionLabel.text = "Fill out address or"
-        addressInstructionLabel.font = UIFont(name: "Avenir-Light", size: 15)
-        addressInstructionLabel.textAlignment = .left
-        addressInstructionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addressInstructionLabel)
     }
     
-    func setupPhotosButton(){
-        addPhotosButton = UIButton()
-        addPhotosButton.setTitle("Add Photos", for: .normal)
-        addPhotosButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 15)
-        addPhotosButton.titleLabel?.textAlignment = .center
-        addPhotosButton.addTarget(self, action: #selector(addPhotos), for: .touchUpInside)
-        addPhotosButton.backgroundColor = UIColor.blue
-        addPhotosButton.layer.cornerRadius = 4
-        addPhotosButton.layer.borderColor = UIColor.blue.cgColor
-        addPhotosButton.layer.borderWidth = 3
-        addPhotosButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addPhotosButton)
-    }
     
     func setupCollectionView(){
         
         photosArray = []
+        
+        mainImageView = UIImageView()
+        mainImageView.backgroundColor = UIColor.gray
+        mainImageView.contentMode = .scaleAspectFit
+        mainImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mainImageView)
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize.init(width: 150, height: 150)
@@ -474,41 +590,46 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         previousButton.addTarget(self, action: #selector(previousStep), for: .touchUpInside)
         previousButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(previousButton)
-        
-        
     }
     
     @objc func nextStep(){
         
+        stepIndex = stepIndex + 1
+        
         switch stepIndex {
         case 0:
-            setupSecondStepUI()
+            setupFirstStepUI()
         case 1:
-            setupThirdStepUI()
+            setupSecondStepUI()
         case 2:
-            setupInitialUI()
+            setupThirdStepUI()
+        case 3:
+            setupFourthStepUI()
+        case 4:
+            setupPreviewUI()
         default:
             print("Shouldnt run")
         }
-        
-        stepIndex = stepIndex + 1
-        
     }
     
     @objc func previousStep(){
         
+        stepIndex = stepIndex - 1
+        
         switch stepIndex {
         case 0:
-            print("Shouldnt run")
-        case 1:
             setupFirstStepUI()
-        case 2:
+        case 1:
             setupSecondStepUI()
+        case 2:
+            setupThirdStepUI()
+        case 3:
+            setupFourthStepUI()
+        case 4:
+            setupPreviewUI()
         default:
             print("Shouldnt run")
         }
-        
-        stepIndex = stepIndex - 1
     }
     
     func setupConstraints(){
@@ -520,13 +641,17 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: promptLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //sellOrRentSegmentControl
-        NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
+        sellOrRentSegmentedControlTopConstraintInStep = NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        
+        sellOrRentSegmentedControlTopConstraintInStep.isActive = true
+        
         NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: sellOrLeaseSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //nameTextField
-        NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: sellOrLeaseSegmentedControl, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
+        nameTextFieldTopConstraintInPreview = NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: sellOrLeaseSegmentedControl, attribute: .bottom, multiplier: 1, constant: 15)
+        nameTextFieldTopConstraintInPreview.isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
@@ -593,28 +718,36 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: descriptionTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: descriptionTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
-        //addressInstructionLabel
-        NSLayoutConstraint(item: addressInstructionLabel, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
-        NSLayoutConstraint(item: addressInstructionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-       
-        NSLayoutConstraint(item: addressInstructionLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         
+        //locationButton
+        locationButtonTopConstraintInPreview = NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 15)
+        locationButtonTopConstraintInPreview.isActive = true
         
-        //addressTextField
-        NSLayoutConstraint(item: addressTextField, attribute: .top, relatedBy: .equal, toItem: addressInstructionLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: addressTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: addressTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: addressTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: locationButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: locationButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: locationButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
+        //streetNumberTextField
+        NSLayoutConstraint(item: streetNumberTextField, attribute: .top, relatedBy: .equal, toItem: locationButton, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: streetNumberTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: streetNumberTextField, attribute: .trailing, relatedBy: .equal, toItem: streetNameTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: streetNumberTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
+        //streetNameTextField
+        NSLayoutConstraint(item: streetNameTextField, attribute: .top, relatedBy: .equal, toItem: locationButton, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: streetNameTextField, attribute: .width, relatedBy: .equal, toItem: streetNumberTextField, attribute: .width , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: streetNameTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: streetNameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //cityTextField
-        NSLayoutConstraint(item: cityTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
+        NSLayoutConstraint(item: cityTextField, attribute: .top, relatedBy: .equal, toItem: streetNameTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .trailing, relatedBy: .equal, toItem: provinceTextField, attribute: .leading , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: cityTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //provinceTextField
-        NSLayoutConstraint(item: provinceTextField, attribute: .top, relatedBy: .equal, toItem: addressTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
+        NSLayoutConstraint(item: provinceTextField, attribute: .top, relatedBy: .equal, toItem: streetNameTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: provinceTextField, attribute: .width, relatedBy: .equal, toItem: cityTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
@@ -631,24 +764,20 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: zipcodeTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         NSLayoutConstraint(item: zipcodeTextField, attribute: .width, relatedBy: .equal, toItem: countryTextField, attribute: .width, multiplier: 1, constant: 0).isActive = true
         
+        //mainImageView
+        mainImageViewTopConstraintInPreview = NSLayoutConstraint(item: mainImageView, attribute: .top, relatedBy: .equal, toItem: zipcodeTextField, attribute: .bottom, multiplier: 1, constant: 20)
+        mainImageViewTopConstraintInPreview.isActive = true
         
-        //locationButton
-        NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom, multiplier: 1, constant: 15).isActive = true
-        NSLayoutConstraint(item: locationButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
-         NSLayoutConstraint(item: locationButton, attribute: .leading, relatedBy: .equal, toItem: addressInstructionLabel, attribute: .trailing , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: locationButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
-        
-        //addPhotosButton
-        NSLayoutConstraint(item: addPhotosButton, attribute: .top, relatedBy: .equal, toItem: zipcodeTextField, attribute: .bottom, multiplier: 1, constant: 14).isActive = true
-        NSLayoutConstraint(item: addPhotosButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: addPhotosButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: addPhotosButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: mainImageView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: mainImageView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: mainImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
+
         
         //photoCollectionView
-        NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: addPhotosButton, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: mainImageView, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: previousButton, attribute: .top, multiplier: 1, constant: -10).isActive = true
+        NSLayoutConstraint(item: photoCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
         
         //previousButton
         NSLayoutConstraint(item: previousButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
@@ -740,7 +869,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             if sellOrLeaseSegmentedControl.selectedSegmentIndex == 0 {
         
-                 let homeSalePost = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                 let homeSalePost = HomeSale(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: streetNumberTextField.text! + " " + streetNameTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: nil, price: Int(priceTextField.text!)!, ownerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
                 
                 for index in 0..<photosArray.count {
                     let storagePath = "\(homeSalePost.UID!)/\(index)"
@@ -758,7 +887,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             else if sellOrLeaseSegmentedControl.selectedSegmentIndex == 1 {
                 
-                 let homeRentalPost = HomeRental(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: addressTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: nil, monthlyRent: Int(priceTextField.text!)!, rentalTerm: 12, landlordUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
+                 let homeRentalPost = HomeRental(name: nameTextField.text!, description: descriptionTextField.text!, location: location!, address: streetNumberTextField.text! + " " + streetNameTextField.text!, city: cityTextField.text!, province: provinceTextField.text!, country: countryTextField.text!, zipcode: zipcodeTextField.text!, posterUID: (FirebaseData.sharedInstance.currentUser?.UID)!, photoRefs: [""], size: Int(sizeTextField.text!)!, bedroomNumber: bedroomNumber!, bathroomNumber: bathroomNumber!, UID: nil, monthlyRent: Int(priceTextField.text!)!, rentalTerm: 12, landlordUID: (FirebaseData.sharedInstance.currentUser?.UID)!, availabilityDate: NSNumber(value: Int(NSDate().timeIntervalSince1970)), active: true)
                 
                 
                 for index in 0..<photosArray.count {
@@ -774,8 +903,12 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 
                 WriteFirebaseData.writeHomesForRent(homeForRent: homeRentalPost)
             }
+            let successAlert = AlertDefault.showAlert(title: "Confirmed", message: "Your listing has been successfully submitted, and can be viewed now")
+            
+            present(successAlert, animated: true, completion: nil)
         
-        self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
+            
         }
     }
     
@@ -819,12 +952,20 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return false
         }
         
-        guard (addressTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add an address", preferredStyle: UIAlertControllerStyle.alert)
+        guard (streetNameTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add an street name", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             present(alert, animated: true, completion: nil)
             return false
         }
+        
+        guard (streetNumberTextField.text != "") else {
+            let alert = UIAlertController(title: "Whoops", message: "You must add an street number", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return false
+        }
+        
         guard (cityTextField.text != "") else {
             let alert = UIAlertController(title: "Whoops", message: "You must add a city", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
@@ -855,6 +996,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             present(alert, animated: true, completion: nil)
             return false
         }
+        
+        
         
         return true        
     }
@@ -903,17 +1046,26 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     //photoCollectionViewDelegate methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photosArray.count
+        return photosArray.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionViewCell", for: indexPath) as! PostPhotoCollectionViewCell
         
-        cell.cellImageView.image = photosArray[indexPath.row]
-        cell.cellImageView.contentMode = .scaleAspectFill
         cell.cellImageView.layer.borderColor = UIProperties.sharedUIProperties.primaryBlackColor.cgColor
-        cell.cellImageView.layer.borderWidth = 2
+        cell.cellImageView.layer.borderWidth = 1
+        
+        if(indexPath.item == photosArray.count){
+            cell.cellImageView.image = #imageLiteral(resourceName: "plusPlaceholder")
+            cell.cellImageView.contentMode = .scaleAspectFit
+        }
+        
+        else {
+            
+            cell.cellImageView.image = photosArray[indexPath.row]
+            cell.cellImageView.contentMode = .scaleAspectFill
+        }
         
         return cell
     }
@@ -940,11 +1092,22 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         changePhotoAlert.addAction(changeAction)
         changePhotoAlert.addAction(cancelAction)
         
-        self.present(changePhotoAlert, animated: true, completion: nil)
+        if(indexPath.item == photosArray.count){
+            presentImagePickerAlert()
+        }
+        
+        else {
+            self.present(changePhotoAlert, animated: true, completion: nil)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+            return CGSize(width: 100, height: 100)
     }
     
     //placePicker methods
-    @objc func pickPlace(sender: UIButton) {
+    @objc func pickPlace() {
         let config = GMSPlacePickerConfig(viewport: nil)
         let placePicker = GMSPlacePickerViewController(config: config)
         placePicker.delegate = self
@@ -983,7 +1146,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 if(pm.thoroughfare != nil && pm.subThoroughfare != nil){
                     // not all places have thoroughfare & subThoroughfare so validate those values
 
-                    self.addressTextField.text = pm.subThoroughfare! + " " + pm.thoroughfare!
+                    self.streetNameTextField.text =  pm.thoroughfare!
+                    self.streetNumberTextField.text = pm.subThoroughfare!
                     self.cityTextField.text = pm.locality
                     self.provinceTextField.text = pm.administrativeArea
                     self.countryTextField.text = pm.country
@@ -992,7 +1156,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
                 else if(pm.subThoroughfare != nil) {
                     
-                    self.addressTextField.text = pm.thoroughfare!
+                    self.streetNameTextField.text = pm.thoroughfare!
                     self.cityTextField.text = pm.locality
                     self.provinceTextField.text = pm.administrativeArea
                     self.countryTextField.text = pm.country
@@ -1054,7 +1218,8 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         priceTextField.resignFirstResponder()
         sizeTextField.resignFirstResponder()
         descriptionTextField.resignFirstResponder()
-        addressTextField.resignFirstResponder()
+        streetNameTextField.resignFirstResponder()
+        streetNumberTextField.resignFirstResponder()
         cityTextField.resignFirstResponder()
         countryTextField.resignFirstResponder()
         provinceTextField.resignFirstResponder()
