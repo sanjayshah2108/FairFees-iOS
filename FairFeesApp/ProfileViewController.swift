@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITextFieldDelegate {
 
     var nameLabel: UILabel!
     var nameTextField: UITextField!
@@ -20,14 +20,14 @@ class ProfileViewController: UIViewController {
     var phoneNumberTextField: UITextField!
     var listingsReviewsSegmentedControl: UISegmentedControl!
    
-
-   // var listingsTableView: UITableView!
     var myHomeSales: [HomeSale]!
     var myHomeRentals: [HomeRental]!
     
     var childContainerView: UIView!
     var myListingsTableViewController: MyListingsTableViewController!
     var myReviewsTableViewController: MyReviewsTableViewController!
+    
+    var tapGesture: UITapGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +47,10 @@ class ProfileViewController: UIViewController {
             }
         }
         
-        setupProfileImage()
+        setupProfileImageView()
         setupProfileLabels()
         setupSegmentedControl()
         setupChildViewControllers()
-        //setupListingsTableView()
         setupConstraints()
     }
     
@@ -65,21 +64,63 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupProfileImage(){
+    func setupProfileImageView(){
         profileImageView = UIImageView()
-        profileImageView.backgroundColor = UIColor.black
+        profileImageView.backgroundColor = UIColor.gray
+        profileImageView.layer.borderWidth = 2
+        profileImageView.layer.borderColor = UIColor.black.cgColor
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileImageView)
     }
     func setupProfileLabels(){
         
         nameLabel = UILabel()
-        nameLabel.text = FirebaseData.sharedInstance.currentUser?.firstName
+        nameLabel.text = "Name"
+        nameLabel.font = UIFont(name: "Avenir-Light", size: 13)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         
+        nameTextField = UITextField()
+        nameTextField.delegate = self
+        nameTextField.text = (FirebaseData.sharedInstance.currentUser?.firstName)! + " " + (FirebaseData.sharedInstance.currentUser?.lastName)!
+        nameTextField.textAlignment = .left
+        nameTextField.layer.borderColor = UIColor.lightGray.cgColor
+        nameTextField.layer.borderWidth = 1
+        nameTextField.layer.cornerRadius = 2
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nameTextField)
+         
         emailLabel = UILabel()
-        emailLabel.text = FirebaseData.sharedInstance.currentUser?.email
+        emailLabel.text = "Email"
+        emailLabel.font = UIFont(name: "Avenir-Light", size: 13)
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailLabel)
+        
+        emailTextField = UITextField()
+        emailTextField.delegate = self
+        emailTextField.text = FirebaseData.sharedInstance.currentUser?.email
+        emailTextField.textAlignment = .left
+        emailTextField.layer.borderColor = UIColor.lightGray.cgColor
+        emailTextField.layer.borderWidth = 1
+        emailTextField.layer.cornerRadius = 2
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emailTextField)
+        
+        phoneNumberLabel = UILabel()
+        phoneNumberLabel.text = "Phone number"
+        phoneNumberLabel.font = UIFont(name: "Avenir-Light", size: 13)
+        phoneNumberLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(phoneNumberLabel)
+        
+        phoneNumberTextField = UITextField()
+        phoneNumberTextField.delegate = self
+        phoneNumberTextField.text = String((FirebaseData.sharedInstance.currentUser?.phoneNumber)!)
+        phoneNumberTextField.textAlignment = .left
+        phoneNumberTextField.layer.borderColor = UIColor.lightGray.cgColor
+        phoneNumberTextField.layer.borderWidth = 1
+        phoneNumberTextField.layer.cornerRadius = 2
+        phoneNumberTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(phoneNumberTextField)
     }
     
     func setupSegmentedControl(){
@@ -145,27 +186,42 @@ class ProfileViewController: UIViewController {
         childViewController.didMove(toParentViewController: self)
     }
 
-//    func setupListingsTableView(){
-//        
-//        listingsTableView = UITableView()
-//        listingsTableView.delegate = self
-//        listingsTableView.dataSource = self
-//        listingsTableView.layer.borderColor = UIColor.black.cgColor
-//        listingsTableView.layer.borderWidth = 3
-//        listingsTableView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(listingsTableView)
-//        
-//        listingsTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
-//    }
-    
     func setupConstraints(){
+        //profileImageView
+        NSLayoutConstraint(item: profileImageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 70).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80).isActive = true
+        
         //nameLabel
-        NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 100).isActive = true
-        NSLayoutConstraint(item: nameLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 70).isActive = true
+        NSLayoutConstraint(item: nameLabel, attribute: .leading, relatedBy: .equal, toItem: profileImageView, attribute: .trailing, multiplier: 1, constant: 40).isActive = true
+        
+        //nameTextField
+        NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 5).isActive = true
+        NSLayoutConstraint(item: nameTextField, attribute: .leading, relatedBy: .equal, toItem: profileImageView, attribute: .trailing, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: nameTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -30).isActive = true
+        NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //emailLabel
-        NSLayoutConstraint(item: emailLabel, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
-        NSLayoutConstraint(item: emailLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: emailLabel, attribute: .top, relatedBy: .equal, toItem: nameTextField, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: emailLabel, attribute: .leading, relatedBy: .equal, toItem: profileImageView, attribute: .trailing, multiplier: 1, constant: 40).isActive = true
+        
+        //emailTextField
+        NSLayoutConstraint(item: emailTextField, attribute: .top, relatedBy: .equal, toItem: emailLabel, attribute: .bottom, multiplier: 1, constant: 5).isActive = true
+        NSLayoutConstraint(item: emailTextField, attribute: .leading, relatedBy: .equal, toItem: profileImageView, attribute: .trailing, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: emailTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -30).isActive = true
+        NSLayoutConstraint(item: emailTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
+        //phonNumberLabel
+        NSLayoutConstraint(item: phoneNumberLabel, attribute: .top, relatedBy: .equal, toItem: emailTextField, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: phoneNumberLabel, attribute: .leading, relatedBy: .equal, toItem: profileImageView, attribute: .trailing, multiplier: 1, constant: 40).isActive = true
+        
+        //phoneNumberTextField
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .top, relatedBy: .equal, toItem: phoneNumberLabel, attribute: .bottom, multiplier: 1, constant: 5).isActive = true
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .leading, relatedBy: .equal, toItem: profileImageView, attribute: .trailing, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -30).isActive = true
+        NSLayoutConstraint(item: phoneNumberTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //listingsReviewsSegmentedControl
         NSLayoutConstraint(item: listingsReviewsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
@@ -179,12 +235,27 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint(item: childContainerView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: childContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
-//        //tableView
-//        NSLayoutConstraint(item: listingsTableView, attribute: .top, relatedBy: .equal, toItem: emailLabel, attribute: .bottom, multiplier: 1, constant: 100).isActive = true
-//        NSLayoutConstraint(item: listingsTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: listingsTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: listingsTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
     
+    //textField delegate methods
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.view.removeGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+        nameTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        phoneNumberTextField.resignFirstResponder()
+    }
 
 }

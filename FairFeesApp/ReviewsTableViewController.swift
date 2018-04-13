@@ -16,9 +16,6 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
-        
-        //tableView = UITableView(frame: CGRect(x: 0, y: 40, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height-40)), style: .plain)
-        //view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -40,8 +37,8 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
         
         cell.reviewerNameLabel.text = currentUser.reviews[indexPath.row].reviewerName
         cell.reviewTextLabel.text = currentUser.reviews[indexPath.row].text
-        cell.upvotesLabel.text = "Up: \(String((currentUser.reviews[indexPath.row].upvotes)!))"
-        cell.downvotesLabel.text = "Down: \(String((currentUser.reviews[indexPath.row].downvotes)!))"
+        cell.upvotesLabel.text = "\(String((currentUser.reviews[indexPath.row].upvotes)!))"
+        cell.downvotesLabel.text = "\(String((currentUser.reviews[indexPath.row].downvotes)!))"
         cell.starRatingView.redraw(withRating: 4)
         
         for vote in (review?.votes)!{
@@ -56,7 +53,7 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
         
         //this should technically never run when we are viewing reviews from profileView
         if(review?.reviewerUID == FirebaseData.sharedInstance.currentUser?.UID){
-            cell.reportDeleteButton.setTitle("Delete Review", for: .normal)
+            cell.reportDeleteButton.setTitle("Delete", for: .normal)
         }
         else {
             cell.reportDeleteButton.setTitle("Report", for: .normal)

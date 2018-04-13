@@ -35,7 +35,10 @@ class ReviewTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        reviewerProfileImageView.layer.borderColor = UIColor.black.cgColor
+        reviewerProfileImageView.layer.borderWidth = 2
+        
         upvoteButton.setTitle("up", for: .normal)
         upvoteButton.setTitle("UP", for: .selected)
         upvoteButton.addTarget(self, action: #selector(upvoteAction), for: .touchUpInside)

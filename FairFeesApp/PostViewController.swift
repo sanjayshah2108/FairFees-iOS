@@ -169,7 +169,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sellOrLeaseSegmentedControl.isHidden = true
         
         nameTextFieldTopConstraintInPreview.isActive = false
-        nameTextFieldTopConstraintInStep = NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
         nameTextFieldTopConstraintInStep.isActive = true
         
         nameTextField.isHidden = false
@@ -201,7 +200,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         promptLabel.text = "Add some photos"
         
         mainImageViewTopConstraintInPreview.isActive = false
-        mainImageViewTopConstraintInStep = NSLayoutConstraint(item: mainImageView, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        
         mainImageViewTopConstraintInStep.isActive = true
         
         mainImageView.isHidden = false
@@ -223,7 +222,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         promptLabel.text = "Where is it located?"
         
         locationButtonTopConstraintInPreview.isActive = false
-        locationButtonTopConstraintInStep = NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
         locationButtonTopConstraintInStep.isActive = true
         
         locationButton.isHidden = false
@@ -651,10 +649,14 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         //nameTextField
         nameTextFieldTopConstraintInPreview = NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: sellOrLeaseSegmentedControl, attribute: .bottom, multiplier: 1, constant: 15)
+        nameTextFieldTopConstraintInStep = NSLayoutConstraint(item: nameTextField, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        nameTextFieldTopConstraintInStep.isActive = false
         nameTextFieldTopConstraintInPreview.isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: nameTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
+        
         
         //priceTextField
         NSLayoutConstraint(item: priceTextField, attribute: .top, relatedBy: .equal, toItem: descriptionTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
@@ -690,6 +692,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: bedroomPlusButton, attribute: .trailing, relatedBy: .equal, toItem: customBedroomStepper, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: bedroomPlusButton, attribute: .bottom, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
+       
         
         //bathroomsNumberStepper
         NSLayoutConstraint(item: customBathroomStepper, attribute: .top, relatedBy: .equal, toItem: sizeTextField, attribute: .bottom , multiplier: 1, constant: 8).isActive = true
@@ -722,6 +725,10 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         //locationButton
         locationButtonTopConstraintInPreview = NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: customBedroomStepper, attribute: .bottom, multiplier: 1, constant: 15)
+        
+        locationButtonTopConstraintInStep = NSLayoutConstraint(item: locationButton, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        
+        locationButtonTopConstraintInStep.isActive = false
         locationButtonTopConstraintInPreview.isActive = true
         
         NSLayoutConstraint(item: locationButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
@@ -766,6 +773,11 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         //mainImageView
         mainImageViewTopConstraintInPreview = NSLayoutConstraint(item: mainImageView, attribute: .top, relatedBy: .equal, toItem: zipcodeTextField, attribute: .bottom, multiplier: 1, constant: 20)
+        
+        mainImageViewTopConstraintInStep = NSLayoutConstraint(item: mainImageView, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom, multiplier: 1, constant: 10)
+        
+        mainImageViewTopConstraintInStep.isActive = false
+        
         mainImageViewTopConstraintInPreview.isActive = true
         
         NSLayoutConstraint(item: mainImageView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true

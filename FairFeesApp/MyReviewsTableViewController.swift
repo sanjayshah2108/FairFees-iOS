@@ -72,7 +72,7 @@ class MyReviewsTableViewController: UITableViewController, ReviewTableViewCellDe
 
         //this should technically never run when we are viewing reviews from profileView
         if(review?.reviewerUID == FirebaseData.sharedInstance.currentUser?.UID){
-            cell.reportDeleteButton.setTitle("Delete Review", for: .normal)
+            cell.reportDeleteButton.setTitle("Delete", for: .normal)
         }
 
         return cell

@@ -13,9 +13,7 @@ import FirebaseStorageUI
 import MessageUI
 
 class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailComposeViewControllerDelegate {
-    
-    
-    
+
     var navigationBarHeight: CGFloat!
     
     var storageRef: StorageReference!
@@ -78,7 +76,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-//        self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = UIColor.clear
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
@@ -114,7 +111,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         imageViewCarousel = UIImageView()
         imageViewCarousel.isUserInteractionEnabled = true
         photoIndex = 0
-        //imageViewCarousel.image = currentListing.photos[photoIndex]
         imageViewCarousel.sd_setImage(with: storageRef.child(currentListing.photoRefs[photoIndex]), placeholderImage: nil)
         
         imageViewCarousel.contentMode = .scaleAspectFill
@@ -167,8 +163,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         landlordButton.setTitleColor(UIColor.blue, for: .normal)
         landlordButton.translatesAutoresizingMaskIntoConstraints = false
         landlordButton.addTarget(self, action: #selector(segueToLandlordUser), for: .touchUpInside)
-       // view.addSubview(landlordButton)
-        
+      
         if(currentListing.isKind(of: HomeRental.self)){
             let currentHomeRental = currentListing as! HomeRental
             landlordButton.setTitle("Poster: \(currentHomeRental.landlordUID)", for: .normal)

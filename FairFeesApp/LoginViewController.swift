@@ -599,6 +599,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         passwordTextfield.resignFirstResponder()
         confirmPasswordTextfield.resignFirstResponder()
         emailTextfield.resignFirstResponder()
+        phoneNumberTextField.resignFirstResponder()
     }
     
     //imagePicker delegate methods

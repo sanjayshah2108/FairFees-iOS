@@ -39,11 +39,6 @@ class MyListingsTableViewController: UITableViewController {
  
         tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,7 +46,6 @@ class MyListingsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -62,15 +56,13 @@ class MyListingsTableViewController: UITableViewController {
         {
         case 0:
             return myHomeSales.count
-        // return (FirebaseData.sharedInstance.currentUser?.listings.filter { $0 is HomeSale }.count)!
+       
         case 1:
             return myHomeRentals.count
-        //return (FirebaseData.sharedInstance.currentUser?.listings.filter { $0 is HomeRental }.count)!
+        
         default:
             return 0
         }
-        
-        //return (FirebaseData.sharedInstance.currentUser?.listings.count)!
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
@@ -258,6 +250,8 @@ class MyListingsTableViewController: UITableViewController {
         
         listing.active = true
         WriteFirebaseData.writeListings(listing: listing)
+        
+        tableView.reloadData()
         
     }
 }

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class UserDetailViewController: UIViewController, UITextViewDelegate {
+class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComposeViewControllerDelegate {
     
     weak var currentUser: User!
     
@@ -75,14 +76,14 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         callButton.setTitle("Call", for: .normal)
         callButton.setTitleColor(UIColor.blue, for: .normal)
         callButton.translatesAutoresizingMaskIntoConstraints = false
-        callButton.addTarget(self, action: #selector(callAction), for: .touchUpInside)
+        callButton.addTarget(self, action: #selector(callUser), for: .touchUpInside)
         view.addSubview(callButton)
         
         emailButton = UIButton()
         emailButton.setTitle("Email", for: .normal)
         emailButton.setTitleColor(UIColor.blue, for: .normal)
         emailButton.translatesAutoresizingMaskIntoConstraints = false
-        emailButton.addTarget(self, action: #selector(emailAction), for: .touchUpInside)
+        emailButton.addTarget(self, action: #selector(emailUser), for: .touchUpInside)
         view.addSubview(emailButton)
         
         addReviewButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
@@ -90,14 +91,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         addReviewButton.setTitleColor(UIColor.blue, for: .normal)
         addReviewButton.addTarget(self, action: #selector(addReview), for: .touchUpInside)
         userReviewsTableViewController.tableView.tableFooterView = addReviewButton
-        
-        
-//        reviewsButton = UIButton()
-//        reviewsButton.setTitle("Reviews", for: .normal)
-//        reviewsButton.setTitleColor(UIColor.blue, for: .normal)
-//        reviewsButton.addTarget(self, action: #selector(segueToReviews), for: .touchUpInside)
-//        reviewsButton.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(reviewsButton)
         
     }
     func setupRatingsView(){
@@ -130,17 +123,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         listingsReviewsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(listingsReviewsSegmentedControl)
     }
-    
-//    func setupTableView(){
-//        listingsTableView = UITableView()
-//        listingsTableView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(listingsTableView)
-//        listingsTableView.delegate = self
-//        listingsTableView.dataSource = self
-//
-//        listingsTableView.register(UINib(nibName: "UserDetailListingsTableViewCell", bundle: nil), forCellReuseIdentifier: "userDetailListingTableViewCell")
-//    }
-    
+
     @objc func switchListingsReviewsTableView(){
         switch listingsReviewsSegmentedControl.selectedSegmentIndex {
         case 0:
@@ -216,13 +199,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         NSLayoutConstraint(item: emailButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 70).isActive = true
         NSLayoutConstraint(item: emailButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
-      
-  
-//        //containerView
-//        NSLayoutConstraint(item: ratingView, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
-//        NSLayoutConstraint(item: ratingView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 30).isActive = true
-//        NSLayoutConstraint(item: ratingView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 30).isActive = true
-//        NSLayoutConstraint(item: ratingView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
+
         
         //ratingsView
         NSLayoutConstraint(item: ratingView, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 80).isActive = true
@@ -234,12 +211,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         NSLayoutConstraint(item: reviewCountLabel, attribute: .centerY, relatedBy: .equal, toItem: ratingView, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: reviewCountLabel, attribute: .leading, relatedBy: .equal, toItem: ratingView, attribute: .trailing, multiplier: 1, constant: 20).isActive = true
         
-        
-        //reviewsButton
-//        NSLayoutConstraint(item: reviewsButton, attribute: .top, relatedBy: .equal, toItem: ratingView, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
-//        NSLayoutConstraint(item: reviewsButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
-//        NSLayoutConstraint(item: reviewsButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: reviewsButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         //listingsReviewsSegmentedControl
         NSLayoutConstraint(item: listingsReviewsSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
@@ -253,33 +224,68 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         NSLayoutConstraint(item: childContainerView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: childContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
-        //reviewsTableview
-//        NSLayoutConstraint(item: userReviewsTableViewController.tableView, attribute: .leading, relatedBy: .equal, toItem: childContainerView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: userReviewsTableViewController.tableView, attribute: .trailing, relatedBy: .equal, toItem: childContainerView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: userReviewsTableViewController.tableView, attribute: .top, relatedBy: .equal, toItem: childContainerView, attribute: .top, multiplier: 1, constant: 0).isActive = true
-        
-        //addReviewButton
-        //NSLayoutConstraint(item: addReviewButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
-//        NSLayoutConstraint(item: addReviewButton, attribute: .leading, relatedBy: .equal, toItem: userReviewsTableViewController.tableView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: addReviewButton, attribute: .trailing, relatedBy: .equal, toItem: userReviewsTableViewController.tableView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: addReviewButton, attribute: .top, relatedBy: .equal, toItem: userReviewsTableViewController.tableView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: addReviewButton, attribute: .bottom, relatedBy: .equal, toItem: userReviewsTableViewController.view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        
-        
-        //tableViewController
-//        NSLayoutConstraint(item: listingsTableView, attribute: .top, relatedBy: .equal, toItem: reviewsButton, attribute: .bottom, multiplier: 1, constant: 30).isActive = true
-//        NSLayoutConstraint(item: listingsTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: listingsTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: listingsTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
     }
     
-    @objc func callAction(){
+    @objc func callUser(){
+        
+        guard let number = URL(string: "tel://" + "\(currentUser.phoneNumber)") else { return }
+        UIApplication.shared.open(number)
+    }
+    
+    @objc func emailUser(){
+        
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+
+        //show error if the VC cant send mail
+        if MFMailComposeViewController.canSendMail()
+        {
+            self.present(mailComposerVC, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+        
+        sendMail(mailComposerVC: mailComposerVC)
+    }
+    
+    func sendMail(mailComposerVC: MFMailComposeViewController){
+        
+        let destinationEmail = currentUser.email
+        let destinationName = currentUser.firstName
+        
+        let currentUserName = FirebaseData.sharedInstance.currentUser!.firstName
+    
+        //mailVC properties
+        mailComposerVC.setToRecipients([destinationEmail])
+        mailComposerVC.setSubject("U-List: Listings inquiry")
+        mailComposerVC.setMessageBody("Hey \(destinationName),\n\nI'm interested in some of your listings.\n\nThanks!\n\n\(currentUserName)", isHTML: false)
         
     }
     
-    @objc func emailAction(){
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertController.init(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: UIAlertControllerStyle.actionSheet)
         
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+    
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        switch result {
+        case .cancelled:
+            break
+            
+        case .saved:
+            print ("Go back")
+            
+        case .sent:
+            print ("Go back")
+            
+        case .failed:
+            print ("Mail sent failure: \([error!.localizedDescription])")
+        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func addReview(){
@@ -299,6 +305,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         newReviewTextView = UITextView()
         newReviewTextView.delegate = self
         newReviewTextView.text = "Add a review"
+        newReviewTextView.clearsOnInsertion = true
         newReviewTextView.textAlignment = .center
         newReviewTextView.textColor = UIColor.gray
         newReviewTextView.layer.cornerRadius = 3
@@ -420,17 +427,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate {
         
     }
     
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return currentUser.listingsRefs.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "userDetailListingTableViewCell") as! UserDetailListingsTableViewCell
-//
-//        cell.listingNameLabel.text = currentUser.listings[indexPath.row].name
-//
-//        return cell
-//    }
     
     
     override func didReceiveMemoryWarning() {

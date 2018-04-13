@@ -34,6 +34,8 @@ class EditPostViewController: PostViewController {
         location = listingToEdit.location
         
         setupSellOrLeaseSegmentControl()
+
+        setupPreviewUI()
     }
     
     override func setupTextFields() {
