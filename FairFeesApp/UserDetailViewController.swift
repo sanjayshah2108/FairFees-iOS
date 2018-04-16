@@ -294,6 +294,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         //container view
         newReviewContainerView = UIView()
         newReviewContainerView.isUserInteractionEnabled = true
+        newReviewContainerView.backgroundColor = UIColor.white
         newReviewContainerView.layer.cornerRadius = 5
         newReviewContainerView.layer.borderColor = UIColor.lightGray.cgColor
         newReviewContainerView.layer.borderWidth = 1
@@ -305,7 +306,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         newReviewTextView = UITextView()
         newReviewTextView.delegate = self
         newReviewTextView.text = "Add a review"
-        newReviewTextView.clearsOnInsertion = true
+        //newReviewTextView.clearsOnInsertion = true
         newReviewTextView.textAlignment = .center
         newReviewTextView.textColor = UIColor.gray
         newReviewTextView.layer.cornerRadius = 3
@@ -341,6 +342,8 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         newReviewStarRatingContainerView.addSubview(newReviewStarRatingView)
         
         setupNewReviewConstraints()
+        
+        //newReviewTextView.becomeFirstResponder()
     }
     
     func setupNewReviewConstraints(){
@@ -348,8 +351,8 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         
         //container view
         NSLayoutConstraint(item: newReviewContainerView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: newReviewContainerView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: newReviewContainerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
+        NSLayoutConstraint(item: newReviewContainerView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 100).isActive = true
+        NSLayoutConstraint(item: newReviewContainerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant:300).isActive = true
         NSLayoutConstraint(item: newReviewContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300).isActive = true
         
         //starRatingContainerView
@@ -398,6 +401,19 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
     
     @objc func submitNewReview(){
         
+        guard (newReviewStarRatingView.rating != nil) else {
+            
+            present(AlertDefault.showAlert(title: "Sorry", message: "You must add a rating"), animated: true, completion: nil)
+            return
+        }
+        
+        guard (newReviewTextView.text != "") else {
+            
+            present(AlertDefault.showAlert(title: "Sorry", message: "Your review is empty"), animated: true, completion: nil)
+            return
+        }
+        
+        
         //by using users UID as the reviewUID, a user can only review someone once!
         let newReview = Review(uid: (FirebaseData.sharedInstance.currentUser?.UID)!, text: newReviewTextView.text, upvotes: 0, downvotes: 0, reviewerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, reviewerName: (FirebaseData.sharedInstance.currentUser?.firstName)! + " " + (FirebaseData.sharedInstance.currentUser?.lastName)!, rating: newReviewStarRatingView.rating, votes: [])
         
@@ -425,6 +441,15 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         newReviewContainerView.isHidden = true
         newReviewContainerView = nil
         
+    }
+    
+    //textView delegate methods
+    func textViewDidBeginEditing (_ textView: UITextView) {
+        
+        if newReviewTextView.textColor == .lightGray && newReviewTextView.isFirstResponder {
+            newReviewTextView.text = ""
+            newReviewTextView.textColor = .black
+        }
     }
     
     
