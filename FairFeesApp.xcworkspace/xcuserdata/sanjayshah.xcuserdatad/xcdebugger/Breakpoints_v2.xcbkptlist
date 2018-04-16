@@ -118,27 +118,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FairFeesApp/UserDetailViewController.swift"
-            timestampString = "545355429.802201"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
-            landmarkName = "cancelNewReview()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/MyListingsTableViewController.swift"
-            timestampString = "545591273.68378"
+            timestampString = "545592854.4601721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "82"
@@ -161,54 +145,6 @@
             endingLineNumber = "20"
             landmarkName = "readHomesForSale()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FairFeesApp/MyListingsTableViewController.swift"
-            timestampString = "545591273.683871"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FairFeesApp.MyListingsTableViewController.viewDidLoad() -&gt; ()"
-                  moduleName = "FairFeesApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanjayshah/Documents/Apps/Fair%20Fees/FairFeesApp/FairFeesApp/MyListingsTableViewController.swift"
-                  timestampString = "545591274.517036"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26"
-                  offsetFromSymbolStart = "824">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FairFeesApp.MyListingsTableViewController.viewDidLoad() -&gt; ()"
-                  moduleName = "FairFeesApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanjayshah/Documents/Apps/Fair%20Fees/FairFeesApp/FairFeesApp/MyListingsTableViewController.swift"
-                  timestampString = "545591274.519497"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26"
-                  offsetFromSymbolStart = "3036">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
