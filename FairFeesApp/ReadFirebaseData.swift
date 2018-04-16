@@ -221,6 +221,7 @@ class ReadFirebaseData: NSObject {
         let rating: Int = userData["rating"] as! Int
         let typeOfUser: [String: Bool] = userData["typeOfUser"] as! [String: Bool]
         let reviewDictArray: [String: [String: Any]] = userData["reviews"] as! [String : [String: Any]]
+        let profileImageRef: String = userData["profileImageRef"] as! String
         
         var reviews: [Review] = []
         
@@ -273,7 +274,7 @@ class ReadFirebaseData: NSObject {
                 listingRefs = [] as [String]
                 
                 //create the user with no listings
-                let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews)
+                let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
                 
                 
                 FirebaseData.sharedInstance.users.append(readUser)
@@ -333,7 +334,7 @@ class ReadFirebaseData: NSObject {
                             listings = FirebaseData.sharedInstance.specificUserListings
 
                             //create the user with all the listings
-                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews)
+                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
                             
                             readUser.listingsRefs = listingRefs
 

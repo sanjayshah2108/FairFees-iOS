@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Firebase
 
 class MyReviewsTableViewController: UITableViewController, ReviewTableViewCellDelegate {
 
-    
+    let storageRef = Storage.storage().reference()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,9 +53,10 @@ class MyReviewsTableViewController: UITableViewController, ReviewTableViewCellDe
         cell.delegate = self
         
         let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
+        let reviewer = FirebaseData.sharedInstance.users.filter{ $0.UID == review?.reviewerUID}.first
 
         cell.reviewTextLabel.text = review?.text
-        cell.reviewerProfileImageView.image = nil
+        cell.reviewerProfileImageView.sd_setImage(with: storageRef.child((reviewer?.profileImageRef)!), placeholderImage: nil)
         cell.reviewerNameLabel.text = review?.reviewerName
         cell.upvotesLabel.text = String((review?.upvotes)!)
         cell.downvotesLabel.text = String((review?.downvotes)!)
