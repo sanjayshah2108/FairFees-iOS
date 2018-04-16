@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    let storageRef = Storage.storage().reference()
 
     var firstNameLabel: UILabel!
     var firstNameTextField: UITextField!
@@ -75,9 +77,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
     
     func setupProfileImageView(){
         profileImageView = UIImageView()
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.sd_setImage(with: storageRef.child((FirebaseData.sharedInstance.currentUser?.profileImageRef)!), placeholderImage: nil)
         profileImageView.backgroundColor = UIColor.gray
         profileImageView.layer.borderWidth = 2
         profileImageView.layer.borderColor = UIColor.black.cgColor
+        profileImageView.clipsToBounds = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileImageView)
     }
@@ -356,8 +361,18 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         let myImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         if myImage != nil {
             print("image loaded: \(myImage!)")
+            profileImageView.image = myImage
+            
+            let imagePath = ImageManager.uploadProfileImage(image: myImage!, email: (FirebaseData.sharedInstance.currentUser?.email)!, filename: "profileImage")
+            
+            FirebaseData.sharedInstance.currentUser?.profileImageRef = imagePath
+            WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
         }
-        profileImageView.image = myImage
+        
+        
+      
+        
+        
         dismiss(animated: true, completion: nil)
     }
     

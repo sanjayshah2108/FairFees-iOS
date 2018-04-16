@@ -329,7 +329,7 @@ class EditPostViewController: PostViewController {
                 for index in 0..<photosArray.count {
                     let storagePath = "\(homeSalePost.UID!)/\(index)"
                     
-                    let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                    let photoRefStr = ImageManager.uploadListingImage(image: photosArray[index],
                                                                userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
                                                                filename: storagePath)
                     photoRefs.append(photoRefStr)
@@ -349,7 +349,7 @@ class EditPostViewController: PostViewController {
                 for index in 0..<photosArray.count {
                     let storagePath = "\(homeRentalPost.UID!)/\(index)"
                     
-                    let photoRefStr = ImageManager.uploadImage(image: photosArray[index],
+                    let photoRefStr = ImageManager.uploadListingImage(image: photosArray[index],
                                                                userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
                                                                filename: storagePath)
                     photoRefs.append(photoRefStr)

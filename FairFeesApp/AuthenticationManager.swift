@@ -11,7 +11,7 @@ import Firebase
 
 class AuthenticationManager: NSObject {
 
-    class func signUp(withEmail email:String, password:String, firstName:String, lastName: String, phoneNumber: Int, completionHandler: @escaping (_ success: Bool) -> Void )  {
+    class func signUp(withEmail email:String, password:String, firstName:String, lastName: String, phoneNumber: Int, profileImageRef: String, completionHandler: @escaping (_ success: Bool) -> Void )  {
         
         print("Signing up with email: \(email), password: \(password)")
 
@@ -40,7 +40,7 @@ class AuthenticationManager: NSObject {
                         if profileError == nil {
                             
                             //create the user locally
-                            let addedUser = User(uid: newUser!.uid, firstName: firstName, lastName: lastName, email: (newUser!.email)!, phoneNumber: phoneNumber, rating: 0, listings: [], typeOfUser: ["buyer": true, "seller": true, "landlord": true, "tenant": true], reviews: [])
+                            let addedUser = User(uid: newUser!.uid, firstName: firstName, lastName: lastName, email: (newUser!.email)!, phoneNumber: phoneNumber, rating: 0, listings: [], typeOfUser: ["buyer": true, "seller": true, "landlord": true, "tenant": true], reviews: [], profileImageRef: profileImageRef)
                             
                             //make this user the current user
                             FirebaseData.sharedInstance.currentUser = addedUser

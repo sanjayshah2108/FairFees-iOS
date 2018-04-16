@@ -447,8 +447,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
         if loginRegisterSegmentedControl.selectedSegmentIndex == 1 {
             
+            //put guards here
+            
+            let profileImagePath = ImageManager.uploadProfileImage(image: profileImageView.image!, email: emailTextfield.text!, filename: "profileImage")
+            
             if (validateInputOf(textfield: confirmPasswordTextfield).valid) {
-                AuthenticationManager.signUp(withEmail: emailTextfield.text!, password: passwordTextfield.text!, firstName: firstNameTextfield.text!, lastName: lastNameTextfield.text!, phoneNumber: Int(phoneNumberTextField.text!)!, completionHandler: { (success) -> Void in
+                AuthenticationManager.signUp(withEmail: emailTextfield.text!, password: passwordTextfield.text!, firstName: firstNameTextfield.text!, lastName: lastNameTextfield.text!, phoneNumber: Int(phoneNumberTextField.text!)!, profileImageRef: profileImagePath, completionHandler: { (success) -> Void in
                     if success == true {
                         loggedInBool = true
                         self.loginSuccess()

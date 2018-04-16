@@ -8,9 +8,11 @@
 
 import UIKit
 import MessageUI
+import Firebase
 
 class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComposeViewControllerDelegate {
     
+    let storageRef = Storage.storage().reference()
     weak var currentUser: User!
     
     var nameLabel: UILabel!
@@ -54,9 +56,12 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
 
     func setupUserProfileImage(){
         userProfileImageView = UIImageView()
+        userProfileImageView.sd_setImage(with: storageRef.child(currentUser.profileImageRef), placeholderImage: nil)
         userProfileImageView.backgroundColor = UIColor.gray
         userProfileImageView.layer.borderColor = UIColor.black.cgColor
         userProfileImageView.layer.borderWidth = 3
+        userProfileImageView.contentMode = .scaleAspectFill
+        userProfileImageView.clipsToBounds = true
         userProfileImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(userProfileImageView)
     }

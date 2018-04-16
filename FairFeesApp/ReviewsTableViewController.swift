@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Firebase
 
 class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDelegate {
 
+    let storageRef = Storage.storage().reference()
     var currentUser: User!
-   // var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +34,10 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
         let cell = tableView.dequeueReusableCell(withIdentifier: "reviewTableViewCell") as! ReviewTableViewCell
         cell.delegate = self
         
-         let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
+        let review = FirebaseData.sharedInstance.currentUser?.reviews[indexPath.row]
+        let reviewer = FirebaseData.sharedInstance.users.filter{ $0.UID == review?.reviewerUID}.first
         
+        cell.reviewerProfileImageView.sd_setImage(with: storageRef.child((reviewer?.profileImageRef)!), placeholderImage: nil)
         cell.reviewerNameLabel.text = currentUser.reviews[indexPath.row].reviewerName
         cell.reviewTextLabel.text = currentUser.reviews[indexPath.row].text
         cell.upvotesLabel.text = "\(String((currentUser.reviews[indexPath.row].upvotes)!))"
@@ -133,6 +136,7 @@ class ReviewsTableViewController: UITableViewController, ReviewTableViewCellDele
                 
                 WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
             }
+            
             self.tableView.reloadData()
             
         })

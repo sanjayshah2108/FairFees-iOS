@@ -21,6 +21,7 @@ class User: NSObject {
     var typeOfUser: [String : Bool]!
     var reviews: [Review]
     var reviewsDict : [String: Any]!
+    var profileImageRef: String!
     
     init(uid:String,
          firstName:String,
@@ -30,7 +31,8 @@ class User: NSObject {
          rating: Int,
          listings: [Listing],
          typeOfUser: [String: Bool],
-         reviews: [Review]) {
+         reviews: [Review],
+         profileImageRef: String) {
     
         self.UID = uid
         self.firstName = firstName
@@ -43,6 +45,7 @@ class User: NSObject {
         self.typeOfUser = typeOfUser
         self.reviews = reviews
         self.reviewsDict = [:]
+        self.profileImageRef = profileImageRef
         
     }
     
@@ -58,6 +61,7 @@ class User: NSObject {
             
             //let inpProfileImage: String = inpDict["profileImage"] as? String ?? "",
             let inpListings:[Listing] = inpDict["listings"] as? [Listing],
+            let inpProfileImageRef: String = inpDict["profileImageRef"] as! String,
             let inpReviews: [Review] = inpDict[""] as? [Review] else
         {
             print("Error: Dictionary is not in the correct format")
@@ -76,7 +80,7 @@ class User: NSObject {
 //            }
 //        }
         
-        self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings, typeOfUser: inpTypeOfUser, reviews: inpReviews)
+        self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings, typeOfUser: inpTypeOfUser, reviews: inpReviews, profileImageRef: inpProfileImageRef)
     }
     
     
@@ -100,6 +104,7 @@ class User: NSObject {
                                       //"profileImage":self.profileImage,
                                       "listings":self.listingsRefs,
                                       "reviews": self.reviewsDict,
+                                      "profileImageRef": self.profileImageRef,
                                       "typeOfUser": self.typeOfUser]
         return userDict
     }
