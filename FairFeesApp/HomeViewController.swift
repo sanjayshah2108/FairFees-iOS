@@ -690,9 +690,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]), placeholderImage: nil)
         cell.leftImageView.contentMode = .scaleToFill
-        cell.nameLabel.text = listing.name
+        //cell.nameLabel.text = listing.name
         cell.sizeLabel.text = "\(listing.size!) SF"
-        cell.addressLabel.text = listing.address
+        //cell.addressLabel.text = listing.address
         
         return cell
     }
@@ -713,7 +713,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 100
     }
     
     //swipe Up on filter view is not being used now
