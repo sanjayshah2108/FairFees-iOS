@@ -33,9 +33,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var profileButton: UIBarButtonItem!
     var loadMoreButton: UIButton!
     
-    //var searchBar: UISearchBar!
     var navigationBarHeight: CGFloat!
-    //var searchBarHeight: CGFloat!
     
     var tapGestureForTextFieldDelegate: UITapGestureRecognizer!
     var swipeUpGestureForFilterView: UISwipeGestureRecognizer!
@@ -68,8 +66,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guestUser = true
         locationManager = LocationManager.theLocationManager
         
-        //filterViewHeight = 220
-        
         setupMapListSegmentTitle()
         setupTopRightButtons()
         setupTopLeftButtons()
@@ -85,9 +81,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupLoadMoreButton()
         //setupSearchBar()
         showSearchBar()
-        
-     
-    
+
         setupConstraints()
         
         //right now we are only being notified when rentals are downloaded, because they are being dowloaded last
@@ -189,11 +183,56 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func setupTopLeftButtons(){
-        topLeftButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newPostAction))
-        profileButton =  UIBarButtonItem(title: "Prof", style: .plain, target: self, action: #selector(profileViewControllerSegue))
+        topLeftButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(menuAlert))
         
+        self.navigationItem.leftBarButtonItems = [topLeftButton]
+    }
+    
+    @objc func menuAlert(){
         
-        self.navigationItem.leftBarButtonItems = [topLeftButton, profileButton]
+        let menuAlert = UIAlertController(title: "What would you like to do?", message: "", preferredStyle: .alert)
+        
+        let signInAction = UIAlertAction(title: "Sign in/Sign up", style: .default, handler: {(action) in
+            
+            let loginViewController = LoginViewController()
+            self.present(loginViewController, animated: true, completion: nil)
+        
+        })
+        
+        let signOutAction = UIAlertAction(title: "Sign out", style: .destructive, handler: {(action) in
+            
+            let loginViewController = LoginViewController()
+            self.present(loginViewController, animated: true, completion: nil)
+            
+        })
+        
+        let newPostAction = UIAlertAction(title: "Add a New Listing", style: .default, handler: {(action) in
+            
+            let postViewController = PostViewController()
+            self.navigationController?.pushViewController(postViewController, animated: true)
+        })
+        
+        let profileAction = UIAlertAction(title: "View My Profile", style: .default, handler: {(action) in
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        if(guestUser){
+            
+            menuAlert.addAction(signInAction)
+        }
+        else {
+            menuAlert.addAction(newPostAction)
+            menuAlert.addAction(profileAction)
+            menuAlert.addAction(signOutAction)
+        }
+        
+        menuAlert.addAction(cancelAction)
+        
+        present(menuAlert, animated: true, completion: nil)
+        
     }
     
     func setupLoadMoreButton(){

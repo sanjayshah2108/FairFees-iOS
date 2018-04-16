@@ -134,43 +134,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FairFeesApp/LoginViewController.swift"
-            timestampString = "545589636.194266"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "500"
-            endingLineNumber = "500"
-            landmarkName = "goPressed(sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FairFeesApp/LoginViewController.swift"
-            timestampString = "545589636.194659"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "508"
-            endingLineNumber = "508"
-            landmarkName = "goPressed(sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/MyListingsTableViewController.swift"
-            timestampString = "545589636.19495"
+            timestampString = "545591273.68378"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "82"
@@ -202,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FairFeesApp/MyListingsTableViewController.swift"
-            timestampString = "545589636.195039"
+            timestampString = "545591273.683871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
@@ -218,7 +186,7 @@
                   moduleName = "FairFeesApp"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sanjayshah/Documents/Apps/Fair%20Fees/FairFeesApp/FairFeesApp/MyListingsTableViewController.swift"
-                  timestampString = "545589636.591187"
+                  timestampString = "545591274.517036"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "26"
@@ -233,7 +201,7 @@
                   moduleName = "FairFeesApp"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sanjayshah/Documents/Apps/Fair%20Fees/FairFeesApp/FairFeesApp/MyListingsTableViewController.swift"
-                  timestampString = "545589636.593511"
+                  timestampString = "545591274.519497"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "26"

@@ -148,7 +148,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
     
     func setupButtons(){
     
-        shareBarButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(shareListing))
+        shareBarButton = UIBarButtonItem(barButtonSystemItem: .action , target: self, action: #selector(shareListing))
         self.navigationItem.rightBarButtonItem = shareBarButton
         
         posterButton = UIButton()
