@@ -11,8 +11,6 @@ import Firebase
 
 class MyListingsTableViewController: UITableViewController {
     
-    //var tableView: UITableView!
-    
     var myHomeSales: [HomeSale]!
     var myHomeRentals: [HomeRental]!
 
@@ -83,8 +81,6 @@ class MyListingsTableViewController: UITableViewController {
         //Use ProfileListingsTableViewCell if we need a different format
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
         
-        
-        
         if(indexPath.section == 0){
             
             let homeSale = myHomeSales[indexPath.row]
@@ -104,8 +100,8 @@ class MyListingsTableViewController: UITableViewController {
                 attributeString.addAttribute(.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
                 cell.priceLabel.attributedText = attributeString
             }
-            
         }
+        
         if(indexPath.section == 1){
             let homeRental = myHomeRentals[indexPath.row]
             
@@ -188,9 +184,11 @@ class MyListingsTableViewController: UITableViewController {
                 WriteFirebaseData.writeHomesForRent(homeForRent: homeRentalToEdit!)
             }
             
-            let cell = self.tableView.cellForRow(at: indexPath) as! HomeTableViewCell
-            //change this to strikethrough
-            cell.priceLabel.text = "Deactive"
+            self.tableView.reloadData()
+            
+//            let cell = self.tableView.cellForRow(at: indexPath) as! HomeTableViewCell
+//            //change this to strikethrough
+//            cell.priceLabel.text = "Deactive"
         })
         let deleteAction = UIAlertAction(title: "Delete this listing", style: .default, handler: { (action) in
             
@@ -227,7 +225,7 @@ class MyListingsTableViewController: UITableViewController {
             }
         }
         else if(indexPath.section == 1){
-            if (myHomeSales[indexPath.row].active){
+            if (myHomeRentals[indexPath.row].active){
                 editRowAction = UITableViewRowAction(style: .default, title: "Remove", handler:{ (action, indexPath) in
                     tableView.dataSource?.tableView!(tableView, commit: .delete, forRowAt: indexPath)
                     return
@@ -247,6 +245,8 @@ class MyListingsTableViewController: UITableViewController {
     }
     
     func reActivateListing(listing: Listing, indexPath: IndexPath){
+        
+        present(AlertDefault.showAlert(title: "Re-activated", message: "Your listing has been re-activated. It will stay live for another 30 days"), animated: true, completion: nil)
         
         listing.active = true
         WriteFirebaseData.writeListings(listing: listing)

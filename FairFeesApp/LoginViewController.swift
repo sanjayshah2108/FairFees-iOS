@@ -567,6 +567,37 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     @objc func forgotPassword(){
         
+        let forgotPasswordAlert = UIAlertController(title: "Forgot your password?", message: "Enter your email address to reset your password", preferredStyle: .alert)
+        
+        forgotPasswordAlert.addTextField(configurationHandler: {(textField) in
+            textField.text = self.emailTextfield.text
+        })
+        
+        let okayAction = UIAlertAction(title: "Send", style: .default, handler: {(action) in
+            
+            Auth.auth().sendPasswordReset(withEmail: forgotPasswordAlert.textFields![0].text!) { (error) in
+                
+                if error != nil
+                {
+                    let failureAlert = AlertDefault.showAlert(title: "Sorry", message: "Error: \(error!)")
+                    self.present(failureAlert, animated: true, completion: nil)
+                }
+                else
+                {
+                    let successAlert = AlertDefault.showAlert(title: "Sent", message: "We've sent you an email to reset your password")
+                    self.present(successAlert, animated: true, completion: nil)
+                }
+            }
+            
+        })
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        forgotPasswordAlert.addAction(okayAction)
+        forgotPasswordAlert.addAction(cancelAction)
+        present(forgotPasswordAlert, animated: true, completion: nil)
+        
     }
     
     //textField delegate methods

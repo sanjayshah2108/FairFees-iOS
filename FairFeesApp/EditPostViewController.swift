@@ -151,7 +151,12 @@ class EditPostViewController: PostViewController {
         streetNumberTextField.layer.borderWidth = 1
         streetNumberTextField.layer.borderColor = UIColor.gray.cgColor
         streetNumberTextField.layer.cornerRadius = 3
-        streetNumberTextField.text = listingToEdit.address
+        
+        var delimiter = " "
+        var address = listingToEdit.address
+        var components = address?.components(separatedBy: delimiter)
+        streetNumberTextField.text = components?[0]
+        
         streetNumberTextField.textAlignment = .center
         streetNumberTextField.font = UIFont(name: "Avenir-Light", size: 15)
         streetNumberTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +168,18 @@ class EditPostViewController: PostViewController {
         streetNameTextField.layer.borderWidth = 1
         streetNameTextField.layer.borderColor = UIColor.gray.cgColor
         streetNameTextField.layer.cornerRadius = 3
-        streetNameTextField.text = listingToEdit.address
+        streetNameTextField.text = ""
+        
+        delimiter = " "
+        address = listingToEdit.address
+        components = address?.components(separatedBy: delimiter)
+        components?.remove(at: 0)
+        
+        for component in components! {
+            streetNameTextField.text = streetNameTextField.text! + component
+        }
+        
+      
         streetNameTextField.textAlignment = .center
         streetNameTextField.font = UIFont(name: "Avenir-Light", size: 15)
         streetNameTextField.translatesAutoresizingMaskIntoConstraints = false
