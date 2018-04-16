@@ -89,9 +89,9 @@ class ListingsTableViewController: UITableViewController {
             
             cell.leftImageView.sd_setImage(with: storageRef.child(homeSale.photoRefs[0]), placeholderImage: nil)
             cell.leftImageView.contentMode = .scaleToFill
-            cell.nameLabel.text = homeSale.name
+            //cell.nameLabel.text = homeSale.name
             cell.sizeLabel.text = "\(homeSale.size!) SF"
-            cell.addressLabel.text = homeSale.address
+            //cell.addressLabel.text = homeSale.address
             
         }
         
@@ -105,9 +105,9 @@ class ListingsTableViewController: UITableViewController {
             
             cell.leftImageView.sd_setImage(with: storageRef.child(homeRental.photoRefs[0]), placeholderImage: nil)
             cell.leftImageView.contentMode = .scaleToFill
-            cell.nameLabel.text = homeRental.name
+            //cell.nameLabel.text = homeRental.name
             cell.sizeLabel.text = "\(homeRental.size!) SF"
-            cell.addressLabel.text = homeRental.address
+            //cell.addressLabel.text = homeRental.address
         }
         return cell
     }
@@ -130,7 +130,7 @@ class ListingsTableViewController: UITableViewController {
     }
  
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 100
     }
 
     /*

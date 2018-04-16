@@ -35,7 +35,7 @@ class MyListingsTableViewController: UITableViewController {
         tableView.layer.borderColor = UIColor.black.cgColor
         tableView.layer.borderWidth = 3
  
-        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
+        tableView.register(UINib(nibName: "MyListingsTableViewCell", bundle: nil), forCellReuseIdentifier: "myListingsTableViewCell")
 
     }
 
@@ -79,46 +79,46 @@ class MyListingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //Use ProfileListingsTableViewCell if we need a different format
-        let cell = tableView.dequeueReusableCell(withIdentifier: "homeTableViewCell") as! HomeTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myListingsTableViewCell") as! MyListingsTableViewCell
         
         if(indexPath.section == 0){
             
             let homeSale = myHomeSales[indexPath.row]
             
-            cell.bedroomsLabel.text = String(homeSale.bedroomNumber)
-            cell.bathroomsLabel.text = String(homeSale.bathroomNumber)
+            //cell.bedroomsLabel.text = String(homeSale.bedroomNumber)
+            //cell.bathroomsLabel.text = String(homeSale.bathroomNumber)
             cell.nameLabel.text = homeSale.name
             cell.addressLabel.text = homeSale.address
-            cell.sizeLabel.text = String((homeSale.size)!)
+            //cell.sizeLabel.text = String((homeSale.size)!)
             cell.leftImageView.sd_setImage(with: Storage.storage().reference().child((homeSale.photoRefs[0])))
             
             if (homeSale.active){
-                cell.priceLabel.text = String(homeSale.price)
+                //cell.priceLabel.text = String(homeSale.price)
             }
             else {
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: String(homeSale.price))
                 attributeString.addAttribute(.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
-                cell.priceLabel.attributedText = attributeString
+                //cell.priceLabel.attributedText = attributeString
             }
         }
         
         if(indexPath.section == 1){
             let homeRental = myHomeRentals[indexPath.row]
             
-            cell.bedroomsLabel.text = String(homeRental.bedroomNumber)
-            cell.bathroomsLabel.text = String(homeRental.bathroomNumber)
+            //cell.bedroomsLabel.text = String(homeRental.bedroomNumber)
+            //cell.bathroomsLabel.text = String(homeRental.bathroomNumber)
             cell.nameLabel.text = homeRental.name
             cell.addressLabel.text = homeRental.address
-            cell.sizeLabel.text = String((homeRental.size)!)
+            //cell.sizeLabel.text = String((homeRental.size)!)
             cell.leftImageView.sd_setImage(with: Storage.storage().reference().child((homeRental.photoRefs[0])))
             
             if (homeRental.active){
-               cell.priceLabel.text = String(homeRental.monthlyRent)
+               //cell.priceLabel.text = String(homeRental.monthlyRent)
             }
             else {
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: String(homeRental.monthlyRent))
                 attributeString.addAttribute(.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
-                cell.priceLabel.attributedText = attributeString
+                //cell.priceLabel.attributedText = attributeString
             }
         }
         
@@ -140,7 +140,7 @@ class MyListingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

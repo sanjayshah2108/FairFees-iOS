@@ -1,29 +1,21 @@
 //
-//  HomeTableViewCell.swift
+//  MyListingsTableViewCell.swift
 //  FairFeesApp
 //
-//  Created by Sanjay Shah on 2018-03-07.
+//  Created by Sanjay Shah on 2018-04-16.
 //  Copyright © 2018 Fair Fees. All rights reserved.
 //
 
 import UIKit
 
-class HomeTableViewCell: UITableViewCell {
+class MyListingsTableViewCell: UITableViewCell {
+
     
     @IBOutlet weak var leftImageView: UIImageView!
     
-    //@IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     
-    //@IBOutlet weak var addressLabel: UILabel!
-    
-    @IBOutlet weak var priceLabel: UILabel!
-    
-    @IBOutlet weak var sizeLabel: UILabel!
-    
-    @IBOutlet weak var bedroomsLabel: UILabel!
-    
-    @IBOutlet weak var bathroomsLabel: UILabel!
-    
+    @IBOutlet weak var nameLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
