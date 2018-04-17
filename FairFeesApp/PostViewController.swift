@@ -75,7 +75,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var mainImageViewTopConstraintInStep: NSLayoutConstraint!
     var mainImageViewTopConstraintInPreview: NSLayoutConstraint!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -1008,8 +1007,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
             present(alert, animated: true, completion: nil)
             return false
         }
-        
-        
         
         return true        
     }
