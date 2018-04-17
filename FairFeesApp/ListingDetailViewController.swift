@@ -12,7 +12,7 @@ import GoogleMaps
 import FirebaseStorageUI
 import MessageUI
 
-class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailComposeViewControllerDelegate {
+class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrollViewDelegate, MFMailComposeViewControllerDelegate {
 
     var navigationBarHeight: CGFloat!
     
@@ -40,6 +40,9 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
     var callButton: UIButton!
     var emailButton: UIButton!
     var compareButton: UIButton!
+    
+    var detailsScrollView: UIScrollView!
+    var scrollContentView: UIView!
     
     var featuresView: UIView!
     var featuresHorizontalStackView: UIStackView!
@@ -85,11 +88,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         
         setupImageView()
         setupButtons()
+        setupScrollView()
         setupLabels()
         setupMapView()
         
         setupConstraints()
-        view.layoutIfNeeded()
+        //view.layoutIfNeeded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +101,14 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         self.navigationController?.navigationBar.tintColor = UIColor.white
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+       // scrollContentView.layoutIfNeeded() //set a frame based on constraints
+        detailsScrollView.contentSize = CGSize(width: scrollContentView.frame.width, height: scrollContentView.frame.height)
+        detailsScrollView.setNeedsLayout()
+        
     }
     
 
@@ -175,6 +187,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         
         setupContactButtons()
     }
+
     
     func setupContactButtons(){
         contactButtonsStackView = UIStackView()
@@ -206,22 +219,31 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         
     }
     
-
-    func setupLabels(){
+    func setupScrollView(){
+        
+        detailsScrollView = UIScrollView()
+        detailsScrollView.delegate = self
+        detailsScrollView.translatesAutoresizingMaskIntoConstraints = false
+        detailsScrollView.backgroundColor = .black
+        //detailScrollView.contentSize = CGSize(width: view.frame.width, height: 500)
+        view.addSubview(detailsScrollView)
+        
+        //contentScrollView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        scrollContentView = UIView()
+        scrollContentView.backgroundColor = UIColor.white
+        scrollContentView.translatesAutoresizingMaskIntoConstraints = false
+        detailsScrollView.addSubview(scrollContentView)
         
         featuresView = UIView()
         featuresView.backgroundColor = UIColor.white
         featuresView.layer.borderWidth = 1
         featuresView.layer.borderColor = UIProperties.sharedUIProperties.primaryBlackColor.cgColor
         featuresView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(featuresView)
-        
-//        addressLabel = UILabel()
-//        addressLabel.textAlignment = .center
-//        addressLabel.translatesAutoresizingMaskIntoConstraints = false
-//        addressLabel.backgroundColor = UIColor.white
-//        addressLabel.text = currentListing.address
-//        view.addSubview(addressLabel)
+        scrollContentView.addSubview(featuresView)
+
+    }
+
+    func setupLabels(){
         
         priceLabel = UILabel()
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -235,8 +257,9 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         descriptionLabel.textAlignment = .center
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.backgroundColor = UIColor.white
-        featuresView.addSubview(descriptionLabel)
+        scrollContentView.addSubview(descriptionLabel)
         descriptionLabel.text = currentListing.listingDescription
+        
     }
     
     func setupStackView(){
@@ -247,7 +270,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         featuresHorizontalStackView.layer.borderWidth = 1
         featuresHorizontalStackView.layer.borderColor = UIColor.black.cgColor
         featuresHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(featuresHorizontalStackView)
+        featuresView.addSubview(featuresHorizontalStackView)
         
         sizeLabel = UILabel()
         bedroomLabel = UILabel()
@@ -324,8 +347,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         distanceLabel.isHidden = true
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         mapView.addSubview(distanceLabel)
-        
-        
+    
         
 //        mapView = MKMapView()
 //        mapView.delegate = MapViewDelegate.theMapViewDelegate
@@ -343,10 +365,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
     func setupConstraints(){
         
         //imageViewCarousel
-        NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: -navigationBarHeight).isActive = true
+        NSLayoutConstraint(item: imageViewCarousel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: imageViewCarousel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height/3).isActive = true
+        NSLayoutConstraint(item: imageViewCarousel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height/3).isActive = true
         
         
         //imageViewPageControl
@@ -355,28 +377,38 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         NSLayoutConstraint(item: imageViewPageControl, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         NSLayoutConstraint(item: imageViewPageControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
+        
+        //scrollView
+        NSLayoutConstraint(item: detailsScrollView, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: detailsScrollView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: detailsScrollView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: detailsScrollView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 500).isActive = true
+        
+        //scrollContentView
+        NSLayoutConstraint(item: scrollContentView, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: scrollContentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.width).isActive = true
+        NSLayoutConstraint(item: scrollContentView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        //NSLayoutConstraint(item: scrollContentView, attribute: .bottom, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
         //featuresView
-        NSLayoutConstraint(item: featuresView, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: featuresView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: featuresView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: featuresView, attribute: .top, relatedBy: .equal, toItem: scrollContentView, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: featuresView, attribute: .leading, relatedBy: .equal, toItem: scrollContentView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: featuresView, attribute: .trailing, relatedBy: .equal, toItem: scrollContentView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        
         //NSLayoutConstraint(item: featuresView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         
-        //addressLabel
-//        NSLayoutConstraint(item: addressLabel, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: addressLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: addressLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: addressLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
-        
+
         //priceLabel
         NSLayoutConstraint(item: priceLabel, attribute: .top, relatedBy: .equal, toItem: featuresView, attribute: .top, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: priceLabel, attribute: .leading, relatedBy: .equal, toItem: featuresView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: priceLabel, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: priceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
+        
         //horizontalStackView
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .top, relatedBy: .equal, toItem: priceLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .leading, relatedBy: .equal, toItem: featuresView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .bottom, relatedBy: .equal, toItem: featuresView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
@@ -404,11 +436,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: descriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .equal , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 90).isActive = true
+        NSLayoutConstraint(item: descriptionLabel, attribute: .bottom, relatedBy: .equal , toItem: scrollContentView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        //NSLayoutConstraint(item: descriptionLabel, attribute: .height, relatedBy: .greaterThanOrEqual , toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
     
         
         //posterButton
-        NSLayoutConstraint(item: posterButton, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: posterButton, attribute: .top, relatedBy: .equal, toItem: detailsScrollView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: posterButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: posterButton, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: posterButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
@@ -441,6 +474,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, MFMailC
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: contactButtonsStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        
     }
     
     @objc func shareListing(){
