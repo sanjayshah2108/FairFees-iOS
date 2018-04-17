@@ -224,7 +224,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         detailsScrollView = UIScrollView()
         detailsScrollView.delegate = self
         detailsScrollView.translatesAutoresizingMaskIntoConstraints = false
-        detailsScrollView.backgroundColor = .black
+        detailsScrollView.backgroundColor = .white
         //detailScrollView.contentSize = CGSize(width: view.frame.width, height: 500)
         view.addSubview(detailsScrollView)
         

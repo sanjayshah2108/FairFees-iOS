@@ -15,6 +15,8 @@ class FilterViewController: UIViewController {
     //var filterViewHeight: CGFloat!
     var theHomeViewController: HomeViewController!
     
+    var logoImageView: UIImageView!
+    var promptLabel: UILabel!
     var buyRentSegmentedControl: UISegmentedControl!
     var priceFilterSlider: RangeSlider!
     var priceFilterResultLabel: UILabel!
@@ -28,10 +30,52 @@ class FilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupLogo()
         setupFilters()
+        setupLabels()
+        setupButtons()
         setupConstraints()
     }
 
+    func setupLogo(){
+        
+        logoImageView = UIImageView()
+        logoImageView.backgroundColor = view.tintColor
+        logoImageView.layer.cornerRadius = logoImageView.frame.width/2
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoImageView)
+    }
+    
+    func setupLabels(){
+        promptLabel = UILabel()
+        promptLabel.text = "What are you looking for?"
+        promptLabel.textAlignment = .center
+        promptLabel.textColor = UIColor.black
+        promptLabel.font = UIFont(name: "Avenir-Light", size: 15)
+        promptLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(promptLabel)
+        
+        priceFilterResultLabel = UILabel()
+        priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to $\(Int(priceFilterSlider.upperValue))"
+        priceFilterResultLabel.font = UIFont(name: "GillSans-Light", size: 12)
+        priceFilterResultLabel.translatesAutoresizingMaskIntoConstraints = false
+        //priceFilterResultLabel.isHidden = true
+        view.addSubview(priceFilterResultLabel)
+        
+        noOfBedroomsLabel = UILabel()
+        noOfBedroomsLabel.text = "No. of Bedrooms"
+        noOfBedroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
+        noOfBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(noOfBedroomsLabel)
+        
+        
+        listingsCountLabel = UILabel()
+        listingsCountLabel.text = String(theHomeViewController.listingsToPresent.count) + " listings found"
+        listingsCountLabel.font = UIFont(name: "GillSans-Light", size: 15)
+        listingsCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(listingsCountLabel)
+        
+    }
     
     func setupFilters(){
 
@@ -50,23 +94,10 @@ class FilterViewController: UIViewController {
         priceFilterSlider.addTarget(self, action: #selector(applyFilters), for: .valueChanged)
         priceFilterSlider.maximumValue = 10000000
         priceFilterSlider.minimumValue = 500
-        priceFilterSlider.lowerValue = 1000
-        priceFilterSlider.upperValue = 1000000
+        priceFilterSlider.lowerValue = 100000
+        priceFilterSlider.upperValue = 5000000
         priceFilterSlider.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(priceFilterSlider)
-        
-        priceFilterResultLabel = UILabel()
-        priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to $\(Int(priceFilterSlider.upperValue))"
-        priceFilterResultLabel.font = UIFont(name: "GillSans-Light", size: 12)
-        priceFilterResultLabel.translatesAutoresizingMaskIntoConstraints = false
-        //priceFilterResultLabel.isHidden = true
-        view.addSubview(priceFilterResultLabel)
-        
-        noOfBedroomsLabel = UILabel()
-        noOfBedroomsLabel.text = "No. of Bedrooms"
-        noOfBedroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
-        noOfBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(noOfBedroomsLabel)
         
         noOfBedroomsSegmentedControl = UISegmentedControl()
         noOfBedroomsSegmentedControl.frame = CGRect.zero
@@ -94,17 +125,15 @@ class FilterViewController: UIViewController {
         //        noOfBathroomsSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         //        filterView.addSubview(noOfBathroomsSegmentedControl)
         
-        listingsCountLabel = UILabel()
-        listingsCountLabel.text = String(theHomeViewController.listingsToPresent.count) + " listings found"
-        listingsCountLabel.font = UIFont(name: "GillSans-Light", size: 15)
-        listingsCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(listingsCountLabel)
-        
+
+    }
+    
+    func setupButtons(){
         applyFilterButton = UIButton()
         applyFilterButton.addTarget(self, action: #selector(applyFiltersAndDismiss), for: .touchUpInside)
         applyFilterButton.layer.cornerRadius = 5
         applyFilterButton.setTitle("Apply Filters", for: .normal)
-        applyFilterButton.backgroundColor = UIColor.blue
+        applyFilterButton.backgroundColor = view.tintColor
         applyFilterButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(applyFilterButton)
         
@@ -112,7 +141,7 @@ class FilterViewController: UIViewController {
         resetFilterButton.addTarget(self, action: #selector(resetFilters), for: .touchUpInside)
         resetFilterButton.layer.cornerRadius = 5
         resetFilterButton.setTitle("Reset Filters", for: .normal)
-        resetFilterButton.backgroundColor = UIColor.blue
+        resetFilterButton.backgroundColor = view.tintColor
         resetFilterButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(resetFilterButton)
         
@@ -120,7 +149,7 @@ class FilterViewController: UIViewController {
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         cancelButton.layer.cornerRadius = 5
         cancelButton.setTitle("Cancel", for: .normal)
-        cancelButton.backgroundColor = UIColor.blue
+        cancelButton.backgroundColor = view.tintColor
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cancelButton)
         
@@ -133,10 +162,21 @@ class FilterViewController: UIViewController {
     
     func setupConstraints(){
         
+        //logoImageView
+        NSLayoutConstraint(item: logoImageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 70).isActive = true
+        NSLayoutConstraint(item: logoImageView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: logoImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
+        NSLayoutConstraint(item: logoImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
+        
+        
+        //promptLabel
+        NSLayoutConstraint(item: promptLabel, attribute: .top, relatedBy: .equal, toItem: logoImageView, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: promptLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        
         //buyRentSegmentedControl
-        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: 200).isActive = true
-        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .top, relatedBy: .equal, toItem: promptLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 150).isActive = true
+        NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: buyRentSegmentedControl, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
         
         
