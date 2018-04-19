@@ -38,6 +38,22 @@ class MyListingsTableViewController: UITableViewController {
         tableView.register(UINib(nibName: "MyListingsTableViewCell", bundle: nil), forCellReuseIdentifier: "myListingsTableViewCell")
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        myHomeSales = []
+        myHomeRentals = []
+        
+        for listing in (FirebaseData.sharedInstance.currentUser?.listings)! {
+            if (listing is HomeSale){
+                myHomeSales.append(listing as! HomeSale)
+            }
+            else if (listing is HomeRental){
+                myHomeRentals.append(listing as! HomeRental)
+            }
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

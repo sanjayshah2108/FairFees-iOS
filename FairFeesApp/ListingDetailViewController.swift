@@ -602,6 +602,25 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     
     @objc func addListingForComparison(){
         
+        let homeVC = self.navigationController?.viewControllers[0] as! HomeViewController
+        homeVC.listingsToCompare.append(currentListing)
+        
+        let compareListingAlert = UIAlertController(title: "Successfully Added", message: "Would you like to view all?", preferredStyle: .alert)
+        
+        let compareAction = UIAlertAction(title: "Yes", style: .default, handler: {(action) in
+      
+            let compareVC = CompareListingsViewController()
+            compareVC.listingsArray = homeVC.listingsToCompare
+            self.present(compareVC, animated: true, completion: nil)
+    
+        })
+        
+        let exploreAction = UIAlertAction(title: "No, keep exploring", style: .default, handler: nil)
+        
+        compareListingAlert.addAction(compareAction)
+        compareListingAlert.addAction(exploreAction)
+        
+        present(compareListingAlert, animated: true, completion: nil)
     }
     
     
