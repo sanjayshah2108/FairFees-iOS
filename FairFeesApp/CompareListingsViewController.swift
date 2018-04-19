@@ -32,18 +32,21 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     var rightListingBathroomsLabel: UILabel!
     
     var mapView: GMSMapView!
+    var polylinesToShow: [GMSPolyline]!
+    var leftPolyline: GMSPolyline!
+    var leftDistanceLabel: UILabel!
+    var rightPolyline: GMSPolyline!
+    var rightDistanceLabel: UILabel!
     
-    
+    var polylineDict: [String: GMSPolyline]!
+
     var bottomToolbar: UIToolbar!
     var exploreButton: UIBarButtonItem!
     var compareButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
-        statusBarView.backgroundColor = UIColor.white
-        view.addSubview(statusBarView)
+      
         
         view.backgroundColor = UIColor.white
         
@@ -57,9 +60,15 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         
         setupBottomToolbar()
         
+        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+        statusBarView.backgroundColor = UIColor.white
+        view.addSubview(statusBarView)
+        
         setupConstraints()
         setupLeftListingConstraints()
         setupRightListingConstraints()
+        
+        
     }
     
     func setupChildViewControllers(){
@@ -69,6 +78,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         view.addSubview(leftListingContainerView)
         
         leftListingCompareTableViewController = CompareListingsTableViewController()
+        leftListingCompareTableViewController.tableViewID = 0
         leftListingCompareTableViewController.listingsArray = listingsArray
         //addViewControllerAsChildViewController(childViewController: leftListingCompareTableViewController)
         addChildViewController(leftListingCompareTableViewController)
@@ -77,6 +87,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         leftListingCompareTableViewController.didMove(toParentViewController: self)
         
         rightListingCompareTableViewController = CompareListingsTableViewController()
+        rightListingCompareTableViewController.tableViewID = 1
         rightListingCompareTableViewController.listingsArray = listingsArray
         //addViewControllerAsChildViewController(childViewController: rightListingCompareTableViewController)
         addChildViewController(rightListingCompareTableViewController)
@@ -164,6 +175,8 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     
     func setupMapView(){
         
+        polylinesToShow = []
+        
         let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 12.0)
         mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         mapView.delegate = MapViewDelegate.theMapViewDelegate
@@ -176,6 +189,22 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         mapView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(mapView)
+        
+        leftDistanceLabel = UILabel()
+        leftDistanceLabel.backgroundColor = UIColor.white
+        leftDistanceLabel.layer.cornerRadius = 10
+        leftDistanceLabel.textAlignment = .center
+        leftDistanceLabel.isHidden = true
+        leftDistanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        mapView.addSubview(leftDistanceLabel)
+        
+        rightDistanceLabel = UILabel()
+        rightDistanceLabel.backgroundColor = UIColor.white
+        rightDistanceLabel.layer.cornerRadius = 10
+        rightDistanceLabel.textAlignment = .center
+        rightDistanceLabel.isHidden = true
+        rightDistanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        mapView.addSubview(rightDistanceLabel)
         
     }
     
@@ -229,6 +258,18 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: bottomToolbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        
+        //leftDistanceLabel
+        NSLayoutConstraint(item: leftDistanceLabel, attribute: .leading, relatedBy: .equal, toItem: mapView, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: leftDistanceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 70).isActive = true
+        NSLayoutConstraint(item: leftDistanceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: leftDistanceLabel, attribute: .bottom, relatedBy: .equal, toItem: mapView, attribute: .bottom, multiplier: 1, constant: -10).isActive = true
+        
+        //rightDistanceLabel
+        NSLayoutConstraint(item: rightDistanceLabel, attribute: .leading, relatedBy: .equal, toItem: mapView, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+        NSLayoutConstraint(item: rightDistanceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 70).isActive = true
+        NSLayoutConstraint(item: rightDistanceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: rightDistanceLabel, attribute: .bottom, relatedBy: .equal, toItem: mapView, attribute: .bottom, multiplier: 1, constant: -10).isActive = true
         
         
         //bottomToolbar

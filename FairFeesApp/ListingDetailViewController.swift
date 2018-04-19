@@ -646,6 +646,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
                 NSLayoutConstraint.deactivate([self.minimizedMapTopConstraint, self.minimizedMapHeightConstraint])
                 NSLayoutConstraint.activate([self.enlargedMapTopConstraint, self.enlargedMapHeightConstraint])
                 
+                DirectionsManager.theDirectionsManager.activePolylines = []
                 DirectionsManager.theDirectionsManager.getPolylineRoute(from: originLocation, to: destinationLocation!)
                 
                 self.view.layoutIfNeeded()

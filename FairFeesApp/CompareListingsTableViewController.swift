@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import Firebase
 
 class CompareListingsTableViewController: UITableViewController {
 
     var listingsArray: [Listing]!
     var chosenRowIndex: IndexPath!
+    
+    //left TableView is 0
+    //right TableView is 1
+    var tableViewID: Int!
+    
     
     var leftListingImageView: UIImageView!
     var leftListingPriceLabel: UILabel!
@@ -55,6 +61,8 @@ class CompareListingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let storageRef = Storage.storage().reference()
+        
         if (indexPath == chosenRowIndex){
             
             //CHANGE THIS TO new prototype Cell
@@ -75,8 +83,8 @@ class CompareListingsTableViewController: UITableViewController {
                 cell.bathroomsLabel.text = "\(homeRental.bathroomNumber!) ba"
             }
             
-            cell.sizeLabel.text = String((listing.size)!)
-            cell.mainImageView.backgroundColor = UIColor.black
+            cell.sizeLabel.text = String((listing.size)!) + "sqft"
+            cell.mainImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]))
             
             return cell
         }
@@ -85,9 +93,9 @@ class CompareListingsTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsSmallTableViewCell", for: indexPath) as! CompareListingsSmallTableViewCell
             
         
-            cell.leftImageView.backgroundColor = UIColor.blue
-        
             let listing = listingsArray[indexPath.row]
+            
+            cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]))
         
             if (listing is HomeSale){
                 let homeSale = listing as! HomeSale
@@ -114,8 +122,81 @@ class CompareListingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         chosenRowIndex = indexPath
         
+        //DirectionsManager
+        
         tableView.reloadData()
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        
+        let parentVC = parent as! CompareListingsViewController
+      
+        DirectionsManager.theDirectionsManager.mapView = parentVC.mapView
+        
+        
+        //if one or both of the tableViews havent been selected, we need to check, and set the activePolylines
+        if (parentVC.leftPolyline != nil) && (parentVC.rightPolyline != nil){
+            DirectionsManager.theDirectionsManager.activePolylines = [parentVC.leftPolyline, parentVC.rightPolyline]
+        }
+            
+        else if(parentVC.leftPolyline != nil){
+            DirectionsManager.theDirectionsManager.activePolylines = [parentVC.leftPolyline]
+        }
+        else if (parentVC.rightPolyline != nil){
+            DirectionsManager.theDirectionsManager.activePolylines = [parentVC.rightPolyline]
+        }
+        else {
+            DirectionsManager.theDirectionsManager.activePolylines = []
+        }
+        
+        
+        //if the left table was clicked on, remove the old leftPolyline
+        if (tableViewID == 0){
+            
+          DirectionsManager.theDirectionsManager.distanceLabel = parentVC.leftDistanceLabel
+            
+            if (parentVC.leftPolyline != nil) {
+                parentVC.leftPolyline.map = nil
+               // DirectionsManager.theDirectionsManager.activePolylines.removeAll()
+
+
+            }
+        }
+            
+        //if the right table was clicked on, remove the old rightPolyline
+        else if (tableViewID == 1){
+            
+            DirectionsManager.theDirectionsManager.distanceLabel = parentVC.rightDistanceLabel
+            
+            if (parentVC.rightPolyline != nil) {
+                parentVC.rightPolyline.map = nil
+               // DirectionsManager.theDirectionsManager.activePolylines.removeAll()
+
+            }
+        }
+        
+        DirectionsManager.theDirectionsManager.getPolylineRoute(from: LocationManager.theLocationManager.currentLocation, to: listingsArray[indexPath.row].location)
+    
+        //addObserver
+        NotificationCenter.default.addObserver(self, selector: #selector(addedPolyline), name: NSNotification.Name(rawValue: "polylineAddedKey"), object: nil)
+        
+      
+        
+    }
+    
+    @objc func addedPolyline(){
+        
+        let parentVC = parent as! CompareListingsViewController
+        
+        if (tableViewID == 0){
+            parentVC.leftPolyline = DirectionsManager.theDirectionsManager.polylineToShow
+        }
+            
+        else if (tableViewID == 1){
+            parentVC.rightPolyline = DirectionsManager.theDirectionsManager.polylineToShow
+        }
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "polylineAddedKey"), object: nil)
+
+        
     }
  
 

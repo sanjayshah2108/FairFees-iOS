@@ -27,7 +27,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gg3-nu-YMF" userLabel="PriceLabel">
-                        <rect key="frame" x="105" y="25" width="191" height="21"/>
+                        <rect key="frame" x="82.5" y="25" width="213.5" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -35,7 +35,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Gg3-nu-YMF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UcX-b8-ZyP"/>
-                    <constraint firstItem="Gg3-nu-YMF" firstAttribute="leading" secondItem="y8y-Ik-QQ9" secondAttribute="trailing" constant="33.5" id="VO9-7Q-Wz0"/>
+                    <constraint firstItem="Gg3-nu-YMF" firstAttribute="leading" secondItem="y8y-Ik-QQ9" secondAttribute="trailing" constant="11" id="VO9-7Q-Wz0"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Gg3-nu-YMF" secondAttribute="trailing" constant="8" id="W9a-ok-NuI"/>
                     <constraint firstAttribute="bottom" secondItem="y8y-Ik-QQ9" secondAttribute="bottom" id="gRZ-1P-pFs"/>
                     <constraint firstItem="y8y-Ik-QQ9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="tA9-tb-hRR"/>

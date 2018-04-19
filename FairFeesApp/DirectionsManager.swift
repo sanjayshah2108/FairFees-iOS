@@ -17,6 +17,7 @@ class DirectionsManager: NSObject {
     var mapView: GMSMapView!
     var distanceLabel: UILabel!
     var activePolylines: [GMSPolyline]!
+    var polylineToShow: GMSPolyline!
     
     
     func getMidpoint(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
@@ -38,6 +39,8 @@ class DirectionsManager: NSObject {
     
     }
     func getPolylineRoute(from source: CLLocation, to destination: CLLocation){
+        
+    
         
         let sourceCoordinate = source.coordinate
         let destinationCoordinate = destination.coordinate
@@ -75,7 +78,7 @@ class DirectionsManager: NSObject {
                             
                             let points = dictPolyline?.object(forKey: "points") as? String
                             
-                            self.showPath(polyStr: points!)
+                           self.showPath(polyStr: points!)
                             
                 
                             self.getPathDistance(from: source, to: destination) { (distance) in
@@ -92,6 +95,9 @@ class DirectionsManager: NSObject {
                                 
                                 let update = GMSCameraUpdate.setTarget(midPointCoordinate, zoom: 11)
                                 self.mapView.animate(with: update)
+                                
+            
+    
                             }
                         }
                         else {
@@ -114,7 +120,7 @@ class DirectionsManager: NSObject {
     
     func showPath(polyStr :String){
         
-        activePolylines = []
+        //activePolylines = []
         
         let path = GMSPath(fromEncodedPath: polyStr)
         let polyline = GMSPolyline(path: path)
@@ -122,14 +128,20 @@ class DirectionsManager: NSObject {
 
         polyline.strokeColor = UIColor.blue
         polyline.map = mapView
+        polylineToShow = polyline
         
-        activePolylines.append(polyline)
+        //activePolylines.append(polyline)
+        
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "polylineAddedKey"), object: nil)
+        
+    
+        
     }
     
     func removePath(){
         
-        activePolylines[0].map = nil
-        activePolylines.removeAll()
+        polylineToShow.map = nil
+        //activePolylines.removeAll()
     }
     
     func getPathDistance(from source: CLLocation, to destination: CLLocation, completion: @escaping(String) -> Void) {
