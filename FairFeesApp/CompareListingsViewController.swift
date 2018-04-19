@@ -41,6 +41,10 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+        statusBarView.backgroundColor = UIColor.white
+        view.addSubview(statusBarView)
+        
         view.backgroundColor = UIColor.white
         
         setupLeftListing()

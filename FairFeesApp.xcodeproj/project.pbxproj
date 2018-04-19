@@ -178,8 +178,10 @@
 		CED64EA32087AB2D0091DFF4 /* GMUPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = CED64E8A2087AB2D0091DFF4 /* GMUPolygon.m */; };
 		CED64EA42087AB2D0091DFF4 /* GMUStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED64E8C2087AB2D0091DFF4 /* GMUStyle.m */; };
 		CED64EA62087F8FD0091DFF4 /* CompareListingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED64EA52087F8FC0091DFF4 /* CompareListingsTableViewController.swift */; };
-		CED64EA92088006D0091DFF4 /* CompareListingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED64EA72088006D0091DFF4 /* CompareListingsTableViewCell.swift */; };
-		CED64EAA2088006D0091DFF4 /* CompareListingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED64EA82088006D0091DFF4 /* CompareListingsTableViewCell.xib */; };
+		CED64EA92088006D0091DFF4 /* CompareListingsSmallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED64EA72088006D0091DFF4 /* CompareListingsSmallTableViewCell.swift */; };
+		CED64EAA2088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED64EA82088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib */; };
+		CED64EB0208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED64EAE208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift */; };
+		CED64EB1208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED64EAF208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib */; };
 		D32A21875248C9799A303988 /* Pods_FairFeesAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FB8A529188D490A800E233 /* Pods_FairFeesAppTests.framework */; };
 		DE459E064610D0977ABD5CFB /* Pods_FairFeesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6121D021F4B3A54D6AF1A32A /* Pods_FairFeesApp.framework */; };
 /* End PBXBuildFile section */
@@ -397,8 +399,10 @@
 		CED64E8B2087AB2D0091DFF4 /* GMUStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMUStyle.h; sourceTree = "<group>"; };
 		CED64E8C2087AB2D0091DFF4 /* GMUStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMUStyle.m; sourceTree = "<group>"; };
 		CED64EA52087F8FC0091DFF4 /* CompareListingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareListingsTableViewController.swift; sourceTree = "<group>"; };
-		CED64EA72088006D0091DFF4 /* CompareListingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareListingsTableViewCell.swift; sourceTree = "<group>"; };
-		CED64EA82088006D0091DFF4 /* CompareListingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareListingsTableViewCell.xib; sourceTree = "<group>"; };
+		CED64EA72088006D0091DFF4 /* CompareListingsSmallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareListingsSmallTableViewCell.swift; sourceTree = "<group>"; };
+		CED64EA82088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareListingsSmallTableViewCell.xib; sourceTree = "<group>"; };
+		CED64EAE208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareListingsLargeTableViewCell.swift; sourceTree = "<group>"; };
+		CED64EAF208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareListingsLargeTableViewCell.xib; sourceTree = "<group>"; };
 		D54D2B7670EE1DE3674DF20F /* Pods_FairFeesAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FairFeesAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -577,6 +581,8 @@
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
 				CE3D4129207822950099A895 /* AlertDefault.swift */,
+				CED64EAE208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift */,
+				CED64EAF208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib */,
 				CE3D412820771C870099A895 /* MarkerManager.h */,
 				CE3D412620771AB40099A895 /* CustomGMUClusterRenderer.swift */,
 				CE3D41242076EF1A0099A895 /* MapMarker.swift */,
@@ -605,8 +611,8 @@
 				CE51485520506A350021DB67 /* ListingDetailViewController.swift */,
 				CED64DE2208671290091DFF4 /* CompareListingsViewController.swift */,
 				CED64EA52087F8FC0091DFF4 /* CompareListingsTableViewController.swift */,
-				CED64EA72088006D0091DFF4 /* CompareListingsTableViewCell.swift */,
-				CED64EA82088006D0091DFF4 /* CompareListingsTableViewCell.xib */,
+				CED64EA72088006D0091DFF4 /* CompareListingsSmallTableViewCell.swift */,
+				CED64EA82088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib */,
 				CE2D6E572069767800104EB6 /* UserDetailViewController.swift */,
 				CE3D412F207E5F470099A895 /* ListingsTableViewController.swift */,
 				CE3E28A620851D9E00187767 /* MyListingsTableViewCell.swift */,
@@ -920,7 +926,7 @@
 				CE7F7DFB204DD32D00548D5F /* Assets.xcassets in Resources */,
 				292304F42054D844000ECFCF /* 00i0i_i58WRgAT0E5_1200x900.jpg in Resources */,
 				292304FB2054D844000ECFCF /* 00U0U_ALiRuz1mTx_1200x900.jpg in Resources */,
-				CED64EAA2088006D0091DFF4 /* CompareListingsTableViewCell.xib in Resources */,
+				CED64EAA2088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib in Resources */,
 				292304FA2054D844000ECFCF /* 00f0f_g4KXDGQh7wV_1200x900.jpg in Resources */,
 				292304F32054D844000ECFCF /* 00a0a_bHlb7rvOfrt_1200x900.jpg in Resources */,
 				292305062054D844000ECFCF /* 00404_8OmXsbv4SED_1200x900.jpg in Resources */,
@@ -939,6 +945,7 @@
 				292305002054D844000ECFCF /* 00N0N_dC0hJzZuUZr_1200x900.jpg in Resources */,
 				292305052054D844000ECFCF /* 00w0w_e8JqNq4nDgI_1200x900.jpg in Resources */,
 				2923050C2054D844000ECFCF /* 00B0B_79jyoTMowLD_1200x900.jpg in Resources */,
+				CED64EB1208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib in Resources */,
 				CE5148642054C0560021DB67 /* PostPhotoCollectionViewCell.xib in Resources */,
 				CE7F7DF9204DD32D00548D5F /* Main.storyboard in Resources */,
 				292304F52054D844000ECFCF /* 00l0l_38ixPXcxZhW_1200x900.jpg in Resources */,
@@ -1181,6 +1188,7 @@
 				CE6EFD2320619293009AFF6A /* WriteFirebaseData.swift in Sources */,
 				CED64EA12087AB2D0091DFF4 /* GMUPlacemark.m in Sources */,
 				CED64DE3208671290091DFF4 /* CompareListingsViewController.swift in Sources */,
+				CED64EB0208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift in Sources */,
 				CED64E8D2087AB2D0091DFF4 /* GMUGradient.m in Sources */,
 				CE6EFD2B2061994A009AFF6A /* ReadFirebaseData.swift in Sources */,
 				CE6EFD192060845D009AFF6A /* ImageManager.swift in Sources */,
@@ -1207,7 +1215,7 @@
 				CED64E992087AB2D0091DFF4 /* GQTPointQuadTreeChild.m in Sources */,
 				CE51485E205200880021DB67 /* PostMapViewController.swift in Sources */,
 				CED64E9A2087AB2D0091DFF4 /* GMUGeoJSONParser.m in Sources */,
-				CED64EA92088006D0091DFF4 /* CompareListingsTableViewCell.swift in Sources */,
+				CED64EA92088006D0091DFF4 /* CompareListingsSmallTableViewCell.swift in Sources */,
 				CED64EA32087AB2D0091DFF4 /* GMUPolygon.m in Sources */,
 				CED64E902087AB2D0091DFF4 /* GMUGridBasedClusterAlgorithm.m in Sources */,
 				CE6EFD3D20634D8B009AFF6A /* EditPostViewController.swift in Sources */,

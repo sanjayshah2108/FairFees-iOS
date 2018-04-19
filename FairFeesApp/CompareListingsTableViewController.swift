@@ -24,7 +24,8 @@ class CompareListingsTableViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.register(UINib(nibName: "CompareListingsTableViewCell", bundle: nil), forCellReuseIdentifier: "compareListingsTableViewCell")
+        tableView.register(UINib(nibName: "CompareListingsSmallTableViewCell", bundle: nil), forCellReuseIdentifier: "compareListingsSmallTableViewCell")
+        tableView.register(UINib(nibName: "CompareListingsLargeTableViewCell", bundle: nil), forCellReuseIdentifier: "compareListingsLargeTableViewCell")
         
  
         // Uncomment the following line to preserve selection between presentations
@@ -57,16 +58,32 @@ class CompareListingsTableViewController: UITableViewController {
         if (indexPath == chosenRowIndex){
             
             //CHANGE THIS TO new prototype Cell
-             let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsTableViewCell", for: indexPath) as! CompareListingsTableViewCell
+             let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsLargeTableViewCell", for: indexPath) as! CompareListingsLargeTableViewCell
             
-            cell.leftImageView.backgroundColor = UIColor.blue
-            cell.priceLabel.text = "test"
+             let listing = listingsArray[indexPath.row]
+            
+            if (listing is HomeSale){
+                let homeSale = listing as! HomeSale
+                cell.priceLabel.text = "$\(homeSale.price!)"
+                cell.bedroomsLabel.text = "\(homeSale.bedroomNumber!) br"
+                cell.bathroomsLabel.text = "\(homeSale.bathroomNumber!) ba"
+            }
+            else if (listing is HomeRental){
+                let homeRental = listing as! HomeRental
+                cell.priceLabel.text = "$\(homeRental.monthlyRent!)/month"
+                cell.bedroomsLabel.text = "\(homeRental.bedroomNumber!) br"
+                cell.bathroomsLabel.text = "\(homeRental.bathroomNumber!) ba"
+            }
+            
+            cell.sizeLabel.text = String((listing.size)!)
+            cell.mainImageView.backgroundColor = UIColor.black
             
             return cell
         }
         else {
         
-            let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsTableViewCell", for: indexPath) as! CompareListingsTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsSmallTableViewCell", for: indexPath) as! CompareListingsSmallTableViewCell
+            
         
             cell.leftImageView.backgroundColor = UIColor.blue
         
@@ -97,6 +114,8 @@ class CompareListingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         chosenRowIndex = indexPath
         
+        tableView.reloadData()
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
  
 

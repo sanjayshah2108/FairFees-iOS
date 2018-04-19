@@ -1,5 +1,5 @@
 //
-//  CompareListingsTableViewCell.swift
+//  CompareListingsLargeTableViewCell.swift
 //  FairFeesApp
 //
 //  Created by Sanjay Shah on 2018-04-18.
@@ -8,13 +8,15 @@
 
 import UIKit
 
-class CompareListingsTableViewCell: UITableViewCell {
-
+class CompareListingsLargeTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var leftImageView: UIImageView!
-    
+    @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var sizeLabel: UILabel!
+    @IBOutlet weak var bedroomsLabel: UILabel!
+    @IBOutlet weak var bathroomsLabel: UILabel!
     
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
