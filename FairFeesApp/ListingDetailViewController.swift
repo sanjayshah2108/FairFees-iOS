@@ -610,8 +610,8 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
 
         }
         
-        FirebaseData.sharedInstance.currentUser?.compareListingsStack.append(currentListing)
-        FirebaseData.sharedInstance.currentUser?.compareListingsStackRefs.append(listingPath)
+        FirebaseData.sharedInstance.currentUser?.compareStackListings.append(currentListing)
+        FirebaseData.sharedInstance.currentUser?.compareStackListingRefs.append(listingPath)
         
         WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
         

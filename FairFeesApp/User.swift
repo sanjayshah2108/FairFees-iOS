@@ -22,8 +22,8 @@ class User: NSObject {
     var reviews: [Review]
     var reviewsDict : [String: Any]!
     var profileImageRef: String!
-    var compareListingsStack: [Listing]!
-    var compareListingsStackRefs: [String]!
+    var compareStackListings: [Listing]!
+    var compareStackListingRefs: [String]!
     
     init(uid:String,
          firstName:String,
@@ -47,12 +47,13 @@ class User: NSObject {
         self.typeOfUser = typeOfUser
         self.reviews = reviews
         self.reviewsDict = [:]
-        self.compareListingsStack = []
-        self.compareListingsStackRefs = []
+        self.compareStackListings = []
+        self.compareStackListingRefs = []
         self.profileImageRef = profileImageRef
         
     }
     
+    //used when creating a user from FirebaseData
     convenience init?(with inpDict:[String:Any]) {
         guard
             let inpUID: String = inpDict["UID"] as? String,
@@ -62,8 +63,6 @@ class User: NSObject {
             let inpPhoneNumber: Int = inpDict["phoneNumber"] as? Int,
             let inpRating: Int = inpDict["rating"] as? Int,
             let inpTypeOfUser: [String: Bool] = inpDict["typeOfUser"] as? [String: Bool],
-            
-            //let inpProfileImage: String = inpDict["profileImage"] as? String ?? "",
             let inpListings:[Listing] = inpDict["listings"] as? [Listing],
             let inpProfileImageRef: String = inpDict["profileImageRef"] as? String,
             let inpCompareStackListings: [Listing] = inpDict["compareStack"] as? [Listing],
@@ -72,32 +71,18 @@ class User: NSObject {
             print("Error: Dictionary is not in the correct format")
             return nil
         }
-        
-        
-//        var index = 0
-//        for i in listings{
-//
-//            if(i == ""){
-//                inpListings.remove(at: index)
-//            }
-//            else {
-//                index = index+1
-//            }
-//        }
-        
+
         self.init(uid: inpUID, firstName: inpFirstName, lastName: inpLastName, email: inpEmail, phoneNumber: inpPhoneNumber, rating: inpRating , listings: inpListings, typeOfUser: inpTypeOfUser, reviews: inpReviews, profileImageRef: inpProfileImageRef)
     }
     
     
+    //used for writing userData to Firebase
     func toDictionary() -> [String:Any] {
         
         for review in reviews {
-           let reviewDict:[String: Any] = review.toDictionary()
-            
+            let reviewDict:[String: Any] = review.toDictionary()
             self.reviewsDict["\(review.UID!)"] = reviewDict
-                                           
         }
-        
         
         
         let userDict:[String:Any] = [ "UID":self.UID,
@@ -106,14 +91,12 @@ class User: NSObject {
                                       "firstName":self.firstName,
                                       "lastName": self.lastName,
                                       "rating":self.rating,
-                                      //"profileImage":self.profileImage,
                                       "listings":self.listingsRefs,
-                                      "compareStack": self.compareListingsStackRefs,
+                                      "compareStack": self.compareStackListingRefs,
                                       "reviews": self.reviewsDict,
                                       "profileImageRef": self.profileImageRef,
                                       "typeOfUser": self.typeOfUser]
         return userDict
     }
-
-    
+ 
 }

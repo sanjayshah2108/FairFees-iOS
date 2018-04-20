@@ -147,14 +147,11 @@ open class ImageScrollView: UIScrollView {
     
     open func display(image: UIImage) {
         
-        let storageRef = Storage.storage().reference()
-        
         if let zoomView = zoomView {
             zoomView.removeFromSuperview()
         }
         
         zoomView = UIImageView(image: image)
-       // zoomView?.sd_setImage(with: storageRef.child(presentingVC.currentListing.photoRefs[presentingVC.photoIndex]), placeholderImage: nil)
         zoomView!.isUserInteractionEnabled = true
         addSubview(zoomView!)
         
@@ -163,7 +160,6 @@ open class ImageScrollView: UIScrollView {
         zoomView!.addGestureRecognizer(tapGesture)
         
         configureImageForSize(image.size)
-        //configureImageForSize((zoomView?.image)!.size)
         
         //if we are accessing this class from the ListingDetailVC
         if(presentingVC.photoIndex != nil){

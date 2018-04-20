@@ -19,7 +19,7 @@ class DirectionsManager: NSObject {
     var activePolylines: [GMSPolyline]!
     var polylineToShow: GMSPolyline!
     
-    
+    //get the midpoint between our location and the listing, so we can centralize the map around that
     func getMidpoint(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         
         let lon1 = sourceCoordinate.longitude * .pi / 180
@@ -36,12 +36,11 @@ class DirectionsManager: NSObject {
         let center:CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat3 * 180 / .pi, lon3 * 180 / .pi)
         
         return center
-    
     }
-    func getPolylineRoute(from source: CLLocation, to destination: CLLocation){
-        
     
-        
+    
+    func getPolylineRoute(from source: CLLocation, to destination: CLLocation){
+       
         let sourceCoordinate = source.coordinate
         let destinationCoordinate = destination.coordinate
         
@@ -56,6 +55,8 @@ class DirectionsManager: NSObject {
         let task = session.dataTask(with: url, completionHandler: {
             (data, response, error) in
             if error != nil {
+                
+                //How should we handle this error?
                 print(error!.localizedDescription)
                 //topController.activityIndicator.stopAnimating()
             }
@@ -65,43 +66,46 @@ class DirectionsManager: NSObject {
                         
                         guard let routes = json["routes"] as? NSArray else {
                             DispatchQueue.main.async {
+                                
+                                //produce an alert?
                                 //topController.activityIndicator.stopAnimating()
                             }
                             return
                         }
                         
+                        //if there are directions available
                         if (routes.count > 0) {
-                            
                             
                             let overview_polyline = routes[0] as? NSDictionary
                             let dictPolyline = overview_polyline?["overview_polyline"] as? NSDictionary
                             
                             let points = dictPolyline?.object(forKey: "points") as? String
                             
-                           self.showPath(polyStr: points!)
+                            self.showPath(polyStr: points!)
                             
-                
                             self.getPathDistance(from: source, to: destination) { (distance) in
+                                
                                 //Update UI on main thread
                                 DispatchQueue.main.async {
-                                    print(distance)
                                     self.distanceLabel.text = distance
                                 }
                             }
                       
-                            
+                            //Update UI on main thread
                             DispatchQueue.main.async {
+                                
                                 //topController.activityIndicator.stopAnimating()
                                 
+                                //centralizeMap
                                 let update = GMSCameraUpdate.setTarget(midPointCoordinate, zoom: 11)
                                 self.mapView.animate(with: update)
-                                
-            
-    
                             }
                         }
+                            
+                        //else if no directions available
                         else {
                             DispatchQueue.main.async {
+                                //produce an alert?
                                 //topController.activityIndicator.stopAnimating()
                             }
                         }
@@ -110,6 +114,7 @@ class DirectionsManager: NSObject {
                 catch {
                     print("error in JSONSerialization")
                     DispatchQueue.main.async {
+                        //produce an alert?
                         //topController.activityIndicator.stopAnimating()
                     }
                 }
@@ -120,8 +125,6 @@ class DirectionsManager: NSObject {
     
     func showPath(polyStr :String){
         
-        //activePolylines = []
-        
         let path = GMSPath(fromEncodedPath: polyStr)
         let polyline = GMSPolyline(path: path)
         polyline.strokeWidth = 1.0
@@ -130,40 +133,33 @@ class DirectionsManager: NSObject {
         polyline.map = mapView
         polylineToShow = polyline
         
-        //activePolylines.append(polyline)
-        
         NotificationCenter.default.post(name: Notification.Name(rawValue: "polylineAddedKey"), object: nil)
-        
-    
-        
     }
     
     func removePath(){
-        
         polylineToShow.map = nil
-        //activePolylines.removeAll()
     }
     
     func getPathDistance(from source: CLLocation, to destination: CLLocation, completion: @escaping(String) -> Void) {
             
-            var dist = ""
+        var dist = ""
         
         let sourceCoordinate = source.coordinate
         let destinationCoordinate = destination.coordinate
         
-            let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(sourceCoordinate.latitude),\(sourceCoordinate.longitude)&destination=\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)&sensor=true&mode=driving&key=AIzaSyDT14Cef5MjsDIc70mQPh4ToyJnltmEGPA")!
-            let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                guard let data = data, error == nil else {
-                    print(error?.localizedDescription ?? "")
-                    completion(dist)
-                    return
-                }
-                if let result = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String:Any],
-                    let routes = result["routes"] as? [[String:Any]], let route = routes.first,
-                    let legs = route["legs"] as? [[String:Any]], let leg = legs.first,
-                    let distance = leg["distance"] as? [String:Any], let distanceText = distance["text"] as? String {
-                    
-                    dist = distanceText
+        let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(sourceCoordinate.latitude),\(sourceCoordinate.longitude)&destination=\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)&sensor=true&mode=driving&key=AIzaSyDT14Cef5MjsDIc70mQPh4ToyJnltmEGPA")!
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "")
+                completion(dist)
+                return
+            }
+            if let result = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String:Any],
+                let routes = result["routes"] as? [[String:Any]], let route = routes.first,
+                let legs = route["legs"] as? [[String:Any]], let leg = legs.first,
+                let distance = leg["distance"] as? [String:Any], let distanceText = distance["text"] as? String {
+                dist = distanceText
+                
                 }
                 completion(dist)
             })

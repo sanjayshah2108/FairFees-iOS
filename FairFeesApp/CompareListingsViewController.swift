@@ -59,7 +59,9 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func reloadTableView(){
         
-        listingsArray = FirebaseData.sharedInstance.currentUser?.compareListingsStack
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:"compareStackDownloadedKey"), object: nil)
+        
+        listingsArray = FirebaseData.sharedInstance.currentUser?.compareStackListings
         
         leftListingCompareTableViewController.listingsArray = listingsArray
         leftListingCompareTableViewController.tableView.reloadData()
@@ -152,7 +154,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func goToCompareViewController(){
     
-        print("THIS BUTTON SHOULD BE DISABLED")
+        print("THIS COMPARE BUTTON SHOULD BE DISABLED")
     }
 
     func setupConstraints(){

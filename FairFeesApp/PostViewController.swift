@@ -862,13 +862,6 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    //NOT BEING USED ANYMORE
-    @objc func showMapForSelectingLocation(){
-
-        let postMapViewController = PostMapViewController()
-        self.navigationController?.pushViewController(postMapViewController, animated: true)
-    }
-    
     @objc func addPhotos(){
         presentImagePickerAlert()
     }
@@ -886,7 +879,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let storagePath = "\(homeSalePost.UID!)/\(index)"
                     
                     let photoRefStr = ImageManager.uploadListingImage(image: photosArray[index],
-                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
+                                                               userEmail: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
                                                                filename: storagePath)
                     photoRefs.append(photoRefStr)
                     
@@ -905,7 +898,7 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let storagePath = "\(homeRentalPost.UID!)/\(index)"
                     
                     let photoRefStr = ImageManager.uploadListingImage(image: photosArray[index],
-                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
+                                                               userEmail: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
                                                                filename: storagePath)
                     photoRefs.append(photoRefStr)
                     
