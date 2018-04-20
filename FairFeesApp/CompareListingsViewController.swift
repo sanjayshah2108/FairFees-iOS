@@ -35,10 +35,10 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     var polylinesToShow: [GMSPolyline]!
     var leftPolyline: GMSPolyline!
     var leftDistanceLabel: UILabel!
+    var leftMarker: GMSMarker!
     var rightPolyline: GMSPolyline!
     var rightDistanceLabel: UILabel!
-    
-    var polylineDict: [String: GMSPolyline]!
+    var rightMarker: GMSMarker!
 
     var bottomToolbar: UIToolbar!
     var exploreButton: UIBarButtonItem!
@@ -46,6 +46,10 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
+        
       
         listingsArray = FirebaseData.sharedInstance.currentUser?.compareListingsStack
         

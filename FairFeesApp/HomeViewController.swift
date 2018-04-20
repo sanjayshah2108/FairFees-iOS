@@ -224,6 +224,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func goToCompareViewController(){
         
+        if(guestUser){
+            present(AlertDefault.showAlert(title: "Sorry", message: "You need to sign in to compare listings"), animated: true, completion: nil)
+            return
+        }
+        
         let compareVC = CompareListingsViewController()
         //compareVC.listingsArray = listingsToCompare
         

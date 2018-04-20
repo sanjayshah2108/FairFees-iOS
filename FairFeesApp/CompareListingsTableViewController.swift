@@ -122,10 +122,12 @@ class CompareListingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         chosenRowIndex = indexPath
         
-        //DirectionsManager
+        
         
         tableView.reloadData()
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        
+        let listing = listingsArray[indexPath.row]
         
         let parentVC = parent as! CompareListingsViewController
       
@@ -156,9 +158,16 @@ class CompareListingsTableViewController: UITableViewController {
             if (parentVC.leftPolyline != nil) {
                 parentVC.leftPolyline.map = nil
                // DirectionsManager.theDirectionsManager.activePolylines.removeAll()
-
-
+    
             }
+            
+            if (parentVC.leftMarker == nil){
+                
+                parentVC.leftMarker = GMSMarker()
+                parentVC.leftMarker.map = parentVC.mapView
+            }
+            parentVC.leftMarker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            
         }
             
         //if the right table was clicked on, remove the old rightPolyline
@@ -169,8 +178,17 @@ class CompareListingsTableViewController: UITableViewController {
             if (parentVC.rightPolyline != nil) {
                 parentVC.rightPolyline.map = nil
                // DirectionsManager.theDirectionsManager.activePolylines.removeAll()
-
             }
+            
+            if(parentVC.rightMarker == nil){
+            
+                parentVC.rightMarker = GMSMarker()
+                parentVC.rightMarker.map = parentVC.mapView
+                
+            }
+            
+            parentVC.rightMarker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            
         }
         
         DirectionsManager.theDirectionsManager.getPolylineRoute(from: LocationManager.theLocationManager.currentLocation, to: listingsArray[indexPath.row].location)
