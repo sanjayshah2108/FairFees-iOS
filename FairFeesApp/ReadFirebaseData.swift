@@ -380,8 +380,6 @@ class ReadFirebaseData: NSObject {
         let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
         let secondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
         let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
-        
-        
         FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(user.UID)
             .observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -530,12 +528,8 @@ class ReadFirebaseData: NSObject {
                         FirebaseData.sharedInstance.currentUser?.compareListingsStack = compareStackListings
                         FirebaseData.sharedInstance.currentUser?.compareListingsStackRefs = compareStackRefs
                         
-                        //                                //if someone is signed in, set the current users details
-                        //                                if (Auth.auth().currentUser != nil) {
-                        //                                    if (UID == Auth.auth().currentUser?.uid){
-                        //                                        FirebaseData.sharedInstance.currentUser = readUser
-                        //                                    }
-                        //                                }
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "compareStackDownloadedKey"), object: nil)
+                        
                         return
                     }
                 })

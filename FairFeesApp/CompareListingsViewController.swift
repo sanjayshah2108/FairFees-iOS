@@ -39,23 +39,33 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
-        
-        listingsArray = FirebaseData.sharedInstance.currentUser?.compareListingsStack
-        
         view.backgroundColor = UIColor.white
-    
+        listingsArray = []
+
         setupChildViewControllers()
-        
         setupMapView()
-        
         setupBottomToolbar()
         
         let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
         statusBarView.backgroundColor = UIColor.white
         view.addSubview(statusBarView)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name(rawValue:"compareStackDownloadedKey"), object: nil)
+        
+        ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
+      
         setupConstraints()
+    }
+    
+    @objc func reloadTableView(){
+        
+        listingsArray = FirebaseData.sharedInstance.currentUser?.compareListingsStack
+        
+        leftListingCompareTableViewController.listingsArray = listingsArray
+        leftListingCompareTableViewController.tableView.reloadData()
+        
+        rightListingCompareTableViewController.listingsArray = listingsArray
+        rightListingCompareTableViewController.tableView.reloadData()
     }
     
     func setupChildViewControllers(){
@@ -63,6 +73,10 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         leftListingContainerView = UIView()
         leftListingContainerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(leftListingContainerView)
+        
+        rightListingContainerView = UIView()
+        rightListingContainerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(rightListingContainerView)
         
         leftListingCompareTableViewController = CompareListingsTableViewController()
         leftListingCompareTableViewController.tableViewID = 0
