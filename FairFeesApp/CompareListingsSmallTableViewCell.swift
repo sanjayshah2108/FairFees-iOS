@@ -10,9 +10,7 @@ import UIKit
 
 class CompareListingsSmallTableViewCell: UITableViewCell {
 
-    
     @IBOutlet weak var leftImageView: UIImageView!
-    
     @IBOutlet weak var priceLabel: UILabel!
     
     override func awakeFromNib() {

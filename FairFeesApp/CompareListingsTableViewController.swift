@@ -18,7 +18,6 @@ class CompareListingsTableViewController: UITableViewController {
     //right TableView is 1
     var tableViewID: Int!
     
-    
     var leftListingImageView: UIImageView!
     var leftListingPriceLabel: UILabel!
     var leftListingSizeLabel: UILabel!
@@ -32,21 +31,13 @@ class CompareListingsTableViewController: UITableViewController {
         
         tableView.register(UINib(nibName: "CompareListingsSmallTableViewCell", bundle: nil), forCellReuseIdentifier: "compareListingsSmallTableViewCell")
         tableView.register(UINib(nibName: "CompareListingsLargeTableViewCell", bundle: nil), forCellReuseIdentifier: "compareListingsLargeTableViewCell")
-        
- 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -63,12 +54,12 @@ class CompareListingsTableViewController: UITableViewController {
         
         let storageRef = Storage.storage().reference()
         
+        //largeCell
         if (indexPath == chosenRowIndex){
             
-            //CHANGE THIS TO new prototype Cell
-             let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsLargeTableViewCell", for: indexPath) as! CompareListingsLargeTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsLargeTableViewCell", for: indexPath) as! CompareListingsLargeTableViewCell
             
-             let listing = listingsArray[indexPath.row]
+            let listing = listingsArray[indexPath.row]
             
             if (listing is HomeSale){
                 let homeSale = listing as! HomeSale
@@ -88,11 +79,12 @@ class CompareListingsTableViewController: UITableViewController {
             
             return cell
         }
+            
+        //smallCells
         else {
         
             let cell = tableView.dequeueReusableCell(withIdentifier: "compareListingsSmallTableViewCell", for: indexPath) as! CompareListingsSmallTableViewCell
             
-        
             let listing = listingsArray[indexPath.row]
             
             cell.leftImageView.sd_setImage(with: storageRef.child(listing.photoRefs[0]))
@@ -120,147 +112,17 @@ class CompareListingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       
         chosenRowIndex = indexPath
-        
-        
         
         tableView.reloadData()
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         
         let listing = listingsArray[indexPath.row]
-        
+    
         let parentVC = parent as! CompareListingsViewController
-      
-        DirectionsManager.theDirectionsManager.mapView = parentVC.mapView
-        
-        
-        //if one or both of the tableViews havent been selected, we need to check, and set the activePolylines
-        if (parentVC.leftPolyline != nil) && (parentVC.rightPolyline != nil){
-            DirectionsManager.theDirectionsManager.activePolylines = [parentVC.leftPolyline, parentVC.rightPolyline]
-        }
-            
-        else if(parentVC.leftPolyline != nil){
-            DirectionsManager.theDirectionsManager.activePolylines = [parentVC.leftPolyline]
-        }
-        else if (parentVC.rightPolyline != nil){
-            DirectionsManager.theDirectionsManager.activePolylines = [parentVC.rightPolyline]
-        }
-        else {
-            DirectionsManager.theDirectionsManager.activePolylines = []
-        }
-        
-        
-        //if the left table was clicked on, remove the old leftPolyline
-        if (tableViewID == 0){
-            
-          DirectionsManager.theDirectionsManager.distanceLabel = parentVC.leftDistanceLabel
-            
-            if (parentVC.leftPolyline != nil) {
-                parentVC.leftPolyline.map = nil
-               // DirectionsManager.theDirectionsManager.activePolylines.removeAll()
-    
-            }
-            
-            if (parentVC.leftMarker == nil){
-                
-                parentVC.leftMarker = GMSMarker()
-                parentVC.leftMarker.map = parentVC.mapView
-            }
-            parentVC.leftMarker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-            
-        }
-            
-        //if the right table was clicked on, remove the old rightPolyline
-        else if (tableViewID == 1){
-            
-            DirectionsManager.theDirectionsManager.distanceLabel = parentVC.rightDistanceLabel
-            
-            if (parentVC.rightPolyline != nil) {
-                parentVC.rightPolyline.map = nil
-               // DirectionsManager.theDirectionsManager.activePolylines.removeAll()
-            }
-            
-            if(parentVC.rightMarker == nil){
-            
-                parentVC.rightMarker = GMSMarker()
-                parentVC.rightMarker.map = parentVC.mapView
-                
-            }
-            
-            parentVC.rightMarker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
-            
-        }
-        
-        DirectionsManager.theDirectionsManager.getPolylineRoute(from: LocationManager.theLocationManager.currentLocation, to: listingsArray[indexPath.row].location)
-    
-        //addObserver
-        NotificationCenter.default.addObserver(self, selector: #selector(addedPolyline), name: NSNotification.Name(rawValue: "polylineAddedKey"), object: nil)
-        
-      
-        
+        parentVC.addOverlaysToMap(tableViewID: tableViewID , listing: listing)
+   
     }
-    
-    @objc func addedPolyline(){
-        
-        let parentVC = parent as! CompareListingsViewController
-        
-        if (tableViewID == 0){
-            parentVC.leftPolyline = DirectionsManager.theDirectionsManager.polylineToShow
-        }
-            
-        else if (tableViewID == 1){
-            parentVC.rightPolyline = DirectionsManager.theDirectionsManager.polylineToShow
-        }
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "polylineAddedKey"), object: nil)
-
-        
-    }
- 
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

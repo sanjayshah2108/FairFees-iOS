@@ -19,18 +19,6 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     var rightListingContainerView: UIView!
     var rightListingCompareTableViewController: CompareListingsTableViewController!
     
-    var leftListingImageView: UIImageView!
-    var leftListingPriceLabel: UILabel!
-    var leftListingSizeLabel: UILabel!
-    var leftListingBedroomsLabel: UILabel!
-    var leftListingBathroomsLabel: UILabel!
-    
-    var rightListingImageView: UIImageView!
-    var rightListingPriceLabel: UILabel!
-    var rightListingSizeLabel: UILabel!
-    var rightListingBedroomsLabel: UILabel!
-    var rightListingBathroomsLabel: UILabel!
-    
     var mapView: GMSMapView!
     var polylinesToShow: [GMSPolyline]!
     var leftPolyline: GMSPolyline!
@@ -39,6 +27,10 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     var rightPolyline: GMSPolyline!
     var rightDistanceLabel: UILabel!
     var rightMarker: GMSMarker!
+    
+    //left TableView is 0
+    //right TableView is 1
+    var tableViewIDLastSelected: Int!
 
     var bottomToolbar: UIToolbar!
     var exploreButton: UIBarButtonItem!
@@ -47,18 +39,12 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
         
-      
         listingsArray = FirebaseData.sharedInstance.currentUser?.compareListingsStack
         
         view.backgroundColor = UIColor.white
-        
-        setupLeftListing()
-
-        setupRightListing()
-        
+    
         setupChildViewControllers()
         
         setupMapView()
@@ -70,10 +56,6 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         view.addSubview(statusBarView)
         
         setupConstraints()
-        setupLeftListingConstraints()
-        setupRightListingConstraints()
-        
-        
     }
     
     func setupChildViewControllers(){
@@ -85,7 +67,6 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         leftListingCompareTableViewController = CompareListingsTableViewController()
         leftListingCompareTableViewController.tableViewID = 0
         leftListingCompareTableViewController.listingsArray = listingsArray
-        //addViewControllerAsChildViewController(childViewController: leftListingCompareTableViewController)
         addChildViewController(leftListingCompareTableViewController)
         leftListingContainerView.addSubview(leftListingCompareTableViewController.view)
         leftListingCompareTableViewController.view.frame = leftListingContainerView.bounds
@@ -94,87 +75,10 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         rightListingCompareTableViewController = CompareListingsTableViewController()
         rightListingCompareTableViewController.tableViewID = 1
         rightListingCompareTableViewController.listingsArray = listingsArray
-        //addViewControllerAsChildViewController(childViewController: rightListingCompareTableViewController)
         addChildViewController(rightListingCompareTableViewController)
         rightListingContainerView.addSubview(rightListingCompareTableViewController.view)
         rightListingCompareTableViewController.view.frame = rightListingContainerView.bounds
         rightListingCompareTableViewController.didMove(toParentViewController: self)
-        
-    }
-    
-    func setupLeftListing(){
-        
-        leftListingContainerView = UIView()
-        leftListingContainerView.translatesAutoresizingMaskIntoConstraints = false
-        leftListingContainerView.backgroundColor = .white
-        view.addSubview(leftListingContainerView)
-        
-        leftListingImageView = UIImageView()
-        leftListingImageView.backgroundColor = view.tintColor
-        leftListingImageView.translatesAutoresizingMaskIntoConstraints = false
-        leftListingContainerView.addSubview(leftListingImageView)
-        
-        leftListingPriceLabel = UILabel()
-        leftListingPriceLabel.text = "Price"
-        leftListingPriceLabel.textAlignment = .left
-        leftListingPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        leftListingContainerView.addSubview(leftListingPriceLabel)
-        
-        leftListingSizeLabel = UILabel()
-        leftListingSizeLabel.text = "Size"
-        leftListingSizeLabel.textAlignment = .left
-        leftListingSizeLabel.translatesAutoresizingMaskIntoConstraints = false
-        leftListingContainerView.addSubview(leftListingSizeLabel)
-        
-        leftListingBedroomsLabel = UILabel()
-        leftListingBedroomsLabel.text = "Brs"
-        leftListingBedroomsLabel.textAlignment = .left
-        leftListingBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
-        leftListingContainerView.addSubview(leftListingBedroomsLabel)
-        
-        leftListingBathroomsLabel = UILabel()
-        leftListingBathroomsLabel.text = "Bas"
-        leftListingBathroomsLabel.textAlignment = .left
-        leftListingBathroomsLabel.translatesAutoresizingMaskIntoConstraints = false
-        leftListingContainerView.addSubview(leftListingBathroomsLabel)
-        
-    }
-    
-    func setupRightListing(){
-        
-        rightListingContainerView = UIView()
-        rightListingContainerView.backgroundColor = .white
-        rightListingContainerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(rightListingContainerView)
-        
-        rightListingImageView = UIImageView()
-        rightListingImageView.backgroundColor = view.tintColor
-        rightListingImageView.translatesAutoresizingMaskIntoConstraints = false
-        rightListingContainerView.addSubview(rightListingImageView)
-        
-        rightListingPriceLabel = UILabel()
-        rightListingPriceLabel.text = "Price"
-        rightListingPriceLabel.textAlignment = .right
-        rightListingPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        rightListingContainerView.addSubview(rightListingPriceLabel)
-        
-        rightListingSizeLabel = UILabel()
-        rightListingSizeLabel.text = "Price"
-        rightListingSizeLabel.textAlignment = .right
-        rightListingSizeLabel.translatesAutoresizingMaskIntoConstraints = false
-        rightListingContainerView.addSubview(rightListingSizeLabel)
-        
-        rightListingBedroomsLabel = UILabel()
-        rightListingBedroomsLabel.text = "Brs"
-        rightListingBedroomsLabel.textAlignment = .right
-        rightListingBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
-        rightListingContainerView.addSubview(rightListingBedroomsLabel)
-        
-        rightListingBathroomsLabel = UILabel()
-        rightListingBathroomsLabel.text = "Bas"
-        rightListingBathroomsLabel.textAlignment = .right
-        rightListingBathroomsLabel.translatesAutoresizingMaskIntoConstraints = false
-        rightListingContainerView.addSubview(rightListingBathroomsLabel)
         
     }
     
@@ -183,6 +87,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         polylinesToShow = []
         
         let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 12.0)
+        
         mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         mapView.delegate = MapViewDelegate.theMapViewDelegate
         MapViewDelegate.theMapViewDelegate.googleMapView = mapView
@@ -190,9 +95,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         mapView.isMyLocationEnabled = true
         mapView.settings.compassButton = true
         mapView.settings.indoorPicker = true
-        
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(mapView)
         
         leftDistanceLabel = UILabel()
@@ -214,6 +117,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     }
     
     func setupBottomToolbar(){
+        
         bottomToolbar = UIToolbar()
         bottomToolbar.backgroundColor = UIColor.white
         bottomToolbar.translatesAutoresizingMaskIntoConstraints = false
@@ -224,7 +128,6 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         compareButton = UIBarButtonItem(title: "Compare", style: .plain, target: self, action: #selector(goToCompareViewController))
         compareButton.tintColor = UIColor.gray
         
-        // bottomToolbar.
         bottomToolbar.items = [exploreButton, flexibleSpace, compareButton]
     }
     
@@ -234,12 +137,8 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     }
     
     @objc func goToCompareViewController(){
-        
-//        let compareVC = CompareListingsViewController()
-//        compareVC.listingsArray = listingsToCompare
-//
-//        present(compareVC, animated: true, completion: nil)
-        
+    
+        print("THIS BUTTON SHOULD BE DISABLED")
     }
 
     func setupConstraints(){
@@ -251,7 +150,6 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
         NSLayoutConstraint(item: leftListingContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .centerY , multiplier: 1, constant: 0).isActive = true
         
         //rightListingView
-        //NSLayoutConstraint(item: rightListingView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: rightListingContainerView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: rightListingContainerView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: rightListingContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .centerY , multiplier: 1, constant: 0).isActive = true
@@ -285,62 +183,89 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
 
     }
     
-    func setupLeftListingConstraints(){
-        
-        //leftListingImageView
-        NSLayoutConstraint(item: leftListingImageView, attribute: .centerX, relatedBy: .equal, toItem: leftListingContainerView, attribute: .centerX , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: leftListingImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 80).isActive = true
-        NSLayoutConstraint(item: leftListingImageView, attribute: .top, relatedBy: .equal, toItem: leftListingContainerView, attribute: .top , multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: leftListingImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 80).isActive = true
-        
-        //leftListingPriceLabel
-        NSLayoutConstraint(item: leftListingPriceLabel, attribute: .leading, relatedBy: .equal, toItem: leftListingContainerView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: leftListingPriceLabel, attribute: .top, relatedBy: .equal, toItem: leftListingImageView, attribute: .bottom , multiplier: 1, constant: 30).isActive = true
-        
-        //leftListingSizeLabel
-        NSLayoutConstraint(item: leftListingSizeLabel, attribute: .leading, relatedBy: .equal, toItem: leftListingContainerView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: leftListingSizeLabel, attribute: .top, relatedBy: .equal, toItem: leftListingPriceLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        
-        //leftListingBedroomsLabel
-        NSLayoutConstraint(item: leftListingBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: leftListingContainerView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: leftListingBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: leftListingSizeLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        
-        //leftListingBathroomsLabel
-        NSLayoutConstraint(item: leftListingBathroomsLabel, attribute: .leading, relatedBy: .equal, toItem: leftListingContainerView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        NSLayoutConstraint(item: leftListingBathroomsLabel, attribute: .top, relatedBy: .equal, toItem: leftListingBedroomsLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        
-        
-    }
-    
-    func setupRightListingConstraints(){
-        
-        //rightListingImageView
-        NSLayoutConstraint(item: rightListingImageView, attribute: .centerX, relatedBy: .equal, toItem: rightListingContainerView, attribute: .centerX , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: rightListingImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 80).isActive = true
-        NSLayoutConstraint(item: rightListingImageView, attribute: .top, relatedBy: .equal, toItem: leftListingContainerView, attribute: .top , multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: rightListingImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 80).isActive = true
-        
-        //rightListingPriceLabel
-        NSLayoutConstraint(item: rightListingPriceLabel, attribute: .trailing, relatedBy: .equal, toItem: rightListingContainerView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: rightListingPriceLabel, attribute: .top, relatedBy: .equal, toItem: rightListingImageView, attribute: .bottom , multiplier: 1, constant: 30).isActive = true
-        
-        //rightListingSizeLabel
-        NSLayoutConstraint(item: rightListingSizeLabel, attribute: .trailing, relatedBy: .equal, toItem: rightListingContainerView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: rightListingSizeLabel, attribute: .top, relatedBy: .equal, toItem: rightListingPriceLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        
-        //rightListingBedroomsLabel
-        NSLayoutConstraint(item: rightListingBedroomsLabel, attribute: .trailing, relatedBy: .equal, toItem: rightListingContainerView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: rightListingBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: rightListingSizeLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-        
-        //rightListingBathroomsLabel
-        NSLayoutConstraint(item: rightListingBathroomsLabel, attribute: .trailing, relatedBy: .equal, toItem: rightListingContainerView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
-        NSLayoutConstraint(item: rightListingBathroomsLabel, attribute: .top, relatedBy: .equal, toItem: rightListingBedroomsLabel, attribute: .bottom , multiplier: 1, constant: 10).isActive = true
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
 
-
+    func addOverlaysToMap(tableViewID: Int, listing: Listing){
+        
+        tableViewIDLastSelected = tableViewID
+        
+        DirectionsManager.theDirectionsManager.mapView = mapView
+        
+        //since one or both of the tableViews might not have been selected yet, we need to check, and set the activePolylines
+        if (leftPolyline != nil) && (rightPolyline != nil){
+            DirectionsManager.theDirectionsManager.activePolylines = [leftPolyline, rightPolyline]
+        }
+            
+        else if(leftPolyline != nil){
+            DirectionsManager.theDirectionsManager.activePolylines = [leftPolyline]
+        }
+        else if (rightPolyline != nil){
+            DirectionsManager.theDirectionsManager.activePolylines = [rightPolyline]
+        }
+        else {
+            DirectionsManager.theDirectionsManager.activePolylines = []
+        }
+        
+        //if the left table was clicked on
+        if (tableViewIDLastSelected == 0){
+            
+            //remove the old leftPolyline if there was one
+            if (leftPolyline != nil) {
+                leftPolyline.map = nil
+            }
+            
+            //set the new marker position
+            if (leftMarker == nil){
+                leftMarker = GMSMarker()
+                leftMarker.map = mapView
+            }
+            leftMarker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            
+            //update the leftDistanceLabel
+            DirectionsManager.theDirectionsManager.distanceLabel = leftDistanceLabel
+            
+        }
+            
+        //if the right table was clicked on, remove the old rightPolyline
+        else if (tableViewIDLastSelected == 1){
+            
+            //remove the old rightPolyline if there was one
+            if (rightPolyline != nil) {
+                rightPolyline.map = nil
+            }
+            
+            //set the new marker position
+            if(rightMarker == nil){
+                rightMarker = GMSMarker()
+                rightMarker.map = mapView
+            }
+            rightMarker.position = CLLocationCoordinate2D(latitude: listing.coordinate.latitude, longitude: listing.coordinate.longitude)
+            
+            //update the rightDistanceLabel
+            DirectionsManager.theDirectionsManager.distanceLabel = rightDistanceLabel
+        }
+        
+        //and finally add the new polyline
+        DirectionsManager.theDirectionsManager.getPolylineRoute(from: LocationManager.theLocationManager.currentLocation, to: listing.location)
+        
+        //We need to keep track of the left and right polylines, and since they take some time to added, we use a notification
+        NotificationCenter.default.addObserver(self, selector: #selector(assignPolylines), name: NSNotification.Name(rawValue: "polylineAddedKey"), object: nil)
+    }
+    
+    @objc func assignPolylines(){
+        
+        if (tableViewIDLastSelected == 0){
+            leftPolyline = DirectionsManager.theDirectionsManager.polylineToShow
+        }
+            
+        else if (tableViewIDLastSelected == 1){
+            rightPolyline = DirectionsManager.theDirectionsManager.polylineToShow
+        }
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "polylineAddedKey"), object: nil)
+    }
 }
