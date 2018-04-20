@@ -56,6 +56,7 @@ class HomeSale: Sale {
         self.bedroomNumber = bathroomNumber
         self.bathroomNumber = bedroomNumber
         
+        //if we are creating a new homeSale, we need to create a UID, otherwise if we are creating a homeRental from Firebase Data, there will aready be a UID
         if (UID == nil){
             super.UID = UUID().uuidString
         }
@@ -64,6 +65,7 @@ class HomeSale: Sale {
         }
     }
     
+    //used when creating a homeSale from FirebaseData
     convenience init?(with inpDict:[String:Any]) {
         
         guard
@@ -98,22 +100,14 @@ class HomeSale: Sale {
             return nil
         }
         
-        
-//        var inpActiveBool: Bool = true
-//
-//        if (inpActiveString == "true") {
-//            inpActiveBool = true
-//        }
-//        else if (inpActiveString == "false"){
-//            inpActiveBool = false
-//        }
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
-        
         
         self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, price: inpPrice, ownerUID: inpOwnerUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
         
     }
     
+    
+    //used for writing homeSale to Firebase
     func toDictionary() -> [String:Any] {
         let locationDict:[String:Double] = ["latitude":self.location.coordinate.latitude , "longitude":self.location.coordinate.longitude]
         

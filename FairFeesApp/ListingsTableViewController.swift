@@ -33,8 +33,6 @@ class ListingsTableViewController: UITableViewController {
                 homeRentals.append(listing as! HomeRental)
             }
         }
-        
-        
         tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "homeTableViewCell")
     }
 
@@ -86,13 +84,11 @@ class ListingsTableViewController: UITableViewController {
             cell.bedroomsLabel.text = "\(homeSale.bedroomNumber!) br"
             cell.bathroomsLabel.text = "\(homeSale.bathroomNumber!) ba"
             cell.priceLabel.text = "$\(homeSale.price!)"
+            cell.sizeLabel.text = "\(homeSale.size!) SF"
             
             cell.leftImageView.sd_setImage(with: storageRef.child(homeSale.photoRefs[0]), placeholderImage: nil)
             cell.leftImageView.contentMode = .scaleToFill
-            //cell.nameLabel.text = homeSale.name
-            cell.sizeLabel.text = "\(homeSale.size!) SF"
-            //cell.addressLabel.text = homeSale.address
-            
+   
         }
         
         else if (indexPath.section == 1){
@@ -102,13 +98,12 @@ class ListingsTableViewController: UITableViewController {
             cell.bedroomsLabel.text = "\(homeRental.bedroomNumber!) br"
             cell.bathroomsLabel.text = "\(homeRental.bathroomNumber!) ba"
             cell.priceLabel.text = "$\(homeRental.monthlyRent!)/month"
+            cell.sizeLabel.text = "\(homeRental.size!) SF"
             
             cell.leftImageView.sd_setImage(with: storageRef.child(homeRental.photoRefs[0]), placeholderImage: nil)
             cell.leftImageView.contentMode = .scaleToFill
-            //cell.nameLabel.text = homeRental.name
-            cell.sizeLabel.text = "\(homeRental.size!) SF"
-            //cell.addressLabel.text = homeRental.address
         }
+        
         return cell
     }
     
@@ -132,50 +127,5 @@ class ListingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -15,7 +15,7 @@ public var guestUser: Bool!
 class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var rememberMeKey = "rememberMe"
-  
+    
     let maxPasswordLength = 20
     let minPasswordLength = 8
     let signupTitleString = "Create Account"
@@ -29,35 +29,35 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     let loginPasswordLabelString = "Password"
     let signupPasswordLabelString = "Password (8-20 characters)"
     
-     var titleLabel: UILabel!
-     var toggleLabel: UILabel!
+    var titleLabel: UILabel!
+    var toggleLabel: UILabel!
     
     var promptLabel: UILabel!
     var loginRegisterSegmentedControl: UISegmentedControl!
     
-     var firstNameLabel: UILabel!
-     var lastNameLabel: UILabel!
-     var emailLabel: UILabel!
-     var passwordLabel: UILabel!
+    var firstNameLabel: UILabel!
+    var lastNameLabel: UILabel!
+    var emailLabel: UILabel!
+    var passwordLabel: UILabel!
     var phoneNumberLabel: UILabel!
-     var confirmPasswordLabel: UILabel!
-     var rememberMeLabel: UILabel!
+    var confirmPasswordLabel: UILabel!
+    var rememberMeLabel: UILabel!
     
-     var firstNameTextfield: UITextField!
-     var lastNameTextfield: UITextField!
-     var emailTextfield: UITextField!
+    var firstNameTextfield: UITextField!
+    var lastNameTextfield: UITextField!
+    var emailTextfield: UITextField!
     var phoneNumberTextField: UITextField!
-     var passwordTextfield: UITextField!
-     var confirmPasswordTextfield: UITextField!
+    var passwordTextfield: UITextField!
+    var confirmPasswordTextfield: UITextField!
     
     var profileImageView: UIImageView!
     var addPhotoButton: UIButton!
-
-     var rememberMeSwitch: UISwitch!
     
-     var goButton: UIButton!
-     var toggleButton: UIButton!
-     var guestLoginButton: UIButton!
+    var rememberMeSwitch: UISwitch!
+    
+    var goButton: UIButton!
+    var toggleButton: UIButton!
+    var guestLoginButton: UIButton!
     
     var forgotPasswordButton: UIButton!
     
@@ -82,11 +82,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     func setupLabels(){
-//        titleLabel = UILabel()
-//        titleLabel.text = loginTitleString
-//        titleLabel.font = UIFont(name: "Avenir-Light", size: 30)
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(titleLabel)
         
         promptLabel = UILabel()
         promptLabel.text = "What would you like to do?"
@@ -105,11 +100,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         rememberMeLabel.text = "Remember Me"
         rememberMeLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(rememberMeLabel)
-        
-//        toggleLabel = UILabel()
-//        toggleLabel.text = signupSwitchString
-//        toggleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(toggleLabel)
     }
     
     func setupSegmentedControl(){
@@ -204,16 +194,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     func setupButtons(){
         
-//        toggleButton = UIButton()
-//        toggleButton.setTitle(loginButtonString, for: .normal)
-//        toggleButton.backgroundColor = UIProperties.sharedUIProperties.primaryRedColor
-//        toggleButton.layer.borderWidth = 3.0
-//        toggleButton.layer.cornerRadius = 7.0
-//        toggleButton.addTarget(self, action: #selector(toggleScreen), for: .touchUpInside)
-//        toggleButton.translatesAutoresizingMaskIntoConstraints = false
-//        toggleButton.tintColor = UIProperties.sharedUIProperties.primaryGrayColor
-//        view.addSubview(toggleButton)
-        
         guestLoginButton = UIButton()
         guestLoginButton.setTitle("Log in as guest", for: .normal)
         guestLoginButton.setTitleColor(view.tintColor, for: .normal)
@@ -271,10 +251,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     func setupConstraints(){
-//        //titleLabel
-//        NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 30).isActive = true
-//        NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
         
         //promptLabel
         NSLayoutConstraint(item: promptLabel, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 40).isActive = true
@@ -358,17 +334,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         NSLayoutConstraint(item: goButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: goButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
          NSLayoutConstraint(item: goButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 150).isActive = true
-        
-//        //toggleLabel
-//        NSLayoutConstraint(item: toggleLabel, attribute: .top, relatedBy: .equal, toItem: goButton, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
-//        NSLayoutConstraint(item: toggleLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-//
-//        //toggleButton
-//        NSLayoutConstraint(item: toggleButton, attribute: .top, relatedBy: .equal, toItem: toggleLabel, attribute: .bottom, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: toggleButton, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: toggleButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
-//        NSLayoutConstraint(item: toggleButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
-        
+
 
     }
     
@@ -382,11 +348,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     func setToSignUp() {
-        //titleLabel.text = signupTitleString
-        //toggleLabel.text = signupSwitchString
         passwordLabel.text =  signupPasswordLabelString
         goButton.setTitle(signupButtonString, for: .normal)
-       // toggleButton.setTitle(signupSwitchButtonString, for: .normal)
         firstNameLabel.isHidden = false
         firstNameTextfield.isHidden = false
         lastNameLabel.isHidden = false
@@ -406,11 +369,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     func setToLogIn() {
-        //titleLabel.text = loginTitleString
-        //toggleLabel.text = loginSwitchString
         passwordLabel.text = loginPasswordLabelString
         goButton.setTitle(loginButtonString, for: .normal)
-        //toggleButton.setTitle(loginSwitchButtonString, for: .normal)
         firstNameLabel.isHidden = true
         firstNameTextfield.isHidden = true
         lastNameLabel.isHidden = true
@@ -430,6 +390,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
       
     }
     
+    //used for remembering a users email
     func setUserDefaults() {
         if UserDefaults.standard.bool(forKey: rememberMeKey) != rememberMeSwitch.isOn {
             UserDefaults.standard.set(rememberMeSwitch.isOn, forKey: rememberMeKey)
@@ -449,23 +410,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
             //put guards here
             
-            let profileImagePath = ImageManager.uploadProfileImage(image: profileImageView.image!, email: emailTextfield.text!, filename: "profileImage")
+            let profileImagePath = ImageManager.uploadProfileImage(image: profileImageView.image!, userEmail: emailTextfield.text!, filename: "profileImage")
             
             if (validateInputOf(textfield: confirmPasswordTextfield).valid) {
                 AuthenticationManager.signUp(withEmail: emailTextfield.text!, password: passwordTextfield.text!, firstName: firstNameTextfield.text!, lastName: lastNameTextfield.text!, phoneNumber: Int(phoneNumberTextField.text!)!, profileImageRef: profileImagePath, completionHandler: { (success) -> Void in
-                    if success == true {
-                        loggedInBool = true
-                        self.loginSuccess()
-                        self.setUserDefaults()
+                        if success == true {
                         
-                    }
-                    else {
-                        let signUpFailedAlert = UIAlertController(title: "Signup failed", message: "There was an error", preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "Try again", style: .default, handler: nil)
-                        signUpFailedAlert.addAction(okayAction)
-                        self.present(signUpFailedAlert, animated: true, completion: nil)
-                    }
-                })
+                            loggedInBool = true
+                            self.loginSuccess()
+                            self.setUserDefaults()
+                        
+                        }
+                        else {
+                            let signUpFailedAlert = UIAlertController(title: "Signup failed", message: "There was an error", preferredStyle: .alert)
+                            let okayAction = UIAlertAction(title: "Try again", style: .default, handler: nil)
+                            signUpFailedAlert.addAction(okayAction)
+                       
+                            self.present(signUpFailedAlert, animated: true, completion: nil)
+                        }
+                    })
                 
                 if (loggedInBool == true){
                     setUserDefaults()
@@ -494,7 +457,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                 AuthenticationManager.login(withEmail: emailTextfield.text!, password: passwordTextfield.text!, completionHandler: { (success) -> Void in
                     if success == true {
                         loggedInBool = true
-        
                         
                         self.loginSuccess()
                         self.setUserDefaults()
@@ -523,6 +485,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
 
+    //this method makes sure password and confirm password both match if someone is signing up
     func validateInputOf(textfield:UITextField) -> (valid: Bool, reason: String?) {
         var validated = false
         var reason: String?
@@ -537,8 +500,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             }
         }
             
-            
-        //maybe We dont need this else if block!
+
         else if textfield === passwordTextfield {
             if confirmPasswordTextfield.isHidden == true {
                 validated = true

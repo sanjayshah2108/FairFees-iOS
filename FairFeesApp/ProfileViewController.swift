@@ -44,7 +44,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         self.navigationItem.titleView?.tintColor = UIColor.black
         view.backgroundColor = UIColor.white
         
-        
         myHomeSales = []
         myHomeRentals = []
         
@@ -195,9 +194,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
             transition(from: myReviewsTableViewController, to: myListingsTableViewController, duration: 0.3, options: .curveEaseIn,
                        animations: nil,
                        completion: { finished in
-                        //self.myReviewsTableViewController.removeFromParentViewController()
                         self.myListingsTableViewController.didMove(toParentViewController: self)
-                        //self.addViewControllerAsChildViewController(childViewController: self.myListingsTableViewController)
             })
             
         case 1:
@@ -205,10 +202,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
             transition(from: myListingsTableViewController, to: myReviewsTableViewController, duration: 0.3, options: .curveEaseIn,
                        animations: nil,
                        completion: { finished in
-                       // self.myListingsTableViewController.removeFromParentViewController()
-                        
                         self.myReviewsTableViewController.didMove(toParentViewController: self)
-                        //self.addViewControllerAsChildViewController(childViewController: self.myReviewsTableViewController)
             })
         default:
             print("Shouldnt run")
@@ -227,9 +221,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 
         myListingsTableViewController = MyListingsTableViewController()
         self.addViewControllerAsChildViewController(childViewController: myListingsTableViewController)
-        
-        
-        
+   
     }
     
     func addViewControllerAsChildViewController(childViewController: UIViewController){
@@ -352,7 +344,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
     }
     
     
-    //imagePicker delegate methods
+    //imagePicker methods
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -363,15 +355,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
             print("image loaded: \(myImage!)")
             profileImageView.image = myImage
             
-            let imagePath = ImageManager.uploadProfileImage(image: myImage!, email: (FirebaseData.sharedInstance.currentUser?.email)!, filename: "profileImage")
+            let imagePath = ImageManager.uploadProfileImage(image: myImage!, userEmail: (FirebaseData.sharedInstance.currentUser?.email)!, filename: "profileImage")
             
             FirebaseData.sharedInstance.currentUser?.profileImageRef = imagePath
             WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
         }
-        
-        
-      
-        
         
         dismiss(animated: true, completion: nil)
     }

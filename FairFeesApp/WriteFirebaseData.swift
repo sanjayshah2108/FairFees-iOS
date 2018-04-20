@@ -23,12 +23,12 @@ class WriteFirebaseData: NSObject {
     }
     
     class func writeListings(listing: Listing){
-        if (listing.isKind(of: HomeSale.self)){
+        if (listing is HomeSale){
             let homeSaleToWrite = listing as! HomeSale
             writeHomesForSale(homeForSale: homeSaleToWrite)
         }
         
-        else if(listing.isKind(of: HomeRental.self)){
+        else if(listing is HomeRental){
             let homeRentalToWrite = listing as! HomeRental
             writeHomesForRent(homeForRent: homeRentalToWrite)
         }
@@ -40,10 +40,6 @@ class WriteFirebaseData: NSObject {
         
         let listingPath = "/forSale/homesForSale/\(homeForSale.country!)/\(homeForSale.province!)/\(homeForSale.city!)/\(homeForSale.zipcode!)/\(user.UID!)/\(homeForSale.UID!)"
       
-        //            if sharedInstance.currentUser!.listings.first == "" {
-        //                sharedInstance.currentUser!.listings.remove(at: 0)
-        //            }
-        
         //if we are editing a post, we dont want to add another listingRef to the user
         if !(FirebaseData.sharedInstance.currentUser!.listingsRefs.contains(listingPath)){
             FirebaseData.sharedInstance.currentUser!.listingsRefs.append(listingPath)
@@ -59,11 +55,6 @@ class WriteFirebaseData: NSObject {
         let user = FirebaseData.sharedInstance.currentUser!
         
         let listingPath = "/forRent/homesForRent/\(homeForRent.country!)/\(homeForRent.province!)/\(homeForRent.city!)/\(homeForRent.zipcode!)/\(user.UID!)/\(homeForRent.UID!)"
-        
-        
-        //            if sharedInstance.currentUser!.listings.first == "" {
-        //                sharedInstance.currentUser!.listings.remove(at: 0)
-        //            }
         
         //if we are editing a post, we dont want to add another listingRef to the user
         if !(FirebaseData.sharedInstance.currentUser!.listingsRefs.contains(listingPath)){

@@ -18,7 +18,6 @@ class Review: NSObject {
     var reviewerName: String!
     var rating: Int!
     var votes: [Vote]!
-    //var votesDict: [String: Any]!
     
     init(uid:String,
          text:String,
@@ -37,7 +36,6 @@ class Review: NSObject {
         self.reviewerName = reviewerName
         self.rating = rating
         self.votes = votes
-        //self.votesDict = [:]
     }
     
 
@@ -46,7 +44,7 @@ class Review: NSObject {
         var votesDict: [String: Any] = [:]
         
         for vote in votes{
-            //votesDict.append(vote.toDictionary())
+            
             let voteDict:[String: Any] = vote.toDictionary()
             votesDict["\(vote.type!)_\(vote.voterUID!)"] = voteDict
         }

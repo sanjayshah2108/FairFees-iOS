@@ -12,12 +12,13 @@ import FirebaseStorage
 
 class ImageManager: NSObject {
     
-    class func uploadListingImage(image:UIImage, userUID:String, listingUID:String, filename:String) -> String {
+    //need to give a listingPath userEmail/UID subbucket
+    class func uploadListingImage(image:UIImage, userEmail:String, listingUID:String, filename:String) -> String {
         let storageRef = Storage.storage().reference()
-        let firstCharOfUserUID = userUID[userUID.index(userUID.startIndex, offsetBy: 0)]
-        let SecondCharOfUserUID = userUID[userUID.index(userUID.startIndex, offsetBy: 1)]
-        let ThirdCharOfUserUID = userUID[userUID.index(userUID.startIndex, offsetBy: 2)]
-        let storagePath = "\(firstCharOfUserUID)/\(SecondCharOfUserUID)/\(ThirdCharOfUserUID)/\(listingUID)\(filename)"
+        let firstCharOfUserEmail = userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)]
+        let secondCharOfUserEmail = userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)]
+        let thirdCharOfUserEmail = userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)]
+        let storagePath = "\(firstCharOfUserEmail)/\(secondCharOfUserEmail)/\(thirdCharOfUserEmail)/\(userEmail)/\(listingUID)\(filename)"
         
         let imageData:Data = UIImageJPEGRepresentation(image, 0.2)!
         let metadata = StorageMetadata()
@@ -27,12 +28,12 @@ class ImageManager: NSObject {
         return storagePath
     }
     
-    class func uploadProfileImage(image:UIImage, email:String, filename:String) -> String {
+    class func uploadProfileImage(image:UIImage, userEmail:String, filename:String) -> String {
         let storageRef = Storage.storage().reference()
-        let firstCharOfUserUID = email[email.index(email.startIndex, offsetBy: 0)]
-        let SecondCharOfUserUID = email[email.index(email.startIndex, offsetBy: 1)]
-        let ThirdCharOfUserUID = email[email.index(email.startIndex, offsetBy: 2)]
-        let storagePath = "\(firstCharOfUserUID)/\(SecondCharOfUserUID)/\(ThirdCharOfUserUID)/\(email)\(filename)"
+        let firstCharOfUserEmail = userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)]
+        let secondCharOfUserEmail = userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)]
+        let thirdCharOfUserEmail = userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)]
+        let storagePath = "\(firstCharOfUserEmail)/\(secondCharOfUserEmail)/\(thirdCharOfUserEmail)/\(userEmail)\(filename)"
         
         let imageData:Data = UIImageJPEGRepresentation(image, 0.2)!
         let metadata = StorageMetadata()

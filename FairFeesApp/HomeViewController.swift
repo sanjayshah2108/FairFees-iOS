@@ -59,7 +59,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var previewBedroomsNoLabel: UILabel!
     var previewBathroomsNoLabel: UILabel!
     
+    var bottomToolbar: UIToolbar!
+    var exploreButton: UIBarButtonItem!
+    var compareButton: UIBarButtonItem!
+    
     var presentedListing: Listing!
+    
+    
+    var storageRef: StorageReference!
+    
+   // public var listingsToCompare: [Listing]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,9 +85,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeSalesToPresent = []
         homeRentalsToPresent = []
         
+       // listingsToCompare = []
+        
         setupHomeMapView()
         setupHomeTableView()
         setupLoadMoreButton()
+        setupBottomToolbar()
         //setupSearchBar()
         showSearchBar()
 
@@ -88,16 +100,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.addObserver(self, selector: #selector(setInitialListingsToPresent), name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
         
         //setupDummyData()
+        
+        //remove this
         ReadFirebaseData.readUsers()
+        
         ReadFirebaseData.readHomesForSale()
         ReadFirebaseData.readHomesForRent()
         
         view.bringSubview(toFront: homeMapView)
         //view.bringSubview(toFront: searchBar)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
         
         navigationItem.hidesSearchBarWhenScrolling = false
         
@@ -128,6 +146,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setupHomeMapView(){
         
         let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 12.0)
+        
         homeMapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
         MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
@@ -139,20 +158,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
-        ///Apple Maps stuff
-        //        homeMapView = MKMapView()
-        //        homeMapView.frame = CGRect.zero
-        //        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
-        //        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
-        //        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
-        //        homeMapView.showsUserLocation = true
-        //
-        //        view.addSubview(homeMapView)
-        //        homeMapView.translatesAutoresizingMaskIntoConstraints = false
-        //
-        //        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        //
-        //        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     func setupHomeTableView(){
@@ -186,6 +191,40 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         topLeftButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(menuAlert))
         
         self.navigationItem.leftBarButtonItems = [topLeftButton]
+    }
+    
+    func setupBottomToolbar(){
+        bottomToolbar = UIToolbar()
+        bottomToolbar.backgroundColor = UIColor.white
+        bottomToolbar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bottomToolbar)
+        
+        exploreButton = UIBarButtonItem(title: "Explore", style: .plain, target: self, action: #selector(goToExploreNavigationController))
+        exploreButton.tintColor = UIColor.gray
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        compareButton = UIBarButtonItem(title: "Compare", style: .plain, target: self, action: #selector(goToCompareViewController))
+        
+        
+        bottomToolbar.items = [exploreButton, flexibleSpace, compareButton]
+    }
+    
+    @objc func goToExploreNavigationController(){
+        
+    }
+    
+    @objc func goToCompareViewController(){
+        
+        if(guestUser){
+            present(AlertDefault.showAlert(title: "Sorry", message: "You need to sign in to compare listings"), animated: true, completion: nil)
+            return
+        }
+        
+        let compareVC = CompareListingsViewController()
+        //compareVC.listingsArray = listingsToCompare
+        
+        present(compareVC, animated: false, completion: nil)
+        
     }
     
     @objc func menuAlert(){
@@ -286,7 +325,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Include the search bar within the navigation bar.
         navigationItem.searchController = searchController
         //navigationItem.hidesSearchBarWhenScrolling = false
-       
+       searchController?.hidesNavigationBarDuringPresentation = false
         
         
         searchController?.searchBar.placeholder = "Search Address, Zip or City"
@@ -320,6 +359,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func setInitialListingsToPresent(){
         
+        storageRef = Storage.storage().reference()
+        
         //can change this when there are more than 3 listings for HomeSales and HomeRentals
         numberOfListingsToShow = 3
         
@@ -330,6 +371,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         reloadMap()
         homeTableView.reloadData()
+        
+        
+        //move this to another method called by another notification
+      //  ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
+
         
     }
     
@@ -414,9 +460,33 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return returnText
     }
     
-    func showListingPreview(listing: Listing){
+    
+    
+    func presentListingPreview(marker: GMSMarker){
         
-        let storageRef = Storage.storage().reference()
+        var listingToPresent: Listing!
+        var homeSaleToPresent: HomeSale!
+        var homeRentalToPresent: HomeRental!
+        
+        //NOT THE BEST WAY TO FIND THE LISTING
+        for listing in FirebaseData.sharedInstance.homesForSale {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeSaleToPresent = listing
+                listingToPresent = homeSaleToPresent
+            }
+        }
+        
+        for listing in FirebaseData.sharedInstance.homesForRent {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeRentalToPresent = listing
+                listingToPresent = homeRentalToPresent
+            }
+        }
+        
+       showListingPreview(listing: listingToPresent)
+    }
+    
+    func showListingPreview(listing: Listing){
         
         let tapGestureForListingPreview = UITapGestureRecognizer(target: self, action: #selector(goToListing))
         
@@ -538,21 +608,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //homeMapView
         NSLayoutConstraint(item: homeMapView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeMapView, attribute: .bottom, relatedBy: .equal, toItem: bottomToolbar, attribute: .top , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeMapView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
         
         //homeTableView
         NSLayoutConstraint(item: homeTableView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: homeTableView, attribute: .bottom, relatedBy: .equal, toItem: bottomToolbar, attribute: .top , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: homeTableView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top , multiplier: 1, constant: navigationBarHeight).isActive = true
         
         //loadMoreButton
         NSLayoutConstraint(item: loadMoreButton, attribute: .centerX, relatedBy: .equal, toItem: homeTableView, attribute: .centerX , multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: loadMoreButton, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: loadMoreButton, attribute: .bottom, relatedBy: .equal, toItem: bottomToolbar, attribute: .top , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: loadMoreButton, attribute: .width, relatedBy: .equal, toItem: homeTableView, attribute: .width , multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: loadMoreButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 20).isActive = true
+        
+        //bottomToolbar
+        NSLayoutConstraint(item: bottomToolbar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bottomToolbar, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bottomToolbar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: bottomToolbar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 30).isActive = true
         
 //        //searchBar
 //        NSLayoutConstraint(item: searchController!.searchBar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing , multiplier: 1, constant: 0).isActive = true

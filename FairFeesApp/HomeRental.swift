@@ -57,6 +57,7 @@ class HomeRental: Rental {
         self.bedroomNumber = bathroomNumber
         self.bathroomNumber = bedroomNumber
         
+        //if we are creating a new homeRental, we need to create a UID, otherwise if we are creating a homeRental from Firebase Data, there will aready be a UID
         if (UID == nil){
             super.UID = UUID().uuidString
         }
@@ -66,7 +67,7 @@ class HomeRental: Rental {
     }
     
     
-    
+    //used when creating a homeRental from FirebaseData
     convenience init?(with inpDict:[String:Any]) {
         
         guard
@@ -101,26 +102,18 @@ class HomeRental: Rental {
             print("Error: Passed location data is not in the correct format")
             return nil
         }
-        
-        
-//        var inpActiveBool: Bool = true
-//
-//        if (inpActiveString == "true") {
-//            inpActiveBool = true
-//        }
-//        else if (inpActiveString == "false"){
-//            inpActiveBool = false
-//        }
+       
         let inpLocation: CLLocation = CLLocation(latitude: inpLatitude, longitude: inpLongitude)
-        
         
         self.init(name: inpName, description: inpDescription, location: inpLocation, address: inpAddress, city: inpCity, province: inpProvince, country: inpCountry, zipcode: inpZipcode, posterUID: inpPosterUID, photoRefs: inpPhotoRefs, size: inpSize, bedroomNumber: inpBedroomNumber, bathroomNumber: inpBathroomNumber, UID: inpUID, monthlyRent: inpMonthlyRent, rentalTerm: inpRentalTerm, landlordUID: inpLandlordUID, availabilityDate: inpAvailabilityDate, active: inpIsActive)
         
     }
     
+    
+    //used for writing homeRental to Firebase
     func toDictionary() -> [String:Any] {
-        let locationDict:[String:Double] = ["latitude":self.location.coordinate.latitude , "longitude":self.location.coordinate.longitude]
         
+        let locationDict:[String:Double] = ["latitude":self.location.coordinate.latitude , "longitude":self.location.coordinate.longitude]
         
         let itemDict:[String:Any] = [
             "UID": super.UID,

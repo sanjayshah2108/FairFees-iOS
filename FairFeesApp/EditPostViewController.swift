@@ -330,7 +330,7 @@ class EditPostViewController: PostViewController {
                     let storagePath = "\(homeSalePost.UID!)/\(index)"
                     
                     let photoRefStr = ImageManager.uploadListingImage(image: photosArray[index],
-                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
+                                                               userEmail: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeSalePost.UID,
                                                                filename: storagePath)
                     photoRefs.append(photoRefStr)
                     
@@ -350,7 +350,7 @@ class EditPostViewController: PostViewController {
                     let storagePath = "\(homeRentalPost.UID!)/\(index)"
                     
                     let photoRefStr = ImageManager.uploadListingImage(image: photosArray[index],
-                                                               userUID: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
+                                                               userEmail: (FirebaseData.sharedInstance.currentUser?.email)!, listingUID: homeRentalPost.UID,
                                                                filename: storagePath)
                     photoRefs.append(photoRefStr)
                     

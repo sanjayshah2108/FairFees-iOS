@@ -27,7 +27,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     var imageViewPageControl: UIPageControl!
     var addressLabel: UILabel!
     var descriptionLabel: UILabel!
-    //var mapView: MKMapView!
     var mapView: GMSMapView!
     var distanceLabel: UILabel!
     var directionsButton: UIButton!
@@ -348,18 +347,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         mapView.addSubview(distanceLabel)
     
-        
-//        mapView = MKMapView()
-//        mapView.delegate = MapViewDelegate.theMapViewDelegate
-//        MapViewDelegate.theMapViewDelegate.theMapView = mapView
-//
-//        let span = MKCoordinateSpanMake(0.009, 0.009)
-//    MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
-//
-//        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-//        mapView.addAnnotation(currentListing)
-//        mapView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(mapView)
     }
     
     func setupConstraints(){
@@ -388,14 +375,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         NSLayoutConstraint(item: scrollContentView, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: scrollContentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.width).isActive = true
         NSLayoutConstraint(item: scrollContentView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        //NSLayoutConstraint(item: scrollContentView, attribute: .bottom, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
         //featuresView
         NSLayoutConstraint(item: featuresView, attribute: .top, relatedBy: .equal, toItem: scrollContentView, attribute: .top, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresView, attribute: .leading, relatedBy: .equal, toItem: scrollContentView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresView, attribute: .trailing, relatedBy: .equal, toItem: scrollContentView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
-        //NSLayoutConstraint(item: featuresView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         
 
         //priceLabel
@@ -411,26 +396,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .bottom, relatedBy: .equal, toItem: featuresView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        
-//        //bedroomsLabel
-//        NSLayoutConstraint(item: bedroomLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: bedroomLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
-//        //NSLayoutConstraint(item: bedroomLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-//
-//        //bathroomsLabel
-//        NSLayoutConstraint(item: bathroomLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: bathroomLabel, attribute: .leading, relatedBy: .equal, toItem: bedroomLabel, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
-//        //NSLayoutConstraint(item: bathroomLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-//
-//        //yearBuiltLabel
-//        NSLayoutConstraint(item: yearBuiltLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: yearBuiltLabel, attribute: .leading, relatedBy: .equal, toItem: bathroomLabel, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
-//        //NSLayoutConstraint(item: yearBuiltLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-//
-//        //sizeLabel
-//        NSLayoutConstraint(item: sizeLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: sizeLabel, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-//        //NSLayoutConstraint(item: sizeLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+    
         
         //descriptionLabel
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
@@ -602,6 +568,48 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     
     @objc func addListingForComparison(){
         
+//        let homeVC = self.navigationController?.viewControllers[0] as! HomeViewController
+//        homeVC.listingsToCompare.append(currentListing)
+        
+        if(guestUser){
+            present(AlertDefault.showAlert(title: "Sorry", message: "You need to sign in to use this feature"), animated: true, completion: nil)
+            return
+        }
+        
+        var listingPath: String = ""
+        
+        if currentListing is HomeSale {
+            listingPath = "/forSale/homesForSale/\(currentListing.country!)/\(currentListing.province!)/\(currentListing.city!)/\(currentListing.zipcode!)/\(currentListing.posterUID!)/\(currentListing.UID!)"
+        }
+        
+        else if currentListing is HomeRental {
+            
+            listingPath = "/forRent/homesForRent/\(currentListing.country!)/\(currentListing.province!)/\(currentListing.city!)/\(currentListing.zipcode!)/\(currentListing.posterUID!)/\(currentListing.UID!)"
+
+        }
+        
+        FirebaseData.sharedInstance.currentUser?.compareStackListings.append(currentListing)
+        FirebaseData.sharedInstance.currentUser?.compareStackListingRefs.append(listingPath)
+        
+        WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
+        
+        let compareListingAlert = UIAlertController(title: "Successfully Added", message: "Would you like to view all?", preferredStyle: .alert)
+        
+        let compareAction = UIAlertAction(title: "Yes", style: .default, handler: {(action) in
+      
+            let compareVC = CompareListingsViewController()
+          //  compareVC.listingsArray = homeVC.listingsToCompare
+            
+            self.present(compareVC, animated: true, completion: nil)
+    
+        })
+        
+        let exploreAction = UIAlertAction(title: "No, keep exploring", style: .default, handler: nil)
+        
+        compareListingAlert.addAction(compareAction)
+        compareListingAlert.addAction(exploreAction)
+        
+        present(compareListingAlert, animated: true, completion: nil)
     }
     
     
@@ -627,6 +635,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
                 NSLayoutConstraint.deactivate([self.minimizedMapTopConstraint, self.minimizedMapHeightConstraint])
                 NSLayoutConstraint.activate([self.enlargedMapTopConstraint, self.enlargedMapHeightConstraint])
                 
+                DirectionsManager.theDirectionsManager.activePolylines = []
                 DirectionsManager.theDirectionsManager.getPolylineRoute(from: originLocation, to: destinationLocation!)
                 
                 self.view.layoutIfNeeded()
