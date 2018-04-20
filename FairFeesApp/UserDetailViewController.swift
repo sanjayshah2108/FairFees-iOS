@@ -53,6 +53,13 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         setupButtons()
         setupConstraints()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.blue
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+    }
 
     func setupUserProfileImage(){
         userProfileImageView = UIImageView()
