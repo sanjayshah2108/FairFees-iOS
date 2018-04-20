@@ -65,6 +65,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var presentedListing: Listing!
     
+    
+    var storageRef: StorageReference!
+    
    // public var listingsToCompare: [Listing]!
     
     override func viewDidLoad() {
@@ -106,6 +109,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         view.bringSubview(toFront: homeMapView)
         //view.bringSubview(toFront: searchBar)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -142,6 +146,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setupHomeMapView(){
         
         let camera = GMSCameraPosition.camera(withLatitude: LocationManager.theLocationManager.getLocation().coordinate.latitude, longitude: LocationManager.theLocationManager.getLocation().coordinate.longitude, zoom: 12.0)
+        
         homeMapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         homeMapView.delegate = MapViewDelegate.theMapViewDelegate
         MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
@@ -153,20 +158,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.addSubview(homeMapView)
         homeMapView.translatesAutoresizingMaskIntoConstraints = false
         
-        ///Apple Maps stuff
-        //        homeMapView = MKMapView()
-        //        homeMapView.frame = CGRect.zero
-        //        homeMapView.delegate = MapViewDelegate.theMapViewDelegate
-        //        MapViewDelegate.theMapViewDelegate.theMapView = homeMapView
-        //        MapViewDelegate.theMapViewDelegate.setHomeVCMapRegion()
-        //        homeMapView.showsUserLocation = true
-        //
-        //        view.addSubview(homeMapView)
-        //        homeMapView.translatesAutoresizingMaskIntoConstraints = false
-        //
-        //        homeMapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-        //
-        //        homeMapView.addAnnotations(DummyData.theDummyData.homesForSale)
     }
     
     func setupHomeTableView(){
@@ -368,6 +359,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func setInitialListingsToPresent(){
         
+        storageRef = Storage.storage().reference()
+        
         //can change this when there are more than 3 listings for HomeSales and HomeRentals
         numberOfListingsToShow = 3
         
@@ -467,9 +460,33 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return returnText
     }
     
-    func showListingPreview(listing: Listing){
+    
+    
+    func presentListingPreview(marker: GMSMarker){
         
-        let storageRef = Storage.storage().reference()
+        var listingToPresent: Listing!
+        var homeSaleToPresent: HomeSale!
+        var homeRentalToPresent: HomeRental!
+        
+        //NOT THE BEST WAY TO FIND THE LISTING
+        for listing in FirebaseData.sharedInstance.homesForSale {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeSaleToPresent = listing
+                listingToPresent = homeSaleToPresent
+            }
+        }
+        
+        for listing in FirebaseData.sharedInstance.homesForRent {
+            if ((listing.coordinate.latitude == marker.position.latitude) && (listing.coordinate.longitude == marker.position.longitude)){
+                homeRentalToPresent = listing
+                listingToPresent = homeRentalToPresent
+            }
+        }
+        
+       showListingPreview(listing: listingToPresent)
+    }
+    
+    func showListingPreview(listing: Listing){
         
         let tapGestureForListingPreview = UITapGestureRecognizer(target: self, action: #selector(goToListing))
         

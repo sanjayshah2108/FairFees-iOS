@@ -348,18 +348,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         mapView.addSubview(distanceLabel)
     
-        
-//        mapView = MKMapView()
-//        mapView.delegate = MapViewDelegate.theMapViewDelegate
-//        MapViewDelegate.theMapViewDelegate.theMapView = mapView
-//
-//        let span = MKCoordinateSpanMake(0.009, 0.009)
-//    MapViewDelegate.theMapViewDelegate.theMapView.setRegion(MKCoordinateRegionMake(currentListing.coordinate, span) , animated: true)
-//
-//        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "listingMarkerView")
-//        mapView.addAnnotation(currentListing)
-//        mapView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(mapView)
     }
     
     func setupConstraints(){

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//we can customize clustering with this class
 class CustomGMUClusterRenderer: GMUDefaultClusterRenderer {
     var mapView:GMSMapView?
     let kGMUAnimationDuration: Double = 0.5
