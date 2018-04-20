@@ -27,7 +27,6 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     var imageViewPageControl: UIPageControl!
     var addressLabel: UILabel!
     var descriptionLabel: UILabel!
-    //var mapView: MKMapView!
     var mapView: GMSMapView!
     var distanceLabel: UILabel!
     var directionsButton: UIButton!
@@ -376,14 +375,12 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         NSLayoutConstraint(item: scrollContentView, attribute: .top, relatedBy: .equal, toItem: imageViewCarousel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: scrollContentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.width).isActive = true
         NSLayoutConstraint(item: scrollContentView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        //NSLayoutConstraint(item: scrollContentView, attribute: .bottom, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
         //featuresView
         NSLayoutConstraint(item: featuresView, attribute: .top, relatedBy: .equal, toItem: scrollContentView, attribute: .top, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresView, attribute: .leading, relatedBy: .equal, toItem: scrollContentView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresView, attribute: .trailing, relatedBy: .equal, toItem: scrollContentView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
-        //NSLayoutConstraint(item: featuresView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         
 
         //priceLabel
@@ -399,26 +396,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         NSLayoutConstraint(item: featuresHorizontalStackView, attribute: .bottom, relatedBy: .equal, toItem: featuresView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-        
-//        //bedroomsLabel
-//        NSLayoutConstraint(item: bedroomLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: bedroomLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10).isActive = true
-//        //NSLayoutConstraint(item: bedroomLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-//
-//        //bathroomsLabel
-//        NSLayoutConstraint(item: bathroomLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: bathroomLabel, attribute: .leading, relatedBy: .equal, toItem: bedroomLabel, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
-//        //NSLayoutConstraint(item: bathroomLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-//
-//        //yearBuiltLabel
-//        NSLayoutConstraint(item: yearBuiltLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: yearBuiltLabel, attribute: .leading, relatedBy: .equal, toItem: bathroomLabel, attribute: .trailing, multiplier: 1, constant: 10).isActive = true
-//        //NSLayoutConstraint(item: yearBuiltLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
-//
-//        //sizeLabel
-//        NSLayoutConstraint(item: sizeLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .top, multiplier: 1, constant: 10).isActive = true
-//        NSLayoutConstraint(item: sizeLabel, attribute: .trailing, relatedBy: .equal, toItem: featuresView, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
-//        //NSLayoutConstraint(item: sizeLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15).isActive = true
+    
         
         //descriptionLabel
         NSLayoutConstraint(item: descriptionLabel, attribute: .top, relatedBy: .equal, toItem: featuresHorizontalStackView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true

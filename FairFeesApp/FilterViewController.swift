@@ -11,8 +11,6 @@ import WARangeSlider
 
 class FilterViewController: UIViewController {
     
-    //var filterViewIsInFront: Bool!
-    //var filterViewHeight: CGFloat!
     var theHomeViewController: HomeViewController!
     
     var logoImageView: UIImageView!
@@ -59,7 +57,6 @@ class FilterViewController: UIViewController {
         priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to $\(Int(priceFilterSlider.upperValue))"
         priceFilterResultLabel.font = UIFont(name: "GillSans-Light", size: 12)
         priceFilterResultLabel.translatesAutoresizingMaskIntoConstraints = false
-        //priceFilterResultLabel.isHidden = true
         view.addSubview(priceFilterResultLabel)
         
         noOfBedroomsLabel = UILabel()
@@ -67,7 +64,6 @@ class FilterViewController: UIViewController {
         noOfBedroomsLabel.font = UIFont(name: "GillSans-Light", size: 10)
         noOfBedroomsLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(noOfBedroomsLabel)
-        
         
         listingsCountLabel = UILabel()
         listingsCountLabel.text = String(theHomeViewController.listingsToPresent.count) + " listings found"
@@ -189,13 +185,9 @@ class FilterViewController: UIViewController {
         
         //priceFilterSliderResultLabel
         NSLayoutConstraint(item: priceFilterResultLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 2).isActive = true
-        //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .trailing, relatedBy: .equal, toItem: filterView, attribute: .trailing , multiplier: 1, constant: -10).isActive = true
         NSLayoutConstraint(item: priceFilterResultLabel, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .leading, relatedBy: .equal, toItem: filterView, attribute: .leading , multiplier: 1, constant: 10).isActive = true
-        //NSLayoutConstraint(item: priceFilterResultLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsLabel, attribute: .top , multiplier: 1, constant: -10).isActive = true
         
         //bedroomNumberLabel
-        //NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .top, relatedBy: .equal, toItem: priceFilterSlider, attribute: .bottom , multiplier: 1, constant: 15).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading , multiplier: 1, constant: 10).isActive = true
         NSLayoutConstraint(item: noOfBedroomsLabel, attribute: .bottom, relatedBy: .equal, toItem: noOfBedroomsSegmentedControl, attribute: .top , multiplier: 1, constant: -5).isActive = true
@@ -339,11 +331,7 @@ class FilterViewController: UIViewController {
         
         theHomeViewController.homeRentalsToPresent = FirebaseData.sharedInstance.homesForRent
         theHomeViewController.homeSalesToPresent = FirebaseData.sharedInstance.homesForSale
-        
-       // priceFilterSlider.lowerValue = 1000
-        //priceFilterSlider.upperValue = 1000000
-       // priceFilterResultLabel.text = "$\(Int(priceFilterSlider.lowerValue)) to  $\(Int(priceFilterSlider.upperValue))"
-        
+    
         switch buyRentSegmentedControl.selectedSegmentIndex {
         case 0:
             theHomeViewController.listingsToPresent = theHomeViewController.homeSalesToPresent

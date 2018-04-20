@@ -919,85 +919,59 @@ class PostViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func validateFields() -> Bool{
         
         guard (nameTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a title", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a title"), animated: true, completion: nil)
             return false
         }
         guard (priceTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a price", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a price"), animated: true, completion: nil)
             return false
         }
         guard (sizeTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a size", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a size"), animated: true, completion: nil)
             return false
         }
         guard (bedroomNumber > 0) else {
-            let alert = UIAlertController(title: "Whoops", message: "Number of bedrooms must be at least 1", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "Number of bedrooms must be at least 1"), animated: true, completion: nil)
             return false
         }
         guard (bathroomNumber > 0) else {
-            let alert = UIAlertController(title: "Whoops", message: "Number of bathrooms must be at least 1", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "Number of bathrooms must be at least 1"), animated: true, completion: nil)
             return false
         }
         
         guard (descriptionTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a description", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a description"), animated: true, completion: nil)
             return false
         }
         
         guard (streetNameTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add an street name", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a street name"), animated: true, completion: nil)
             return false
         }
         
         guard (streetNumberTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add an street number", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a street number"), animated: true, completion: nil)
             return false
         }
         
         guard (cityTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a city", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a city"), animated: true, completion: nil)
             return false
         }
         guard (provinceTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a province", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a province"), animated: true, completion: nil)
             return false
         }
         guard (zipcodeTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a zipcode", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a zipcode"), animated: true, completion: nil)
             return false
         }
         guard (countryTextField.text != "") else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a country", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add a zipcode"), animated: true, completion: nil)
             return false
         }
         guard (photosArray.count > 0) else {
-            let alert = UIAlertController(title: "Whoops", message: "You must add a photo", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            present(AlertDefault.showAlert(title: "Whoops", message: "You must add at least one photo"), animated: true, completion: nil)
             return false
         }
         

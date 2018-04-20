@@ -44,7 +44,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         self.navigationItem.titleView?.tintColor = UIColor.black
         view.backgroundColor = UIColor.white
         
-        
         myHomeSales = []
         myHomeRentals = []
         

@@ -74,7 +74,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
     
     }
     
-    
     func setupButtons(){
         
         callButton = UIButton()
@@ -136,9 +135,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
             transition(from: userReviewsTableViewController, to: userListingsTableViewController, duration: 0.3, options: .curveEaseIn,
                        animations: nil,
                        completion: { finished in
-                        //self.myReviewsTableViewController.removeFromParentViewController()
                         self.userListingsTableViewController.didMove(toParentViewController: self)
-                        //self.addViewControllerAsChildViewController(childViewController: self.myListingsTableViewController)
             })
             
         case 1:
@@ -146,10 +143,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
             transition(from: userListingsTableViewController, to: userReviewsTableViewController, duration: 0.3, options: .curveEaseIn,
                        animations: nil,
                        completion: { finished in
-                        // self.myListingsTableViewController.removeFromParentViewController()
-                        
                         self.userReviewsTableViewController.didMove(toParentViewController: self)
-                        //self.addViewControllerAsChildViewController(childViewController: self.myReviewsTableViewController)
             })
         default:
             print("Shouldnt run")
@@ -205,7 +199,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         NSLayoutConstraint(item: emailButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
 
-        
         //ratingsView
         NSLayoutConstraint(item: ratingView, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 80).isActive = true
         NSLayoutConstraint(item: ratingView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 50).isActive = true
@@ -311,7 +304,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         newReviewTextView = UITextView()
         newReviewTextView.delegate = self
         newReviewTextView.text = "Add a review"
-        //newReviewTextView.clearsOnInsertion = true
         newReviewTextView.textAlignment = .center
         newReviewTextView.textColor = UIColor.gray
         newReviewTextView.layer.cornerRadius = 3
@@ -456,8 +448,6 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
             newReviewTextView.textColor = .black
         }
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

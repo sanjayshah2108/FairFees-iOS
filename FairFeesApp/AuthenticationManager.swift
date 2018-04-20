@@ -13,8 +13,6 @@ class AuthenticationManager: NSObject {
 
     class func signUp(withEmail email:String, password:String, firstName:String, lastName: String, phoneNumber: Int, profileImageRef: String, completionHandler: @escaping (_ success: Bool) -> Void )  {
         
-        print("Signing up with email: \(email), password: \(password)")
-
         //Firebase's sign up authentication
         Auth.auth().createUser(withEmail: email,
                                password: password)
@@ -24,10 +22,11 @@ class AuthenticationManager: NSObject {
                 completionHandler(flag)
                 Auth.auth().currentUser?.sendEmailVerification(completion: { (verifyError) in
                     if (verifyError != nil) {
+                        topController(UIApplication.shared.keyWindow?.rootViewController).present(AlertDefault.showAlert(title: "Verification Email not sent", message: "Error: \(String(describing: verifyError))"), animated: true, completion: nil)
                         print("Error sending verification email: \(String(describing: verifyError))")
                     }
                     else {
-                        print("Email sent")
+                        topController(UIApplication.shared.keyWindow?.rootViewController).present(AlertDefault.showAlert(title: "Verification Email sent", message: "Click the link in the email before you log in next time"), animated: true, completion: nil)
                     }
                 })
                 
@@ -50,6 +49,7 @@ class AuthenticationManager: NSObject {
                             let secondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
                             let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
                             
+                            
                             //add this user to the Firebase user node
                             FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail)
                                 .child(newUser!.uid)
@@ -69,7 +69,6 @@ class AuthenticationManager: NSObject {
     }
     
     class func login(withEmail email:String, password:String, completionHandler: @escaping (_ success: Bool) -> Void) {
-        print("Logging in with email: \(email), password: \(password)")
 
         //Firebase's login authentication
         Auth.auth().signIn(withEmail: email,
@@ -84,8 +83,7 @@ class AuthenticationManager: NSObject {
                 let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
                
                 //read this user's data
-                
-                FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(userUID!)
+                 FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(userUID!)
                     .observeSingleEvent(of: .value, with: { (snapshot) in
                         let data = snapshot.value as? NSDictionary
                         
@@ -101,14 +99,14 @@ class AuthenticationManager: NSObject {
             
                 guestUser = false
 
-                //NOT TOO SURE WHAT THIS IS FOR
                 let flag = true
                 completionHandler(flag)
             }
             else {
                 print("login failed: \(loginError.debugDescription)")
                 
-                //present an alert in the LoginViewController
+                
+                //present an alert with the error description in the LoginViewController
                 if var topController: LoginViewController = topController(UIApplication.shared.keyWindow?.rootViewController) as? LoginViewController {
                     while let presentedViewController = topController.presentedViewController {
                         topController = presentedViewController as! LoginViewController
@@ -116,23 +114,15 @@ class AuthenticationManager: NSObject {
                     
                     if ((loginError?.localizedDescription)! ==  "The password is invalid or the user does not have a password.") {
                         
-                        let wrongPasswordAlert = UIAlertController(title: "Login failed", message: "Wrong password", preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "Try again", style: .default, handler: nil)
-                        wrongPasswordAlert.addAction(okayAction)
-                        
+                        let wrongPasswordAlert = AlertDefault.showAlert(title: "Login failed", message: "Wrong password")
                         topController.present(wrongPasswordAlert, animated: true, completion: nil)
         
                     }
                         
                     else if ((loginError?.localizedDescription)! == "The email address is badly formatted."){
                         
-                        let invalidEmailAlert = UIAlertController(title: "Invalid email", message: "Enter a valid email", preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "Try again", style: .default, handler: nil)
-                        invalidEmailAlert.addAction(okayAction)
-                        
+                        let invalidEmailAlert = AlertDefault.showAlert(title: "Invalid email", message: "Enter a valid email")
                         topController.present(invalidEmailAlert, animated: true, completion: nil)
-                        
-                        
                     }
                         
                     else if ((loginError?.localizedDescription)! == "There is no user record corresponding to this identifier. The user may have been deleted."){
@@ -143,11 +133,11 @@ class AuthenticationManager: NSObject {
                             topController.setToSignUp()
                             
                         })
+                        
                         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                         emailNotRegisteredAlert.addAction(signupAction)
                         emailNotRegisteredAlert.addAction(cancelAction)
                         topController.present(emailNotRegisteredAlert, animated: true, completion: nil)
-                        
                     }
                     else {
                         
@@ -162,6 +152,8 @@ class AuthenticationManager: NSObject {
         }
     }
     
+
+    //find out which VC is using the Auth Manager
     class func topController(_ parent:UIViewController? = nil) -> UIViewController {
         if let vc = parent {
             if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {

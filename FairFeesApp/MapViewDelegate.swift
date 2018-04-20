@@ -110,7 +110,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate, GMSMapViewDelegate, GMUClust
 
     
     
-    //find out which VC is using this delegate
+    //find out which VC is using this
     func topController(_ parent:UIViewController? = nil) -> UIViewController {
         if let vc = parent {
             if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
