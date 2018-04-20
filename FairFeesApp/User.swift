@@ -22,6 +22,8 @@ class User: NSObject {
     var reviews: [Review]
     var reviewsDict : [String: Any]!
     var profileImageRef: String!
+    var compareListingsStack: [Listing]!
+    var compareListingsStackRefs: [String]!
     
     init(uid:String,
          firstName:String,
@@ -45,6 +47,8 @@ class User: NSObject {
         self.typeOfUser = typeOfUser
         self.reviews = reviews
         self.reviewsDict = [:]
+        self.compareListingsStack = []
+        self.compareListingsStackRefs = []
         self.profileImageRef = profileImageRef
         
     }
@@ -61,7 +65,8 @@ class User: NSObject {
             
             //let inpProfileImage: String = inpDict["profileImage"] as? String ?? "",
             let inpListings:[Listing] = inpDict["listings"] as? [Listing],
-            let inpProfileImageRef: String = inpDict["profileImageRef"] as! String,
+            let inpProfileImageRef: String = inpDict["profileImageRef"] as? String,
+            let inpCompareStackListings: [Listing] = inpDict["compareStack"] as? [Listing],
             let inpReviews: [Review] = inpDict[""] as? [Review] else
         {
             print("Error: Dictionary is not in the correct format")
@@ -103,6 +108,7 @@ class User: NSObject {
                                       "rating":self.rating,
                                       //"profileImage":self.profileImage,
                                       "listings":self.listingsRefs,
+                                      "compareStack": self.compareListingsStackRefs,
                                       "reviews": self.reviewsDict,
                                       "profileImageRef": self.profileImageRef,
                                       "typeOfUser": self.typeOfUser]

@@ -602,15 +602,38 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     
     @objc func addListingForComparison(){
         
-        let homeVC = self.navigationController?.viewControllers[0] as! HomeViewController
-        homeVC.listingsToCompare.append(currentListing)
+//        let homeVC = self.navigationController?.viewControllers[0] as! HomeViewController
+//        homeVC.listingsToCompare.append(currentListing)
+        
+        if(guestUser){
+            present(AlertDefault.showAlert(title: "Sorry", message: "You need to sign in to use this feature"), animated: true, completion: nil)
+            return
+        }
+        
+        var listingPath: String = ""
+        
+        if currentListing is HomeSale {
+            listingPath = "/forSale/homesForSale/\(currentListing.country!)/\(currentListing.province!)/\(currentListing.city!)/\(currentListing.zipcode!)/\(currentListing.posterUID!)/\(currentListing.UID!)"
+        }
+        
+        else if currentListing is HomeRental {
+            
+            listingPath = "/forRent/homesForRent/\(currentListing.country!)/\(currentListing.province!)/\(currentListing.city!)/\(currentListing.zipcode!)/\(currentListing.posterUID!)/\(currentListing.UID!)"
+
+        }
+        
+        FirebaseData.sharedInstance.currentUser?.compareListingsStack.append(currentListing)
+        FirebaseData.sharedInstance.currentUser?.compareListingsStackRefs.append(listingPath)
+        
+        WriteFirebaseData.write(user: FirebaseData.sharedInstance.currentUser!)
         
         let compareListingAlert = UIAlertController(title: "Successfully Added", message: "Would you like to view all?", preferredStyle: .alert)
         
         let compareAction = UIAlertAction(title: "Yes", style: .default, handler: {(action) in
       
             let compareVC = CompareListingsViewController()
-            compareVC.listingsArray = homeVC.listingsToCompare
+          //  compareVC.listingsArray = homeVC.listingsToCompare
+            
             self.present(compareVC, animated: true, completion: nil)
     
         })

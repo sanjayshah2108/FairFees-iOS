@@ -47,6 +47,7 @@ class CompareListingsViewController: UIViewController, GMSMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        listingsArray = FirebaseData.sharedInstance.currentUser?.compareListingsStack
         
         view.backgroundColor = UIColor.white
         

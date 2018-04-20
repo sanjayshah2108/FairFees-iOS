@@ -65,7 +65,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var presentedListing: Listing!
     
-    public var listingsToCompare: [Listing]!
+   // public var listingsToCompare: [Listing]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +82,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         homeSalesToPresent = []
         homeRentalsToPresent = []
         
-        listingsToCompare = []
+       // listingsToCompare = []
         
         setupHomeMapView()
         setupHomeTableView()
@@ -100,6 +100,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //remove this
         ReadFirebaseData.readUsers()
+        
         ReadFirebaseData.readHomesForSale()
         ReadFirebaseData.readHomesForRent()
         
@@ -224,7 +225,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func goToCompareViewController(){
         
         let compareVC = CompareListingsViewController()
-        compareVC.listingsArray = listingsToCompare
+        //compareVC.listingsArray = listingsToCompare
         
         present(compareVC, animated: false, completion: nil)
         
@@ -372,6 +373,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         reloadMap()
         homeTableView.reloadData()
+        
+        
+        //move this to another method called by another notification
+      //  ReadFirebaseData.readCurrentUser(user: FirebaseData.sharedInstance.currentUser!)
+
         
     }
     

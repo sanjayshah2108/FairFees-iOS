@@ -13,6 +13,7 @@ class ReadFirebaseData: NSObject {
 
     static var homesForSaleHandle: UInt? = nil
     static var homesForRentHandle: UInt? = nil
+    static var myUserData: [String: Any]!
     
     //read all homesForSale
     class func readHomesForSale() {
@@ -265,101 +266,110 @@ class ReadFirebaseData: NSObject {
         
         
             //user["listingRefs"] may have disappeared in the Firebase DB if the user deleted his only listing, so we have to check first.
-            var listingRefs: [String]
+        var listingRefs: [String]
+        //var compareStackRefs: [String]
             
-            if (userData.keys.contains("listings")){
-                listingRefs = (userData["listings"] as? [String])!
+        if (userData.keys.contains("listings")){
+            listingRefs = (userData["listings"] as? [String])!
+        }
+        else {
+            listingRefs = [] as [String]
+                
+            //create the user with no listings
+            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
+                
+                
+            FirebaseData.sharedInstance.users.append(readUser)
+                
+            //if someone is signed in, set the current users details
+            if (Auth.auth().currentUser != nil) {
+                if (UID == Auth.auth().currentUser?.uid){
+                    FirebaseData.sharedInstance.currentUser = readUser
+                }
+            }
+        }
+            
+        //since the user data on Firebase only contains the references to the listings, we have to append them  manually to the user's local data.
+        
+        //first, clear the specificUserListings array.
+        FirebaseData.sharedInstance.specificUserListings.removeAll()
+        
+        var listings: [Listing] = []
+        var index = 0
+        for listingRef in listingRefs{
+                
+            //if there's a blank listingRef, don't include it.
+            if(listingRef == ""){
+                listingRefs.remove(at: index)
             }
             else {
-                listingRefs = [] as [String]
-                
-                //create the user with no listings
-                let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
-                
-                
-                FirebaseData.sharedInstance.users.append(readUser)
-                
-                //if someone is signed in, set the current users details
-                if (Auth.auth().currentUser != nil) {
-                    if (UID == Auth.auth().currentUser?.uid){
-                        FirebaseData.sharedInstance.currentUser = readUser
+                    
+                let ref = FirebaseData.sharedInstance.listingsNode.child(listingRef)
+                ref.observe(DataEventType.value, with: { (snapshot) in
+                    let value = snapshot.value as? NSDictionary;
+                    
+                    if ( value == nil) {
+                        print("This listing doesn't exist")
+                        return
                     }
-                }
+                        
+                    //find out if its a sale or rental
+                    let startIndex = listingRef.index(listingRef.startIndex, offsetBy: 17)
+                    let endIndex = listingRef.index(listingRef.startIndex, offsetBy: 21)
+                    let range = startIndex..<endIndex
+                        
+                    let typeOfListing = listingRef[range]
+                    
+                    //append this listing to specificUserListings
+                    let data = value as? [String:Any]
+                    
+                    if typeOfListing == "Sale" {
+                        readHomeForSale(data: data!, specificUser: true)
+                    }
+                    if typeOfListing == "Rent" {
+                        readHomeForRent(data: data!, specificUser: true)
+                    }
+                        
+                    //if this homeSale is the last one in the listingRefs
+                    if (
+                        listingRefs.index(of: listingRef) == listingRefs.count-1){
+
+                        listings = FirebaseData.sharedInstance.specificUserListings
+
+                        //create the user with all the listings
+                        let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
+                            
+                        readUser.listingsRefs = listingRefs
+
+                        //USERS ARE BEING READ MULTIPLE TIMES, so instead of appending, we need to check if the user exists, and replace it if true. FIX THIS
+                        if(FirebaseData.sharedInstance.users.contains(where: {$0.UID == readUser.UID})){
+                            let index = FirebaseData.sharedInstance.users.index(where: {$0.UID == readUser.UID})
+                                
+                            FirebaseData.sharedInstance.users[index!] = readUser
+                        }
+                        else {
+                                FirebaseData.sharedInstance.users.append(readUser)
+                        }
+
+                        //if someone is signed in, set the current users details
+                        if (Auth.auth().currentUser != nil) {
+                            if (UID == Auth.auth().currentUser?.uid){
+                                FirebaseData.sharedInstance.currentUser = readUser
+                                myUserData = userData
+                                
+                                NotificationCenter.default.post(name: Notification.Name(rawValue: "userListingsDownloadedKey"), object: nil)
+                            }
+                        }
+                        return
+                    }
+                })
+                index = index+1
             }
             
-            //since the user data on Firebase only contains the references to the listings, we have to append them  manually to the user's local data.
-        
-            //first, clear the specificUserListings array.
-            FirebaseData.sharedInstance.specificUserListings.removeAll()
-        
-            var listings: [Listing] = []
-            var index = 0
-            for listingRef in listingRefs{
-                
-                //if there's a blank listingRef, don't include it.
-                if(listingRef == ""){
-                    listingRefs.remove(at: index)
-                }
-                else {
-                    
-                    let ref = FirebaseData.sharedInstance.listingsNode.child(listingRef)
-                    ref.observe(DataEventType.value, with: { (snapshot) in
-                        let value = snapshot.value as? NSDictionary;
-                        
-                        if ( value == nil) {
-                            print("This listing doesn't exist")
-                            return
-                        }
-                        
-                        //find out if its a sale or rental
-                        let startIndex = listingRef.index(listingRef.startIndex, offsetBy: 17)
-                        let endIndex = listingRef.index(listingRef.startIndex, offsetBy: 21)
-                        let range = startIndex..<endIndex
-                        
-                        let typeOfListing = listingRef[range]
-                        
-                        //append this listing to specificUserListings
-                        let data = value as? [String:Any]
-                        
-                        if typeOfListing == "Sale" {
-                            readHomeForSale(data: data!, specificUser: true)
-                        }
-                        if typeOfListing == "Rent" {
-                            readHomeForRent(data: data!, specificUser: true)
-                        }
-                        
-                        //if this homeSale is the last one in the listingRefs
-                        if (index == listingRefs.count){
-
-                            listings = FirebaseData.sharedInstance.specificUserListings
-
-                            //create the user with all the listings
-                            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
-                            
-                            readUser.listingsRefs = listingRefs
-
-                            //USERS ARE BEING READ MULTIPLE TIMES, so instead of appending, we need to check if the user exists, and replace it if true. FIX THIS
-                            if(FirebaseData.sharedInstance.users.contains(where: {$0.UID == readUser.UID})){
-                                let index = FirebaseData.sharedInstance.users.index(where: {$0.UID == readUser.UID})
-                                
-                                FirebaseData.sharedInstance.users[index!] = readUser
-                            }
-                            else {
-                                 FirebaseData.sharedInstance.users.append(readUser)
-                            }
-
-                            //if someone is signed in, set the current users details
-                            if (Auth.auth().currentUser != nil) {
-                                if (UID == Auth.auth().currentUser?.uid){
-                                    FirebaseData.sharedInstance.currentUser = readUser
-                                }
-                            }
-                            return
-                        }
-                    })
-                    index = index+1
-                }
-            }
+            
+  
+            
+        }
     }
     
     
@@ -383,7 +393,17 @@ class ReadFirebaseData: NSObject {
                 }
                 
                 let userData = value as! [String: Any]
+                
+                
+                //observe Notif
+                NotificationCenter.default.addObserver(self, selector: #selector(readCompareStack), name: NSNotification.Name(rawValue: "userListingsDownloadedKey"), object: nil)
+                
                 self.readUser(userData: userData)
+                
+            
+                
+               
+            
             })
     }
     
@@ -434,5 +454,93 @@ class ReadFirebaseData: NSObject {
     //            }
     //        }
     //    }
+    
+    
+    
+    @objc class func readCompareStack(){
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "userListingsDownloadedKey"), object: nil)
+        
+        //user["compareStackRefs"] may have disappeared in the Firebase DB if the user deleted his only comparison, so we have to check first.
+        var compareStackRefs: [String]
+        
+        let userData = myUserData
+        
+        if (userData?.keys.contains("compareStack"))!{
+            compareStackRefs = (userData!["compareStack"] as? [String])!
+        }
+        else {
+            compareStackRefs = [] as [String]
+            
+            //FirebaseData.sharedInstance.currentUser?.compareListingsStackRefs = compareStackRefs
+            
+            //                    //if someone is signed in, set the current users details
+            //                    if (Auth.auth().currentUser != nil) {
+            //                        if (UID == Auth.auth().currentUser?.uid){
+            //                            FirebaseData.sharedInstance.currentUser = readUser
+            //                        }
+            //                    }
+        }
+        
+        //first, clear the specificUserListings array.
+        FirebaseData.sharedInstance.specificUserListings.removeAll()
+        
+        var compareStackListings: [Listing] = []
+     
+        for compareListingRef in compareStackRefs{
+            
+            //if there's a blank compareListingRef, don't include it.
+            if(compareListingRef == ""){
+                compareStackRefs.remove(at: compareStackRefs.index(of: compareListingRef)!)
+            }
+            else {
+                
+                let ref = FirebaseData.sharedInstance.listingsNode.child(compareListingRef)
+                ref.observe(DataEventType.value, with: { (snapshot) in
+                    let value = snapshot.value as? NSDictionary;
+                    
+                    if ( value == nil) {
+                        print("This listing doesn't exist")
+                        return
+                    }
+                    
+                    
+                    //find out if its a sale or rental
+                    let startIndex = compareListingRef.index(compareListingRef.startIndex, offsetBy: 17)
+                    let endIndex = compareListingRef.index(compareListingRef.startIndex, offsetBy: 21)
+                    let range = startIndex..<endIndex
+                    
+                    let typeOfListing = compareListingRef[range]
+                    
+                    //append this listing to specificUserListings
+                    let data = value as? [String:Any]
+                    
+                    if typeOfListing == "Sale" {
+                        readHomeForSale(data: data!, specificUser: true)
+                    }
+                    if typeOfListing == "Rent" {
+                        readHomeForRent(data: data!, specificUser: true)
+                    }
+             
+                    //if this listing is the last one in the compareStackRefs
+                    if (compareStackRefs.index(of: compareListingRef) == compareStackRefs.count-1){
+                        
+                        compareStackListings = FirebaseData.sharedInstance.specificUserListings
+                        
+                        FirebaseData.sharedInstance.currentUser?.compareListingsStack = compareStackListings
+                        FirebaseData.sharedInstance.currentUser?.compareListingsStackRefs = compareStackRefs
+                        
+                        //                                //if someone is signed in, set the current users details
+                        //                                if (Auth.auth().currentUser != nil) {
+                        //                                    if (UID == Auth.auth().currentUser?.uid){
+                        //                                        FirebaseData.sharedInstance.currentUser = readUser
+                        //                                    }
+                        //                                }
+                        return
+                    }
+                })
+            }
+        }
+    }
     
 }
