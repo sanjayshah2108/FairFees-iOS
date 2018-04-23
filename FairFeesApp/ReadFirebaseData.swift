@@ -132,7 +132,7 @@ class ReadFirebaseData: NSObject {
     
     fileprivate class func readHomeForRent(data:[String:Any], specificUser: Bool) {
         
-        //appending a specific user's homesForSale to that user's local data.
+        //appending a specific user's homesForRent to that user's local data.
         if (specificUser){
             let readHomeForRent = HomeRental(with: data)
             if (readHomeForRent != nil) {

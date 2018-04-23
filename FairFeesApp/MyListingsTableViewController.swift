@@ -147,6 +147,9 @@ class MyListingsTableViewController: UITableViewController {
         return 60
     }
     
+ 
+    
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete){
             
@@ -161,6 +164,8 @@ class MyListingsTableViewController: UITableViewController {
     
             deleteListing(listing: listingToEdit!)
         }
+        
+       
     }
     
     

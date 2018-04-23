@@ -20,9 +20,13 @@ class ShareListing: NSObject {
         
         ReadFirebaseData.readHomesForSale()
         ReadFirebaseData.readHomesForRent()
+        
+        //parseURLAndDisplayListing()
     }
     
     @objc func parseURLAndDisplayListing(){
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
