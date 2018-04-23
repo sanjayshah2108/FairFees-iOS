@@ -113,7 +113,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         MapViewDelegate.theMapViewDelegate.googleMapView = homeMapView
         
@@ -131,6 +131,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidAppear(_ animated: Bool) {
        // navigationItem.hidesSearchBarWhenScrolling = true
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // navigationItem.hidesSearchBarWhenScrolling = true
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
+    }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -358,6 +367,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
  
     
     @objc func setInitialListingsToPresent(){
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "rentalHomesDownloadCompleteNotificationKey"), object: nil)
         
         storageRef = Storage.storage().reference()
         

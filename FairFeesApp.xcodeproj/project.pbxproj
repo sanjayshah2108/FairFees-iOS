@@ -182,6 +182,7 @@
 		CED64EAA2088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED64EA82088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib */; };
 		CED64EB0208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED64EAE208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift */; };
 		CED64EB1208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED64EAF208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib */; };
+		CED64EB3208A87B10091DFF4 /* ShareListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED64EB2208A87B10091DFF4 /* ShareListing.swift */; };
 		D32A21875248C9799A303988 /* Pods_FairFeesAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FB8A529188D490A800E233 /* Pods_FairFeesAppTests.framework */; };
 		DE459E064610D0977ABD5CFB /* Pods_FairFeesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6121D021F4B3A54D6AF1A32A /* Pods_FairFeesApp.framework */; };
 /* End PBXBuildFile section */
@@ -403,6 +404,7 @@
 		CED64EA82088006D0091DFF4 /* CompareListingsSmallTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareListingsSmallTableViewCell.xib; sourceTree = "<group>"; };
 		CED64EAE208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareListingsLargeTableViewCell.swift; sourceTree = "<group>"; };
 		CED64EAF208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompareListingsLargeTableViewCell.xib; sourceTree = "<group>"; };
+		CED64EB2208A87B10091DFF4 /* ShareListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListing.swift; sourceTree = "<group>"; };
 		D54D2B7670EE1DE3674DF20F /* Pods_FairFeesAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FairFeesAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -580,6 +582,7 @@
 				292304A42054D5F1000ECFCF /* listing images */,
 				CE7F7DF1204DD32D00548D5F /* AppDelegate.swift */,
 				CE7F7E21204DDB6600548D5F /* MapViewDelegate.swift */,
+				CED64EB2208A87B10091DFF4 /* ShareListing.swift */,
 				CE3D4129207822950099A895 /* AlertDefault.swift */,
 				CED64EAE208834FE0091DFF4 /* CompareListingsLargeTableViewCell.swift */,
 				CED64EAF208834FE0091DFF4 /* CompareListingsLargeTableViewCell.xib */,
@@ -1232,6 +1235,7 @@
 				CE51484C204F74540021DB67 /* DummyData.swift in Sources */,
 				CE51484A204F70170021DB67 /* LocationManager.swift in Sources */,
 				CE2D6E67206C341500104EB6 /* ReviewTableViewCell.swift in Sources */,
+				CED64EB3208A87B10091DFF4 /* ShareListing.swift in Sources */,
 				CED64E9C2087AB2D0091DFF4 /* GMUKMLParser.m in Sources */,
 				CED64E942087AB2D0091DFF4 /* GMUClusterManager.m in Sources */,
 				CE3D4130207E5F470099A895 /* ListingsTableViewController.swift in Sources */,

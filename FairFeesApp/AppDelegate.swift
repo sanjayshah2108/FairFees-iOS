@@ -26,6 +26,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    //This is called when the app is opened through the URL Scheme
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        //make sure the url prefix/scheme is right.
+        if(url.scheme == "iOSFairFeesApp"){
+            print("Scheme is: \(url.scheme!)")
+            print("Query is: \(url.query!)")
+            
+            openedThroughSchema(url: url)
+            
+            return true
+        }
+            
+        else {
+            return false
+        }
+    }
+    
+    
+    //connector method to parse the url from the scheme link
+    @objc func openedThroughSchema(url: URL) {
+        
+        let shareListing = ShareListing()
+        shareListing.updateDataBeforeParsing(url: url)
+        
+    }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

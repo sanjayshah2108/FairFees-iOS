@@ -12,7 +12,7 @@ import GoogleMaps
 import FirebaseStorageUI
 import MessageUI
 
-class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrollViewDelegate, MFMailComposeViewControllerDelegate {
+class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrollViewDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate {
 
     var navigationBarHeight: CGFloat!
     
@@ -445,7 +445,64 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     
     @objc func shareListing(){
         print("Share")
+        
+        
+        let destinationUser = FirebaseData.sharedInstance.users.filter{ $0.UID == currentListing.posterUID }.first
+        
+        let messageController = MFMessageComposeViewController()
+        messageController.messageComposeDelegate = self
+        
+        if (MFMessageComposeViewController.canSendText()) {
+            self.present(messageController, animated: true, completion: nil)
+        }
+        else {
+            self.showSendTextErrorAlert()
+        }
+        
+        
+        sendText(messageComposerVC: messageController)
     }
+    
+    func sendText(messageComposerVC: MFMessageComposeViewController){
+        
+        let destinationUser = FirebaseData.sharedInstance.users.filter{ $0.UID == currentListing.posterUID }.first
+        
+        let destinationName = destinationUser!.firstName
+        let destinationPhoneNumber = String((destinationUser!.phoneNumber))
+        
+        let currentUserName = FirebaseData.sharedInstance.currentUser!.firstName
+        let currentUserID = FirebaseData.sharedInstance.currentUser!.UID
+        let currentListingName = currentListing.name
+        let currentListingUID = currentListing.UID
+ 
+        messageComposerVC.recipients = [destinationPhoneNumber]
+        
+        messageComposerVC.body = "Hey \(destinationName),\n\nPlease click the link below!\n\niOSFairFeesApp://?listingUID=\(currentListingUID!)\n\nThanks! :)\n\n"
+    }
+    
+    func showSendTextErrorAlert() {
+        let sendMailErrorAlert = UIAlertController.init(title: "Could Not Send Text", message: "Your device could not send a text.  Please check your message configuration and try again.", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+    
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        switch result {
+        case .cancelled:
+            break
+            
+        case .sent:
+            //self.performSegue(withIdentifier: "unwindToInitialVC", sender: self)
+            print ("Go back to mapView")
+            
+        case .failed:
+            print ("Message sent failure")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     
     func nextImage(imageView: UIImageView, pageControl: UIPageControl){
         if (photoIndex == currentListing.photoRefs.count-1){
