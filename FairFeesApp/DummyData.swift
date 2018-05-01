@@ -24,8 +24,7 @@ class DummyData: NSObject {
         users = []
         
         let user1 = User(uid: "NHWEbBFEfzaL7B3d7PD49wuaUtW2",
-                         firstName: "Sanjay",
-                         lastName: "Shah",
+                         displayName: "Sanjay",
                          email: "sanjays_94@hotmail.com",
                          phoneNumber: 7788816399,
                          rating: 5,
@@ -38,8 +37,7 @@ class DummyData: NSObject {
                          profileImageRef: "")
         
         let user2 = User(uid: "notRealUID",
-                         firstName: "Amir",
-                         lastName: "Jahanlou",
+                         displayName: "Amir",
                          email: "amir.jahan@gmail.com",
                          phoneNumber: 6044413431,
                          rating: 5,

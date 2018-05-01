@@ -39,7 +39,7 @@ class AuthenticationManager: NSObject {
                         if profileError == nil {
                             
                             //create the user locally
-                            let addedUser = User(uid: newUser!.uid, firstName: firstName, lastName: lastName, email: (newUser!.email)!, phoneNumber: phoneNumber, rating: 0, listings: [], typeOfUser: ["buyer": true, "seller": true, "landlord": true, "tenant": true], reviews: [], profileImageRef: profileImageRef)
+                            let addedUser = User(uid: newUser!.uid, displayName: firstName, email: (newUser!.email)!, phoneNumber: phoneNumber, rating: 0, listings: [], typeOfUser: ["buyer": true, "seller": true, "landlord": true, "tenant": true], reviews: [], profileImageRef: profileImageRef)
                             
                             //make this user the current user
                             FirebaseData.sharedInstance.currentUser = addedUser

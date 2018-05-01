@@ -95,7 +95,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         
         firstNameTextField = UITextField()
         firstNameTextField.delegate = self
-        firstNameTextField.text = FirebaseData.sharedInstance.currentUser?.firstName
+        firstNameTextField.text = FirebaseData.sharedInstance.currentUser?.displayName
         firstNameTextField.textAlignment = .left
         firstNameTextField.layer.borderColor = UIColor.lightGray.cgColor
         firstNameTextField.layer.borderWidth = 1
@@ -111,7 +111,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         
         lastNameTextField = UITextField()
         lastNameTextField.delegate = self
-        lastNameTextField.text = FirebaseData.sharedInstance.currentUser?.lastName
+        lastNameTextField.text = FirebaseData.sharedInstance.currentUser?.displayName
         lastNameTextField.textAlignment = .left
         lastNameTextField.layer.borderColor = UIColor.lightGray.cgColor
         lastNameTextField.layer.borderWidth = 1
@@ -313,8 +313,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
             present(AlertDefault.showAlert(title: "Login Email not changed", message: "Your contact email has been updated. The email you use to login in however, cannot be changed"), animated: true, completion: nil)
         }
         
-        FirebaseData.sharedInstance.currentUser?.firstName = firstNameTextField.text!
-        FirebaseData.sharedInstance.currentUser?.lastName = lastNameTextField.text!
+        FirebaseData.sharedInstance.currentUser?.displayName = firstNameTextField.text!
         FirebaseData.sharedInstance.currentUser?.email = emailTextField.text!
         FirebaseData.sharedInstance.currentUser?.phoneNumber = Int(phoneNumberTextField.text!)!
         

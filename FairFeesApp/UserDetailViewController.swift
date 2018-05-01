@@ -75,7 +75,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
     func setupLabels(){
         nameLabel = UILabel()
         nameLabel.backgroundColor = UIColor.white
-        nameLabel.text = currentUser.firstName + " " + currentUser.lastName
+        nameLabel.text = currentUser.displayName
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
     
@@ -257,9 +257,9 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
     func sendMail(mailComposerVC: MFMailComposeViewController){
         
         let destinationEmail = currentUser.email
-        let destinationName = currentUser.firstName
+        let destinationName = currentUser.displayName
         
-        let currentUserName = FirebaseData.sharedInstance.currentUser!.firstName
+        let currentUserName = FirebaseData.sharedInstance.currentUser!.displayName
     
         //mailVC properties
         mailComposerVC.setToRecipients([destinationEmail])
@@ -419,7 +419,7 @@ class UserDetailViewController: UIViewController, UITextViewDelegate, MFMailComp
         
         
         //by using users UID as the reviewUID, a user can only review someone once!
-        let newReview = Review(uid: (FirebaseData.sharedInstance.currentUser?.UID)!, text: newReviewTextView.text, upvotes: 0, downvotes: 0, reviewerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, reviewerName: (FirebaseData.sharedInstance.currentUser?.firstName)! + " " + (FirebaseData.sharedInstance.currentUser?.lastName)!, rating: newReviewStarRatingView.rating, votes: [])
+        let newReview = Review(uid: (FirebaseData.sharedInstance.currentUser?.UID)!, text: newReviewTextView.text, upvotes: 0, downvotes: 0, reviewerUID: (FirebaseData.sharedInstance.currentUser?.UID)!, reviewerName: (FirebaseData.sharedInstance.currentUser?.displayName)!, rating: newReviewStarRatingView.rating, votes: [])
         
         currentUser.reviews.append(newReview)
         

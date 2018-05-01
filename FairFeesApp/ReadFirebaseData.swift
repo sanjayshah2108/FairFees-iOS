@@ -5,23 +5,22 @@
 //  Created by Sanjay Shah on 2018-03-20.
 //  Copyright © 2018 Fair Fees. All rights reserved.
 //
-
 import UIKit
 import Firebase
 
-class ReadFirebaseData: NSObject {
-
+class ReadFirebaseData: NSObject
+{
     static var homesForSaleHandle: UInt? = nil
     static var homesForRentHandle: UInt? = nil
     static var myUserData: [String: Any]!
     
     //read all homesForSale
-    class func readHomesForSale() {
-        
+    class func readHomesForSale()
+    {
         //We will need this if statement if we have autoLogin
         if ( Auth.auth().currentUser == nil)
         {
-            return
+            
         }
         
         let ref = FirebaseData.sharedInstance.homesForSaleNode
@@ -42,8 +41,8 @@ class ReadFirebaseData: NSObject {
             //get individual homesForSale data and append to local data
             readHomeForSale(data: data!, specificUser: false)
             
-            let myDownloadCompleteNotificationKey = "myDownloadCompleteNotificationKey"
-            NotificationCenter.default.post(name: Notification.Name(rawValue: myDownloadCompleteNotificationKey), object: nil)
+            let homesForSaleDownloadCompleteNotificationKey = "homesForSaleDownloadCompleteNotificationKey"
+            NotificationCenter.default.post(name: Notification.Name(rawValue: homesForSaleDownloadCompleteNotificationKey), object: nil)
         })
         
         if homesForSaleHandle != nil {
@@ -59,8 +58,8 @@ class ReadFirebaseData: NSObject {
             let readHomeForSale = HomeSale(with: data)
             FirebaseData.sharedInstance.specificUserListings.append(readHomeForSale!)
         }
-        
-        //appending all homesForSale to local data
+            
+            //appending all homesForSale to local data
         else {
             
             //refer to Firebase Data structure to understand these for loops
@@ -78,7 +77,7 @@ class ReadFirebaseData: NSObject {
                                     let homeForSale = userListing.value as! [String: Any]
                                     
                                     let readHomeForSale = HomeSale(with: homeForSale)
-                            
+                                    
                                     if readHomeForSale != nil {
                                         FirebaseData.sharedInstance.homesForSale.append(readHomeForSale!)
                                     }
@@ -99,7 +98,7 @@ class ReadFirebaseData: NSObject {
         //We will need this if statement if we have autoLogin
         if ( Auth.auth().currentUser == nil)
         {
-            return
+            
         }
         
         let ref = FirebaseData.sharedInstance.homesForRentNode
@@ -132,7 +131,7 @@ class ReadFirebaseData: NSObject {
     
     fileprivate class func readHomeForRent(data:[String:Any], specificUser: Bool) {
         
-        //appending a specific user's homesForRent to that user's local data.
+        //appending a specific user's homesForSale to that user's local data.
         if (specificUser){
             let readHomeForRent = HomeRental(with: data)
             if (readHomeForRent != nil) {
@@ -140,7 +139,7 @@ class ReadFirebaseData: NSObject {
             }
         }
             
-        //appending all homesForRent to local data
+            //appending all homesForRent to local data
         else {
             
             //refer to Firebase Data structure to understand these for loops
@@ -175,49 +174,48 @@ class ReadFirebaseData: NSObject {
     }
     
     
-    //read all users
-    class func readUsers() {
+        //read all users
+        class func readUsers() {
     
-        //first, clear all.
-        FirebaseData.sharedInstance.users.removeAll()
-        
-        FirebaseData.sharedInstance.usersNode
-            .observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                let value = snapshot.value as? NSDictionary
-                
-                if ( value == nil) {
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "noUsersFoundKey"), object: nil)
-                    return
-                }
-                
-                //refer to Firebase data structure to understand these for loops.
-                for firstCharInEmail in value! {
-                    let firstCharDict = firstCharInEmail.value as! [String:Any]
-                    
-                    for secondCharInEmail in firstCharDict {
-                        let secondCharDict = secondCharInEmail.value as! [String:Any]
-                        
-                        for thirdCharInEmail in secondCharDict {
-                            let thirdCharDict = thirdCharInEmail.value as! [String:Any]
-                            
-                            for user in thirdCharDict{
-                                let userData = user.value as! [String: Any]
-                                self.readUser(userData: userData)
+            //first, clear all.
+            FirebaseData.sharedInstance.users.removeAll()
+    
+            FirebaseData.sharedInstance.usersNode
+                .observeSingleEvent(of: .value, with: { (snapshot) in
+    
+                    let value = snapshot.value as? NSDictionary
+    
+                    if ( value == nil) {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "noUsersFoundKey"), object: nil)
+                        return
+                    }
+    
+                    //refer to Firebase data structure to understand these for loops.
+                    for firstCharInUID in value! {
+                        let firstCharDict = firstCharInUID.value as! [String:Any]
+    
+                        for secondCharInUID in firstCharDict {
+                            let secondCharDict = secondCharInUID.value as! [String:Any]
+    
+                            for thirdCharInUID in secondCharDict {
+                                let thirdCharDict = thirdCharInUID.value as! [String:Any]
+    
+                                for user in thirdCharDict{
+                                    let userData = user.value as! [String: Any]
+                                    self.readUser(userData: userData)
+                                }
+    
                             }
-                            
                         }
                     }
-                }
-            })
-    }
+                })
+        }
     
     //read an individual user
     class func readUser(userData: [String: Any]){
-     
+        
         let UID: String = userData["UID"] as! String
-        let firstName: String = userData["firstName"] as! String
-        let lastName: String = userData["lastName"] as! String
+        let displayName: String = userData["displayName"] as! String
         let email: String = userData["email"] as! String
         let phoneNumber: Int = userData["phoneNumber"] as! Int
         let rating: Int = userData["rating"] as! Int
@@ -236,7 +234,7 @@ class ReadFirebaseData: NSObject {
         }
         
         for (key, value) in reviewsDict{
-           
+            
             let reviewUID = value["UID"] as! String
             let text = value["text"] as! String
             let reviewerUID = value["reviewerUID"] as! String
@@ -259,7 +257,7 @@ class ReadFirebaseData: NSObject {
             for (key, value) in votesDict{
                 let typeOfVote: String = value["type"] as! String
                 let voterUID: String = value["voterUID"] as! String
-    
+                
                 let vote:Vote = Vote(type: typeOfVote, voterUID: voterUID)
                 
                 votes.append(vote)
@@ -279,12 +277,12 @@ class ReadFirebaseData: NSObject {
         else {
             
             listingRefs = [] as [String]
-                
+            
             //create the user with no listings
-            let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
+            let readUser = User(uid: UID, displayName: displayName, email: email, phoneNumber: phoneNumber, rating: rating, listings: [], typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
             
             FirebaseData.sharedInstance.users.append(readUser)
-                
+            
             //if someone is signed in, set the current users details
             if (Auth.auth().currentUser != nil) {
                 if (UID == Auth.auth().currentUser?.uid){
@@ -292,7 +290,7 @@ class ReadFirebaseData: NSObject {
                 }
             }
         }
-            
+        
         //since the user data on Firebase only contains the references to the listings, we have to append them  manually to the user's local data.
         
         //first, clear the specificUserListings array.
@@ -300,13 +298,13 @@ class ReadFirebaseData: NSObject {
         
         var listings: [Listing] = []
         for listingRef in listingRefs{
-                
+            
             //if there's a blank listingRef, don't include it.
             if(listingRef == ""){
                 listingRefs.remove(at: listingRefs.index(of: listingRef)!)
             }
             else {
-                    
+                
                 let ref = FirebaseData.sharedInstance.listingsNode.child(listingRef)
                 ref.observe(DataEventType.value, with: { (snapshot) in
                     let value = snapshot.value as? NSDictionary;
@@ -315,12 +313,12 @@ class ReadFirebaseData: NSObject {
                         print("This listing doesn't exist")
                         return
                     }
-                        
+                    
                     //find out if its a sale or rental
                     let startIndex = listingRef.index(listingRef.startIndex, offsetBy: 17)
                     let endIndex = listingRef.index(listingRef.startIndex, offsetBy: 21)
                     let range = startIndex..<endIndex
-                        
+                    
                     let typeOfListing = listingRef[range]
                     
                     //append this listing to specificUserListings
@@ -332,28 +330,30 @@ class ReadFirebaseData: NSObject {
                     if typeOfListing == "Rent" {
                         readHomeForRent(data: data!, specificUser: true)
                     }
-                        
+                    
                     //if this homeSale is the last one in the listingRefs
                     if (
                         listingRefs.index(of: listingRef) == listingRefs.count-1){
-
+                        
                         listings = FirebaseData.sharedInstance.specificUserListings
-
+                        
                         //create the user with all the listings
-                        let readUser = User(uid: UID, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
-                            
+                        let readUser = User(uid: UID, displayName: displayName, email: email, phoneNumber: phoneNumber, rating: rating, listings: listings, typeOfUser: typeOfUser, reviews: reviews, profileImageRef: profileImageRef)
+                        
                         readUser.listingsRefs = listingRefs
-
+                        
                         //if this user has been read before, overwrite him, otherwise append him
                         if(FirebaseData.sharedInstance.users.contains(where: {$0.UID == readUser.UID})){
                             let index = FirebaseData.sharedInstance.users.index(where: {$0.UID == readUser.UID})
-                                
+                            
                             FirebaseData.sharedInstance.users[index!] = readUser
                         }
                         else {
                             FirebaseData.sharedInstance.users.append(readUser)
                         }
-
+                        
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "userDownloadedKey"), object: nil)
+                        
                         //if someone is signed in, set the current users details
                         if (Auth.auth().currentUser != nil) {
                             if (UID == Auth.auth().currentUser?.uid){
@@ -361,6 +361,7 @@ class ReadFirebaseData: NSObject {
                                 myUserData = userData
                                 
                                 NotificationCenter.default.post(name: Notification.Name(rawValue: "userListingsDownloadedKey"), object: nil)
+                                
                             }
                         }
                         return
@@ -370,15 +371,14 @@ class ReadFirebaseData: NSObject {
         }
     }
     
-    
-    class func readCurrentUser(user: User){
+    class func readUser(userUID: String){
         
-        let userEmail = user.email
-    
-        let firstCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 0)])
-        let secondCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 1)])
-        let thirdCharOfUserEmail = String(userEmail[userEmail.index(userEmail.startIndex, offsetBy: 2)])
-        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserEmail).child(secondCharOfUserEmail).child(thirdCharOfUserEmail).child(user.UID)
+        // let userEmail = user.email
+        
+        let firstCharOfUserUID = String(userUID[userUID.index(userUID.startIndex, offsetBy: 0)])
+        let secondCharOfUserUID = String(userUID[userUID.index(userUID.startIndex, offsetBy: 1)])
+        let thirdCharOfUserUID = String(userUID[userUID.index(userUID.startIndex, offsetBy: 2)])
+        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserUID).child(secondCharOfUserUID).child(thirdCharOfUserUID).child(userUID)
             .observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 let value = snapshot.value as? NSDictionary
@@ -394,7 +394,35 @@ class ReadFirebaseData: NSObject {
                 NotificationCenter.default.addObserver(self, selector: #selector(readCompareStack), name: NSNotification.Name(rawValue: "userListingsDownloadedKey"), object: nil)
                 
                 self.readUser(userData: userData)
-  
+                
+            })
+    }
+    
+    class func readCurrentUser(user: User){
+        
+        let userEmail = user.email
+        let userUID = user.UID!
+        
+        let firstCharOfUserUID = String(userUID[userUID.index(userUID.startIndex, offsetBy: 0)])
+        let secondCharOfUserUID = String(userUID[userUID.index(userUID.startIndex, offsetBy: 1)])
+        let thirdCharOfUserUID = String(userUID[userUID.index(userUID.startIndex, offsetBy: 2)])
+        FirebaseData.sharedInstance.usersNode.child(firstCharOfUserUID).child(secondCharOfUserUID).child(thirdCharOfUserUID).child(userUID)
+            .observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                let value = snapshot.value as? NSDictionary
+                
+                if ( value == nil) {
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "user not found"), object: nil)
+                    return
+                }
+                
+                let userData = value as! [String: Any]
+                
+                //we can only compile the compareStack after the user's listings have been compiled in readUser()
+                NotificationCenter.default.addObserver(self, selector: #selector(readCompareStack), name: NSNotification.Name(rawValue: "userListingsDownloadedKey"), object: nil)
+                
+                self.readUser(userData: userData)
+                
             })
     }
     
@@ -422,7 +450,7 @@ class ReadFirebaseData: NSObject {
         FirebaseData.sharedInstance.specificUserListings.removeAll()
         
         var compareStackListings: [Listing] = []
-     
+        
         for compareListingRef in compareStackRefs{
             
             //if there's a blank compareListingRef, don't include it, and remove it from the refs
@@ -456,7 +484,7 @@ class ReadFirebaseData: NSObject {
                     if typeOfListing == "Rent" {
                         readHomeForRent(data: data!, specificUser: true)
                     }
-             
+                    
                     //if this listing is the last one in the compareStackRefs
                     if (compareStackRefs.index(of: compareListingRef) == compareStackRefs.count-1){
                         

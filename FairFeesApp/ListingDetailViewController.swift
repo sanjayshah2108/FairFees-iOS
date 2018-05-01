@@ -163,7 +163,7 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         self.navigationItem.rightBarButtonItem = shareBarButton
         
         posterButton = UIButton()
-        posterButton.setTitle("Listed by: \(posterUser.firstName)", for: .normal)
+        posterButton.setTitle("Listed by: \(posterUser.displayName)", for: .normal)
         posterButton.setTitleColor(UIColor.white, for: .normal)
         posterButton.backgroundColor = UIColor.blue
         posterButton.translatesAutoresizingMaskIntoConstraints = false
@@ -467,10 +467,10 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
         
         let destinationUser = FirebaseData.sharedInstance.users.filter{ $0.UID == currentListing.posterUID }.first
         
-        let destinationName = destinationUser!.firstName
+        let destinationName = destinationUser!.displayName
         let destinationPhoneNumber = String((destinationUser!.phoneNumber))
         
-        let currentUserName = FirebaseData.sharedInstance.currentUser!.firstName
+        let currentUserName = FirebaseData.sharedInstance.currentUser!.displayName
         let currentUserID = FirebaseData.sharedInstance.currentUser!.UID
         let currentListingName = currentListing.name
         let currentListingUID = currentListing.UID
@@ -584,9 +584,9 @@ class ListingDetailViewController: UIViewController, GMSMapViewDelegate, UIScrol
     func sendMail(mailComposerVC: MFMailComposeViewController, destinationUser: User){
         
         let destinationEmail = destinationUser.email
-        let destinationName = destinationUser.firstName
+        let destinationName = destinationUser.displayName
         
-        let currentUserName = FirebaseData.sharedInstance.currentUser!.firstName
+        let currentUserName = FirebaseData.sharedInstance.currentUser!.displayName
 
         let currentListingName = currentListing.name!
         let currentListingAddress = currentListing.address!
